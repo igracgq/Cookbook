@@ -67,6 +67,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.model.DifficultyLevel
 import com.example.data.model.Recipe
 import com.example.data.model.SpiceLevel
+import com.example.ui.theme.SerifHeritageFontFamily
 import com.example.ui.viewmodel.CookbookViewModel
 import com.example.ui.viewmodel.IndexViewMode
 import com.example.ui.viewmodel.ScreenDestination
@@ -493,7 +494,8 @@ fun IndexRecipeRow(
           Text(
             text = recipe.title,
             style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
+            fontFamily = SerifHeritageFontFamily,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
           )
           if (recipe.italianTitle.isNotEmpty() && !recipe.italianTitle.equals(recipe.title, ignoreCase = true)) {

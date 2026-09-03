@@ -75,6 +75,7 @@ import com.example.data.model.RecipeCategory
 import com.example.data.model.SpiceLevel
 import com.example.ui.components.CulinaryMonochromeBackground
 import com.example.ui.theme.CursiveHeritageFontFamily
+import com.example.ui.theme.SerifHeritageFontFamily
 import com.example.ui.util.RecipePhotoResolver
 import com.example.ui.viewmodel.CookbookViewModel
 import com.example.ui.viewmodel.RecipeQuickFilter
@@ -486,7 +487,7 @@ fun CookbookHeroHeader() {
           Text(
             text = "Heritage Cookbook",
             fontFamily = CursiveHeritageFontFamily,
-            fontSize = 32.sp,
+            fontSize = 38.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
           )
@@ -619,7 +620,8 @@ fun RecipeCard(
           Text(
             text = recipe.title,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontFamily = SerifHeritageFontFamily,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
