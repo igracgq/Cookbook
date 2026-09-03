@@ -240,7 +240,7 @@ fun AlphabeticalIndexScreen(
               item(key = "cat_header_${cat.name}") {
                 IndexSectionHeader(
                   title = cat.displayName,
-                  count = "${cat.pageRange} • ${recipeList.size} recipes"
+                  count = "${recipeList.size} recipes"
                 )
               }
               items(recipeList, key = { "cat_recipe_${it.id}" }) { recipe ->
@@ -536,25 +536,18 @@ fun IndexRecipeRow(
         Spacer(modifier = Modifier.width(8.dp))
 
         Surface(
-          color = MaterialTheme.colorScheme.primaryContainer,
+          color = MaterialTheme.colorScheme.surfaceVariant,
           shape = RoundedCornerShape(8.dp)
         ) {
           Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
           ) {
-            Icon(
-              imageVector = Icons.Default.MenuBook,
-              contentDescription = null,
-              modifier = Modifier.size(12.dp),
-              tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Spacer(modifier = Modifier.width(4.dp))
             Text(
-              text = "p. ${recipe.cookbookPage}",
+              text = recipe.prepTime,
               fontSize = 12.sp,
-              fontWeight = FontWeight.Bold,
-              color = MaterialTheme.colorScheme.onPrimaryContainer
+              fontWeight = FontWeight.Medium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant
             )
           }
         }

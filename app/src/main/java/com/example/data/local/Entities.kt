@@ -29,3 +29,11 @@ data class RecipeRatingEntity(
   val rating: Int,
   val ratedAt: Long = System.currentTimeMillis()
 )
+
+@Entity(tableName = "recipe_photos")
+data class RecipePhotoEntity(
+  @PrimaryKey val recipeId: String,
+  val photoUri: String,
+  val updatedAt: Long = System.currentTimeMillis()
+)
+

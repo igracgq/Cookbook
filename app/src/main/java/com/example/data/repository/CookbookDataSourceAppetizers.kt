@@ -297,6 +297,38 @@ object CookbookDataSourceAppetizers {
       ),
       notes = "Silky smooth chickpea spread that pairs wonderfully with crusty bread.",
       tags = listOf("Appetizers", "Dips", "Vegetarian", "Healthy")
+    ),
+    Recipe(
+      id = "franks_wine_making",
+      title = "Frank's Wine Making",
+      italianTitle = "Il Vino di Casa Ruffolo",
+      cookbookPage = 26,
+      category = RecipeCategory.APPETIZERS,
+      contributor = "Frank Ruffolo",
+      servings = "20 bottles",
+      prepTime = "5 days primary",
+      cookTime = "8-12 weeks aging",
+      ingredients = listOf(
+        RecipeIngredient("1 (4 gallon) pail of Moscato (must or mosto)", "moscato"),
+        RecipeIngredient("2 (4 gallon) pails of Ruby Cabernet (must or mosto)", "cabernet"),
+        RecipeIngredient("Sterilizer solution", "sterilizer"),
+        RecipeIngredient("Antioxidant (1 pack per pail — 23 litres)", "antioxidant"),
+        RecipeIngredient("Glass demijohns, airlocks, siphon tubing, and corks", "demijohns")
+      ),
+      instructions = listOf(
+        "Ensure temperature is between 68–75°F. Open pails of mosto at home and stir thoroughly. Keep for 3-5 days in pails.",
+        "Wash and sterilize demijohns thoroughly with sterilizer solution.",
+        "Using plastic tubing, siphon mosto from pails into sanitized demijohns without disturbing sediment.",
+        "Keep demijohns full to about 5-6 inches from top to allow expansion; fit with airlocks.",
+        "First Racking (4 weeks): Siphon wine into clean demijohn using tube with spacer stick so sludge is left behind. Add antioxidant. Fit airlocks.",
+        "Second Racking (8 weeks): Repeat siphoning process until wine is clear.",
+        "Siphon clear wine into clean glass bottles leaving headspace for corks. Store upright at 55°F.",
+        "Red wine should be aged for one year; white wine is ready to drink after six months."
+      ),
+      notes = "The cantina winemaking craft passed down from Antonio Ruffolo to his son Frank.",
+      tags = listOf("Beverages", "Wine", "Frank", "Cantina", "Family Tradition"),
+      originalPhotoCaption = "Frank pouring his home made wine into gallons in the cantina",
+      originalPhotoPage = 26
     )
   )
 }

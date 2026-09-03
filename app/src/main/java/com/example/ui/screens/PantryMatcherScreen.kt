@@ -528,7 +528,7 @@ fun PantryMatchCard(
           }
 
           Text(
-            text = "p. ${recipe.cookbookPage}",
+            text = recipe.contributor,
             fontSize = 11.sp,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant

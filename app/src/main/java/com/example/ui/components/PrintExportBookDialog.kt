@@ -398,7 +398,7 @@ fun PrintExportBookDialog(
                   color = Color(android.graphics.Color.parseColor(selectedTemplate.accentColorHex))
                 )
                 Text(
-                  text = "Page ${sample.cookbookPage}",
+                  text = sample.contributor,
                   style = MaterialTheme.typography.labelSmall,
                   fontSize = 10.sp,
                   color = Color.DarkGray
@@ -711,7 +711,7 @@ private fun printRecipesDocument(
       append("<div class='recipe-page'>")
       append("<div class='header-bar'>")
       append("<span>Ruffolo • Vitale Family Cookbook</span>")
-      append("<span>Page ${recipe.cookbookPage}</span>")
+      append("<span>${recipe.contributor}</span>")
       append("</div>")
 
       append("<div class='recipe-title'>${recipe.title}</div>")

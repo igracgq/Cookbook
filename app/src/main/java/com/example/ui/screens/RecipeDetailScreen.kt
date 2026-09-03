@@ -88,6 +88,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.example.ui.components.RecipeHeroPhotoCard
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -135,6 +136,7 @@ fun RecipeDetailScreen(
   val isTimerAlert by viewModel.isTimerAlertTriggered.collectAsStateWithLifecycle()
   val timerLabel by viewModel.timerLabel.collectAsStateWithLifecycle()
   val spiceCustomization by viewModel.recipeSpiceCustomization.collectAsStateWithLifecycle()
+  val customPhotos by viewModel.customRecipePhotos.collectAsStateWithLifecycle()
 
   var noteEditText by remember { mutableStateOf("") }
   val snackbarHostState = remember { SnackbarHostState() }
@@ -186,7 +188,7 @@ fun RecipeDetailScreen(
       TopAppBar(
         title = {
           Text(
-            text = "Cookbook p. ${recipe.cookbookPage}",
+            text = recipe.category.displayName,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
           )
@@ -304,7 +306,7 @@ fun RecipeDetailScreen(
               shape = CircleShape
             ) {
               Text(
-                text = "Cookbook Page ${recipe.cookbookPage}",
+                text = "${recipe.calculatedDifficulty.label} • ${recipe.servings}",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -366,6 +368,19 @@ fun RecipeDetailScreen(
             }
           }
         }
+      }
+
+      // Recipe Hero Photo Card (PDF Archival Photo, User Photo, or Heritage Art)
+      item {
+        RecipeHeroPhotoCard(
+          recipe = recipe,
+          customPhotoUri = customPhotos[recipe.id],
+          isFavorite = isFavorite,
+          onToggleFavorite = { viewModel.toggleFavorite(recipe.id) },
+          onPhotoSelected = { uri -> viewModel.setCustomRecipePhoto(recipe.id, uri) },
+          onPhotoRemoved = { viewModel.removeCustomRecipePhoto(recipe.id) },
+          modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+        )
       }
 
       // Hands-Free Kitchen Mode JUMBO Banner Card
@@ -1691,7 +1706,7 @@ private fun shareRecipeDetails(
   val shareText = """
     🍽️ ${recipe.title} ${if (recipe.italianTitle.isNotEmpty()) "(${recipe.italianTitle})" else ""}
     From the kitchen of ${recipe.contributor}
-    Ruffolo-Vitale Family Heritage Cookbook (Page ${recipe.cookbookPage})
+    Ruffolo-Vitale Family Heritage Cookbook
 
     ⏱️ Prep: ${recipe.prepTime} | Cook: ${recipe.cookTime} | Servings: ${recipe.servings}
     🌶️ Heat: ${recipe.baseSpiceLevel.label} | Difficulty: ${recipe.calculatedDifficulty.label}

@@ -72,7 +72,9 @@ object CookbookDataSourceDesserts {
         "Slide hot taralle onto clean tablecloth to cool. Can be frozen and reheated in oven before serving."
       ),
       notes = "Nonna Rosina's secret: Boiling the taralle before baking gives them their signature crisp, tender crumb and golden sheen.",
-      tags = listOf("Holiday", "Taralle", "Nonna Rosina", "Baking", "Calabrese")
+      tags = listOf("Holiday", "Taralle", "Nonna Rosina", "Baking", "Calabrese"),
+      originalPhotoCaption = "Nonna Rosina rolling, boiling, drying on clean tablecloths, and baking golden taralle",
+      originalPhotoPage = 201
     ),
     Recipe(
       id = "glazed_egg_taralli",
@@ -106,7 +108,9 @@ object CookbookDataSourceDesserts {
         "Warm icing sugar, water, and lemon juice in small pot. Dip cooled taralli in glaze and let dry on wire rack."
       ),
       notes = "Maria Vanelli's heirloom recipe: The crisp outer crust with sweet lemon glaze makes these irresistible.",
-      tags = listOf("Cookies", "Taralli", "Glazed", "Easter", "Italian")
+      tags = listOf("Cookies", "Taralli", "Glazed", "Easter", "Italian"),
+      originalPhotoCaption = "Glazed Egg Taralli after baking with scored circumference and lemon glaze on wire rack",
+      originalPhotoPage = 202
     ),
     Recipe(
       id = "pizzelle_della_nonna",
@@ -139,7 +143,9 @@ object CookbookDataSourceDesserts {
         "Chocolate option: Replace 1/4 cup flour with 1/4 cup unsweetened cocoa powder."
       ),
       notes = "Crisp, wafer-thin snowflake cookies that evoke Italian Christmas and Easter celebrations.",
-      tags = listOf("Cookies", "Pizzelle", "Anise", "Holiday", "Traditional")
+      tags = listOf("Cookies", "Pizzelle", "Anise", "Holiday", "Traditional"),
+      originalPhotoCaption = "Justin sifts flour and drops batter on pizzelle iron; Pizzelle removed when golden",
+      originalPhotoPage = 242
     ),
     Recipe(
       id = "cuddruriaddri_calabresi",
@@ -171,7 +177,9 @@ object CookbookDataSourceDesserts {
         "Drain on paper towels. Immediately toss in granulated sugar for dessert, or insert anchovy inside before frying for dinner!"
       ),
       notes = "Traditionally eaten on the Eve of the Immaculate Conception (Dec 8) and throughout the Christmas season.",
-      tags = listOf("Holiday", "Donuts", "Calabrese", "Potatoes", "Nonna Rosina", "Christmas Eve")
+      tags = listOf("Holiday", "Donuts", "Calabrese", "Potatoes", "Nonna Rosina", "Christmas Eve"),
+      originalPhotoCaption = "Anna fries and places Cudorelli on paper towels; Risen dough balls and donuts",
+      originalPhotoPage = 278
     ),
     Recipe(
       id = "scalille_calabresi",
@@ -202,7 +210,9 @@ object CookbookDataSourceDesserts {
         "Store in tins with parchment paper between layers."
       ),
       notes = "'Scalille' means little ladders, representing climbing to heaven at Christmas time.",
-      tags = listOf("Holiday", "Honey", "Christmas", "Calabrese", "Tradition")
+      tags = listOf("Holiday", "Honey", "Christmas", "Calabrese", "Tradition"),
+      originalPhotoCaption = "Maya, Rita, Chiara and Sandy forming scalilli; Braided ladders and honey glaze",
+      originalPhotoPage = 284
     ),
     Recipe(
       id = "turdilli_calabresi",
@@ -235,7 +245,9 @@ object CookbookDataSourceDesserts {
         "Allow to cool before serving. They keep well for over a week!"
       ),
       notes = "Calabrese deep-fried and honeyed Christmas cookies made with fragrant wine and citrus.",
-      tags = listOf("Holiday", "Turdilli", "Honey", "Christmas", "Nonna Rosina")
+      tags = listOf("Holiday", "Turdilli", "Honey", "Christmas", "Nonna Rosina"),
+      originalPhotoCaption = "Nonna Rosina: Golden honey-glazed Calabrese Christmas Turdilli with ridges",
+      originalPhotoPage = 285
     ),
     Recipe(
       id = "almond_biscotti",
@@ -364,7 +376,43 @@ object CookbookDataSourceDesserts {
         "Cool on wire racks. Can be frozen and enjoyed throughout Easter."
       ),
       notes = "Bruna Sabusco's cherished recipe. Savory cheese variation uses grated Pecorino, Caciotta, and parsley.",
-      tags = listOf("Holiday", "Easter", "Ricotta", "Pies", "Calabrese")
+      tags = listOf("Holiday", "Easter", "Ricotta", "Pies", "Calabrese"),
+      originalPhotoCaption = "Fiadone egg washed and cut, ready for baking; Baked Fiadone ready for serving",
+      originalPhotoPage = 292
+    ),
+    Recipe(
+      id = "samanthas_s_cookies",
+      title = "Samantha's S Cookies",
+      italianTitle = "Biscotti a 'S' delle Feste",
+      cookbookPage = 234,
+      category = RecipeCategory.COOKIES_AND_BISCOTTI,
+      contributor = "Samantha Jovanovich",
+      servings = "30-40 cookies",
+      prepTime = "20 mins",
+      cookTime = "15 mins",
+      ingredients = listOf(
+        RecipeIngredient("3 cups (750 mL) all-purpose flour", "flour"),
+        RecipeIngredient("3 eggs", "eggs"),
+        RecipeIngredient("1 cup (250 mL) granulated sugar", "sugar"),
+        RecipeIngredient("1/2 cup (125 mL) vegetable oil", "oil"),
+        RecipeIngredient("2 tsp (10 mL) baking powder", "baking powder"),
+        RecipeIngredient("2 tsp ground cinnamon mixed with 1/3 cup sugar or colored sprinkles", "cinnamon sugar")
+      ),
+      instructions = listOf(
+        "Preheat oven to 350°F (180°C). Grease or line cookie sheet with parchment paper.",
+        "In a small bowl, combine cinnamon and 1/3 cup sugar for coating.",
+        "In a large bowl, combine eggs, 1 cup sugar, and oil. Add flour and baking powder; mix well.",
+        "Divide dough into two loaves. Cut 1/3 inch slices (or use 1 tablespoon of dough for each cookie).",
+        "Roll dough into a rope about 1 cm in diameter and 5 inches long.",
+        "Shape each roll into an 'S' shape.",
+        "Drop upside down in cinnamon-sugar mixture or colored sprinkles.",
+        "Place on parchment paper-lined cookie sheet. Bake for 12-15 minutes until golden.",
+        "Cool on wire racks."
+      ),
+      notes = "A wonderful family tradition for kids of all generations to roll, shape, and decorate together.",
+      tags = listOf("Cookies", "S Cookies", "Samantha", "Kids Baking", "Heirloom"),
+      originalPhotoCaption = "S Cookies shaped by kids with cinnamon sugar",
+      originalPhotoPage = 234
     )
   )
 }

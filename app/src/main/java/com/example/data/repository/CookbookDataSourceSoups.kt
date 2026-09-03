@@ -237,7 +237,9 @@ object CookbookDataSourceSoups {
         "Simmer all together, stirring well. Serve warm."
       ),
       notes = "Rosina Ruffolo, our matriarch, soaked beans each December 12 and ladled cuccia into containers for all her children on Santa Lucia Day. The tradition continues with Lena Orrico.",
-      tags = listOf("Soups", "Heritage Special", "Beans", "Grains", "Vegetarian")
+      tags = listOf("Soups", "Heritage Special", "Beans", "Grains", "Vegetarian"),
+      originalPhotoCaption = "Cuccia made by Lena December 13, 2024",
+      originalPhotoPage = 36
     ),
     Recipe(
       id = "minestrone_alla_milanese",

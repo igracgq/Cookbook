@@ -33,7 +33,9 @@ object CookbookDataSourcePasta {
         "Boil in abundant salted water for 3 to 5 minutes until perfectly al dente."
       ),
       notes = "The soul of Italian family Sundays. Golden egg yolks give authentic vibrancy and silky bite.",
-      tags = listOf("Pasta", "Handmade", "Traditional", "Basics")
+      tags = listOf("Pasta", "Handmade", "Traditional", "Basics"),
+      originalPhotoCaption = "Cutting board, rolling pin, and flattening pasta sheets by hand and machine",
+      originalPhotoPage = 87
     ),
     Recipe(
       id = "spaghetti_carbonara",
@@ -272,7 +274,9 @@ object CookbookDataSourcePasta {
         "Serve hot with homemade tomato meat sauce or browned butter and sage."
       ),
       notes = "Nonna Rosina's tip: Drop one test gnocchi into boiling water first. If it holds shape and floats, dough is ready; if it falls apart, knead in a tiny bit more flour.",
-      tags = listOf("Pasta", "Gnocchi", "Nonna Rosina", "Potatoes", "Family Classic")
+      tags = listOf("Pasta", "Gnocchi", "Nonna Rosina", "Potatoes", "Family Classic"),
+      originalPhotoCaption = "Work dough until smooth and elastic. Shape dough into long ropes and roll on gnocchi board",
+      originalPhotoPage = 106
     ),
     Recipe(
       id = "cannelloni_balsamella",

@@ -92,7 +92,9 @@ data class Recipe(
   val notes: String = "",
   val tags: List<String> = emptyList(),
   val defaultRating: Float = 4.8f,
-  val ratingCount: Int = 32
+  val ratingCount: Int = 32,
+  val originalPhotoCaption: String = "",
+  val originalPhotoPage: Int? = null
 ) {
   val autoTags: List<String>
     get() = AutoTaggingEngine.generateTags(this)

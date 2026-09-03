@@ -325,7 +325,9 @@ object CookbookDataSourceVegBreads {
         "Bake in a preheated hot oven at 425°F for 20 minutes until crust is crispy and golden."
       ),
       notes = "Nonna Rosina's secret touch of rendered pork fat or pure olive oil produces an airy, golden crust with unmatched flavor.",
-      tags = listOf("Pizza", "Breads", "Nonna Rosina", "Baking", "Family Classic")
+      tags = listOf("Pizza", "Breads", "Nonna Rosina", "Baking", "Family Classic"),
+      originalPhotoCaption = "Grandchildren making personal pizzas; Justin slices his personal pizza with cutter",
+      originalPhotoPage = 204
     ),
     Recipe(
       id = "focaccia_rosemary",
@@ -392,6 +394,71 @@ object CookbookDataSourceVegBreads {
       ),
       notes = "Calzones are classic Italian 'finger food' turnovers. Perfect for casual family gatherings.",
       tags = listOf("Breads", "Calzone", "Spinach", "Ricotta", "Mozzarella")
+    ),
+    Recipe(
+      id = "aidens_first_communion_bread",
+      title = "Aiden's First Communion Italian Bread",
+      italianTitle = "Pane di Prima Comunione",
+      cookbookPage = 195,
+      category = RecipeCategory.BREADS_AND_PIZZA,
+      contributor = "Aiden & Samantha Jovanovich",
+      servings = "3 large loaves",
+      prepTime = "30 mins (+ 2.5 hrs rise)",
+      cookTime = "40 mins",
+      ingredients = listOf(
+        RecipeIngredient("9 cups all-purpose flour (up to 12 if needed)", "flour"),
+        RecipeIngredient("3 1/2 tbsp instant yeast", "yeast"),
+        RecipeIngredient("3 tbsp olive oil", "olive oil"),
+        RecipeIngredient("3 tbsp granulated sugar", "sugar"),
+        RecipeIngredient("2 1/4 tbsp salt", "salt"),
+        RecipeIngredient("3 3/4 cups warm water", "water"),
+        RecipeIngredient("1 large egg white for brushing on loaves", "egg white")
+      ),
+      instructions = listOf(
+        "Knead flour, yeast, oil, sugar, salt, and warm water in stand mixer or by hand for 6-10 minutes until dough forms a smooth ball.",
+        "Place in greased bowl, cover with plastic wrap, and let rise for 2 hours.",
+        "Gently punch down dough and let rise another 40 minutes.",
+        "Preheat oven to 425°F. Place a metal pan halfway filled with hot water on bottom rack for a steam bath to create a crispier crust.",
+        "Divide dough into 3 balls. Shape each into a 10-inch loaf and score vertical or horizontal slits along the top surface.",
+        "Bake for 10 minutes at 425°F, then lower temperature to 400°F and bake 30-35 minutes until tapping underside sounds hollow.",
+        "Cool loaves on a wire rack."
+      ),
+      notes = "Traditional celebratory Italian bread prepared for communion milestones and family feasts.",
+      tags = listOf("Breads", "Italian Bread", "Aiden", "Samantha", "Communion", "Heritage"),
+      originalPhotoCaption = "Aiden's First Communion Italian Bread; Samantha's First Communion Bread",
+      originalPhotoPage = 195
+    ),
+    Recipe(
+      id = "tomato_canning_tradition",
+      title = "Tomato Canning Tradition",
+      italianTitle = "I Pomodori di Casa Ruffolo",
+      cookbookPage = 75,
+      category = RecipeCategory.PICKLING,
+      contributor = "Nonna Rosina, Frank, Sandy, Ethan, Hunter, Justin, Sam & Daniel",
+      servings = "5 bushels (numerous jars)",
+      prepTime = "Full Day Family Event",
+      cookTime = "2 hrs boiling",
+      ingredients = listOf(
+        RecipeIngredient("5 bushels of fresh, ripe plum tomatoes", "tomatoes"),
+        RecipeIngredient("1/2 cup coarse salt", "salt"),
+        RecipeIngredient("Vegetable spray for stainless steel pot", "cooking spray"),
+        RecipeIngredient("Tomato squeezer machine, propane burner, and 100-quart pot", "equipment"),
+        RecipeIngredient("Sterilized Mason jars, lids, and warm cloths", "canning jars")
+      ),
+      instructions = listOf(
+        "Wash tomatoes thoroughly in three water bins.",
+        "Cut tomatoes into quarters and discard any bruised spots.",
+        "Pass quartered tomatoes through the tomato squeezer machine to separate seeds and peels from fresh juice.",
+        "Pour juice into a 100-quart stainless steel pot over the outdoor propane burner.",
+        "Add salt and bring to a rolling boil for 1.5 to 2 hours, stirring constantly with a tall wooden spoon so it doesn't burn.",
+        "Pour boiling sauce into hot, clean jars leaving 1/2-inch headspace. Seal immediately with lids.",
+        "Place sealed jars into bushels lined with blankets to let heat slowly seal the jars overnight.",
+        "Store cooled sealed jars in the cantina (cold room) for the entire year's pasta feasts."
+      ),
+      notes = "An all-hands late-summer family ritual spanning generations from Antonio and Nonna Rosina to the great-grandchildren.",
+      tags = listOf("Canning", "Tomatoes", "Nonna Rosina", "Cantina", "Family Tradition"),
+      originalPhotoCaption = "Grandsons (Ethan, Hunter, Justin, Sam, Daniel) washing and grinding tomatoes; Nonna Rosina stirring sauce",
+      originalPhotoPage = 75
     )
   )
 }

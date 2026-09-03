@@ -356,6 +356,93 @@ object CookbookDataSourceMains {
       ),
       notes = "A Christmas Eve Feast of the Seven Fishes essential.",
       tags = listOf("Seafood", "Mussels", "Tomatoes", "Christmas Eve")
+    ),
+    Recipe(
+      id = "calabrese_homemade_sausage_salami",
+      title = "Calabrese Sausage & Salami",
+      italianTitle = "Salsicce e Soppressata di Casa",
+      cookbookPage = 145,
+      category = RecipeCategory.MEATS,
+      contributor = "Nonna Rosina, Fiore, Vito, Sam & Hunter",
+      servings = "12-16 servings",
+      prepTime = "2 hrs",
+      cookTime = "Curing",
+      ingredients = listOf(
+        RecipeIngredient("Pork shoulder and belly, coarsely ground", "pork"),
+        RecipeIngredient("Coarse sea salt (calculated strictly by meat weight)", "sea salt"),
+        RecipeIngredient("Sweet and hot ground Calabrian red pepper", "chili pepper"),
+        RecipeIngredient("Fennel seeds (semi di finocchio selvatico)", "fennel seed"),
+        RecipeIngredient("Natural pork casings, cleaned and soaked in vinegar/wine", "casings")
+      ),
+      instructions = listOf(
+        "Mix coarsely ground pork with salt, hot and sweet Calabrian pepper, and wild fennel seeds.",
+        "Turn the meat mixer vigorously until seasoning is completely incorporated.",
+        "Stuff prepared casings tightly using sausage horn, piercing air pockets with needle.",
+        "Tie links with natural twine.",
+        "Hang high on wooden rafters in the cold cantina to cure for several weeks to months."
+      ),
+      notes = "Sausage or Salami making is an all-hands family group effort. Generations gather in the cold winter cellar.",
+      tags = listOf("Meats", "Sausage", "Salami", "Cantina", "Family Tradition"),
+      originalPhotoCaption = "Nonna Rosina, Fiore, Vito, Sam & Hunter making sausages; Liver sausages hanging",
+      originalPhotoPage = 148
+    ),
+    Recipe(
+      id = "homemade_capicollo_pancetta",
+      title = "Homemade Capicollo & Pancetta",
+      italianTitle = "Capicollo e Pancetta Tesa",
+      cookbookPage = 149,
+      category = RecipeCategory.MEATS,
+      contributor = "Antonio & Frank Ruffolo",
+      servings = "10 servings",
+      prepTime = "1 hr",
+      cookTime = "Curing",
+      ingredients = listOf(
+        RecipeIngredient("Whole pork neck / collar (capicollo) or pork belly", "pork collar"),
+        RecipeIngredient("Coarse salt, crushed black peppercorns", "sea salt"),
+        RecipeIngredient("Ground hot Calabrian red pepper", "chili powder"),
+        RecipeIngredient("Red wine for washing", "red wine")
+      ),
+      instructions = listOf(
+        "Rub pork collar thoroughly with salt and let cure in cold cellar for designated days.",
+        "Wash with red wine, rub generously with fiery Calabrian pepper.",
+        "Wrap tightly in beef bung casing or parchment, bind tightly with butcher's twine in crisscross pattern.",
+        "Hang high from cantina ceiling until firm and dried to weight."
+      ),
+      notes = "Tenderloins and capicolli hung high to dry in the traditional cold cellar.",
+      tags = listOf("Meats", "Cured", "Capicollo", "Heritage Special"),
+      originalPhotoCaption = "Capicolli hung high for drying; tenderloins tied and hung to dry",
+      originalPhotoPage = 149
+    ),
+    Recipe(
+      id = "bacalhau_a_rosa",
+      title = "Bacalhau à Rosa (Salt Cod)",
+      italianTitle = "Baccalà con Patate e Olive",
+      cookbookPage = 176,
+      category = RecipeCategory.SEAFOOD,
+      contributor = "Rosa Ruffolo",
+      servings = "6 servings",
+      prepTime = "30 mins",
+      cookTime = "45 mins",
+      ingredients = listOf(
+        RecipeIngredient("1.5 lbs salt cod, soaked in cold water 48 hrs with frequent changes", "salt cod"),
+        RecipeIngredient("4 medium potatoes, peeled and sliced", "potatoes"),
+        RecipeIngredient("2 onions, sliced", "onion"),
+        RecipeIngredient("1/2 cup black and green olives", "olives"),
+        RecipeIngredient("1/2 cup extra virgin olive oil", "olive oil"),
+        RecipeIngredient("Fresh parsley and freshly ground black pepper", "parsley")
+      ),
+      instructions = listOf(
+        "Drain thoroughly desalted cod and cut into portioned pieces.",
+        "Parboil sliced potatoes for 6 minutes; drain.",
+        "In a large baking dish, layer sliced onions, potatoes, and cod pieces.",
+        "Scatter black and green olives, drizzle generously with extra virgin olive oil and season with pepper.",
+        "Bake at 375°F (190°C) for 40-45 minutes until potatoes are golden and tender.",
+        "Garnish with chopped fresh flat-leaf parsley and serve hot."
+      ),
+      notes = "Rosa's festive salt cod specialty, savory and rich with olive oil.",
+      tags = listOf("Seafood", "Baccalà", "Holiday", "Family Classic"),
+      originalPhotoCaption = "Bacalhau à Rosa baked with golden potatoes, onions, and black olives",
+      originalPhotoPage = 176
     )
   )
 }

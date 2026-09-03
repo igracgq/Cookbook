@@ -12,31 +12,32 @@ import androidx.compose.ui.graphics.Color
 //   5. Medium Mocha Beige: #A69582
 //   6. Deep Warm Walnut Taupe: #7A6957
 
-val NeutralBeigeBackground = Color(0xFFFAF8F5)        // Very neutral beige, almost white
-val NeutralBeigeSurfaceVariant = Color(0xFFF3EFE9)     // Soft light linen beige
-val NeutralBeigeCardSurface = Color(0xFFFFFFFF)        // Crisp white card surface
-val NeutralBeigeSurface = Color(0xFFFFFFFF)
+// Warm Antique Linen Beige Palette matching heirloom cookbook aesthetic:
+val NeutralBeigeBackground = Color(0xFFF4EEE5)        // Warm antique linen beige screen canvas
+val NeutralBeigeSurfaceVariant = Color(0xFFE4DBCF)     // Slightly deeper tan beige
+val NeutralBeigeCardSurface = Color(0xFFEBE3D6)        // Warm beige card surface (no white background)
+val NeutralBeigeSurface = Color(0xFFEBE3D6)            // Harmonious warm beige surface
 
-val NeutralBeigeOutline = Color(0xFFE2D8CC)            // Delicate sand beige outline
-val NeutralBeigeOutlineVariant = Color(0xFFEDE7DE)
+val NeutralBeigeOutline = Color(0xFFD2C4B1)            // Warm sand border
+val NeutralBeigeOutlineVariant = Color(0xFFDDD2C2)
 
-val NeutralBeigeTertiary = Color(0xFFB5A490)           // Dusty Tan Beige
-val NeutralBeigeTertiaryContainer = Color(0xFFF5EFE7)
-val NeutralBeigeOnTertiaryContainer = Color(0xFF2C2219)
+val NeutralBeigeTertiary = Color(0xFFA69480)           // Dusty Tan
+val NeutralBeigeTertiaryContainer = Color(0xFFE8DECF)
+val NeutralBeigeOnTertiaryContainer = Color(0xFF261E16)
 
-val NeutralBeigeSecondary = Color(0xFF8F7E6B)          // Warm Sandstone
-val NeutralBeigeSecondaryContainer = Color(0xFFF0E9DF)
-val NeutralBeigeOnSecondaryContainer = Color(0xFF2B2117)
+val NeutralBeigeSecondary = Color(0xFF7D6C5A)          // Warm Sandstone
+val NeutralBeigeSecondaryContainer = Color(0xFFE2D6C6)
+val NeutralBeigeOnSecondaryContainer = Color(0xFF261D15)
 
-val NeutralBeigePrimary = Color(0xFF635242)            // Deep Walnut Taupe
-val NeutralBeigeOnPrimary = Color(0xFFFFFFFF)
-val NeutralBeigePrimaryContainer = Color(0xFFEDE5DA)
-val NeutralBeigeOnPrimaryContainer = Color(0xFF261D15)
+val NeutralBeigePrimary = Color(0xFF4A3B2C)            // Rich Espresso Roast
+val NeutralBeigeOnPrimary = Color(0xFFFAF7F2)
+val NeutralBeigePrimaryContainer = Color(0xFFDECFC0)
+val NeutralBeigeOnPrimaryContainer = Color(0xFF201710)
 
 // High-contrast readable warm text colors
-val NeutralBeigeTextPrimary = Color(0xFF1E1712)
-val NeutralBeigeTextSecondary = Color(0xFF574B40)
-val NeutralBeigeTextMuted = Color(0xFF827467)
+val NeutralBeigeTextPrimary = Color(0xFF261D16)
+val NeutralBeigeTextSecondary = Color(0xFF5C4E40)
+val NeutralBeigeTextMuted = Color(0xFF857566)
 
 // Accent colors that harmonize with neutral beige
 val WarmChiliSpicy = Color(0xFFB8452D)                // Calabrian Chili accent

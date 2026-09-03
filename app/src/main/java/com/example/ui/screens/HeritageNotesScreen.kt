@@ -62,7 +62,7 @@ fun HeritageNotesScreen(
         color = MaterialTheme.colorScheme.onBackground
       )
       Text(
-        text = "Reference charts and wisdom from Pages 1–18 of the Ruffolo-Vitale Cookbook",
+        text = "Reference charts and culinary wisdom from the Ruffolo-Vitale Family Cookbook",
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
       )
@@ -165,7 +165,7 @@ fun HeritageNotesScreen(
               shape = RoundedCornerShape(6.dp)
             ) {
               Text(
-                text = "p. ${hint.cookbookPage}",
+                text = "Kitchen Tip",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,

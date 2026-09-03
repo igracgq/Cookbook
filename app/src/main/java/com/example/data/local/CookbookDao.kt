@@ -53,4 +53,17 @@ interface CookbookDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun saveRating(rating: RecipeRatingEntity)
+
+  // Photos
+  @Query("SELECT * FROM recipe_photos")
+  fun getAllPhotos(): Flow<List<RecipePhotoEntity>>
+
+  @Query("SELECT photoUri FROM recipe_photos WHERE recipeId = :recipeId")
+  fun getPhotoForRecipe(recipeId: String): Flow<String?>
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun savePhoto(photo: RecipePhotoEntity)
+
+  @Query("DELETE FROM recipe_photos WHERE recipeId = :recipeId")
+  suspend fun deletePhoto(recipeId: String)
 }

@@ -64,6 +64,25 @@ class RecipeRepository(private val cookbookDao: CookbookDao) {
     cookbookDao.saveRating(com.example.data.local.RecipeRatingEntity(recipeId = recipeId, rating = rating))
   }
 
+  // Custom User Photos
+  val allPhotos: Flow<Map<String, String>> =
+    cookbookDao.getAllPhotos().map { list -> list.associate { it.recipeId to it.photoUri } }
+
+  fun getRecipePhoto(recipeId: String): Flow<String?> =
+    cookbookDao.getPhotoForRecipe(recipeId)
+
+  suspend fun saveRecipePhoto(recipeId: String, photoUri: String) {
+    if (photoUri.trim().isEmpty()) {
+      cookbookDao.deletePhoto(recipeId)
+    } else {
+      cookbookDao.savePhoto(com.example.data.local.RecipePhotoEntity(recipeId = recipeId, photoUri = photoUri.trim()))
+    }
+  }
+
+  suspend fun deleteRecipePhoto(recipeId: String) {
+    cookbookDao.deletePhoto(recipeId)
+  }
+
   fun search(query: String, category: RecipeCategory? = null): List<Recipe> {
     return CookbookDataSource.searchRecipes(query, category)
   }

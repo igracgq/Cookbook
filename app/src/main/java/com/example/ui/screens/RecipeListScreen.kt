@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
@@ -35,6 +37,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Restaurant
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -55,7 +58,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -63,12 +68,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.SubcomposeAsyncImage
 import com.example.data.model.DifficultyLevel
 import com.example.data.model.Recipe
 import com.example.data.model.RecipeCategory
 import com.example.data.model.SpiceLevel
 import com.example.ui.components.CulinaryMonochromeBackground
 import com.example.ui.theme.CursiveHeritageFontFamily
+import com.example.ui.util.RecipePhotoResolver
 import com.example.ui.viewmodel.CookbookViewModel
 import com.example.ui.viewmodel.RecipeQuickFilter
 import com.example.ui.viewmodel.ScreenDestination
@@ -85,6 +92,7 @@ fun RecipeListScreen(
   val selectedFilter by viewModel.selectedFilter.collectAsStateWithLifecycle()
   val selectedDifficulty by viewModel.selectedDifficulty.collectAsStateWithLifecycle()
   val favorites by viewModel.favoriteRecipeIds.collectAsStateWithLifecycle()
+  val customPhotos by viewModel.customRecipePhotos.collectAsStateWithLifecycle()
 
   Box(modifier = modifier.fillMaxSize()) {
     CulinaryMonochromeBackground(
@@ -118,7 +126,7 @@ fun RecipeListScreen(
             .testTag("recipe_search_input"),
           placeholder = {
             Text(
-              "Search 1,200+ recipes, ingredients, pages...",
+              "Search 1,200+ recipes, ingredients, family members...",
               color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
               fontSize = 14.sp
             )
@@ -365,12 +373,6 @@ fun RecipeListScreen(
                   fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                   color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                  text = cat.pageRange,
-                  fontSize = 10.sp,
-                  color = if (isSelected) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f) else MaterialTheme.colorScheme.outline
-                )
               }
             }
           }
@@ -449,6 +451,7 @@ fun RecipeListScreen(
       val isFav = favorites.contains(recipe.id)
       RecipeCard(
         recipe = recipe,
+        customPhotoUri = customPhotos[recipe.id],
         isFavorite = isFav,
         onFavoriteToggle = { viewModel.toggleFavorite(recipe.id) },
         onClick = { viewModel.navigateTo(ScreenDestination.Detail(recipe.id)) }
@@ -527,6 +530,7 @@ fun CookbookHeroHeader() {
 @Composable
 fun RecipeCard(
   recipe: Recipe,
+  customPhotoUri: String? = null,
   isFavorite: Boolean,
   onFavoriteToggle: () -> Unit,
   onClick: () -> Unit,
@@ -543,26 +547,65 @@ fun RecipeCard(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
   ) {
+    val context = LocalContext.current
     Row(
       modifier = Modifier
         .fillMaxWidth()
         .padding(12.dp),
       verticalAlignment = Alignment.CenterVertically
     ) {
-      // Sleek square leading icon container
+      // Sleek square leading photo container
       Box(
         modifier = Modifier
-          .size(70.dp)
+          .size(72.dp)
           .clip(RoundedCornerShape(16.dp))
           .background(MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
       ) {
-        Icon(
-          imageVector = Icons.Outlined.Restaurant,
-          contentDescription = null,
-          tint = MaterialTheme.colorScheme.primary,
-          modifier = Modifier.size(28.dp)
-        )
+        if (customPhotoUri != null) {
+          SubcomposeAsyncImage(
+            model = customPhotoUri,
+            contentDescription = "Photo of ${recipe.title}",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+          )
+        } else {
+          Image(
+            painter = painterResource(id = RecipePhotoResolver.getHeritageDrawableRes(context, recipe)),
+            contentDescription = "Photo of ${recipe.title}",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+          )
+        }
+
+        // Archival badge indicator if recipe has photo from PDF
+        if (recipe.originalPhotoCaption.isNotEmpty() && customPhotoUri == null) {
+          Surface(
+            shape = RoundedCornerShape(topStart = 8.dp),
+            color = Color(0xDD261D16),
+            modifier = Modifier
+              .align(Alignment.BottomEnd)
+          ) {
+            Row(
+              verticalAlignment = Alignment.CenterVertically,
+              modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+            ) {
+              Icon(
+                imageVector = Icons.Default.CameraAlt,
+                contentDescription = null,
+                tint = Color(0xFFDFC6A6),
+                modifier = Modifier.size(10.dp)
+              )
+              Spacer(modifier = Modifier.width(2.dp))
+              Text(
+                text = "Family",
+                fontSize = 9.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFFAF7F2)
+              )
+            }
+          }
+        }
       }
 
       Spacer(modifier = Modifier.width(12.dp))
@@ -612,7 +655,7 @@ fun RecipeCard(
         Spacer(modifier = Modifier.height(3.dp))
 
         Text(
-          text = "${recipe.prepTime} • ${recipe.ingredients.size} ingredients • p. ${recipe.cookbookPage}",
+          text = "${recipe.prepTime} • ${recipe.ingredients.size} ingredients • ${recipe.contributor}",
           fontSize = 12.sp,
           color = MaterialTheme.colorScheme.onSurfaceVariant
         )

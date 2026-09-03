@@ -103,6 +103,26 @@ class CookbookViewModel(application: Application) : AndroidViewModel(application
   val userRatings: StateFlow<Map<String, Int>> = repository.allRatings
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
 
+  // Custom user photos from Room
+  val customRecipePhotos: StateFlow<Map<String, String>> = repository.allPhotos
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
+
+  fun setCustomRecipePhoto(recipeId: String, photoUri: String) {
+    viewModelScope.launch {
+      repository.saveRecipePhoto(recipeId, photoUri)
+    }
+  }
+
+  fun removeCustomRecipePhoto(recipeId: String) {
+    viewModelScope.launch {
+      repository.deleteRecipePhoto(recipeId)
+    }
+  }
+
+  fun getCustomPhotoUri(recipeId: String): String? {
+    return customRecipePhotos.value[recipeId]
+  }
+
   fun rateRecipe(recipeId: String, rating: Int) {
     viewModelScope.launch {
       repository.saveRecipeRating(recipeId, rating)
