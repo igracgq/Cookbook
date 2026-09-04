@@ -1,0 +1,4733 @@
+[
+  {
+    "id": "bruschetta_classica",
+    "title": "Bruschetta Classica",
+    "italianTitle": "Toasted Garlic Bread",
+    "cookbookPage": 19,
+    "category": "APPETIZERS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "5 mins",
+    "cookTime": "5 mins",
+    "ingredients": [
+      {
+        "rawText": "4 slices thick-crusted Italian country bread (about 1 cm thick)",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "1 clove of garlic, peeled",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "Extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Whole small dry red peppers, spicy (optional)",
+        "normalizedName": "red pepper flakes"
+      },
+      {
+        "rawText": "Salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Preheat oven, broiler, toaster, or light up a charcoal fire.",
+      "Grill the bread on both sides until golden brown.",
+      "Lightly rub the garlic on the surface of the bread.",
+      "If you like, you may also lightly rub the red pepper over the bread.",
+      "Pour a thin stream of olive oil on the bread, and sprinkle with salt. Serve while still warm."
+    ],
+    "notes": "A classic Italian antipasto staple. Always rub the garlic immediately after grilling while the bread is still hot.",
+    "tags": [
+      "Appetizers",
+      "Bread",
+      "Vegetarian",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "bruschetta_al_pomodoro",
+    "title": "Bruschetta al Pomodoro",
+    "italianTitle": "Toasted Bread with Tomatoes",
+    "cookbookPage": 19,
+    "category": "APPETIZERS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "5 mins",
+    "ingredients": [
+      {
+        "rawText": "4 slices thick-crusted Italian country bread (about 1 cm thick)",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "4 medium tomatoes, finely diced",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "Fresh basil leaves, torn",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "Extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1 clove of garlic, peeled",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In a bowl mix tomato, basil, extra-virgin olive oil, salt, and pepper.",
+      "Preheat oven, broiler, toaster, or light up a charcoal fire.",
+      "Grill the bread on both sides until golden brown.",
+      "Lightly rub the garlic on the surface of the bread.",
+      "Distribute tomato uniformly on bread slices and serve warm."
+    ],
+    "notes": "Ripe, sweet garden tomatoes yield the most flavourful topping.",
+    "tags": [
+      "Appetizers",
+      "Bread",
+      "Vegetarian",
+      "Tomatoes"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "italian_garlic_bread",
+    "title": "Italian Garlic Bread",
+    "italianTitle": "Pane all'Aglio",
+    "cookbookPage": 19,
+    "category": "APPETIZERS",
+    "contributor": "Sandy Vitale",
+    "servings": "6-8 servings",
+    "prepTime": "5 mins",
+    "cookTime": "8 mins",
+    "ingredients": [
+      {
+        "rawText": "1 loaf French bread or sourdough, cut in half lengthwise in 6-inch sections",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "Garlic juice or crushed garlic",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "Butter",
+        "normalizedName": "butter"
+      }
+    ],
+    "instructions": [
+      "Melt butter and mix in equal amount of garlic juice with melted butter.",
+      "Lightly toast bread.",
+      "Spread melted butter-garlic juice mix on bread.",
+      "Again, lightly toast until butter & garlic juice combination are slightly bubbly. Serve warm.",
+      "P.S. Don't forget to add garlic juice to your pasta sauce, too!"
+    ],
+    "notes": "Alternate method: Spray bread with garlic juice, toast lightly, then spread butter and toast until melted into bread.",
+    "tags": [
+      "Appetizers",
+      "Bread",
+      "Garlic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "muffaletta_sandwiches",
+    "title": "Muffaletta Sandwiches",
+    "italianTitle": "Classic Sicilian Sandwich",
+    "cookbookPage": 19,
+    "category": "APPETIZERS",
+    "contributor": "Family Heritage",
+    "servings": "6-8 servings",
+    "prepTime": "20 mins",
+    "cookTime": "None",
+    "ingredients": [
+      {
+        "rawText": "1 15-inch loaf French bread or Sicilian round crusty loaf",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "1 cup olive salad",
+        "normalizedName": "olive salad"
+      },
+      {
+        "rawText": "1/4 lb Genoa salami, sliced",
+        "normalizedName": "salami"
+      },
+      {
+        "rawText": "3/4 lb provolone cheese, sliced",
+        "normalizedName": "provolone"
+      },
+      {
+        "rawText": "1/4 lb sliced prosciutto cotto",
+        "normalizedName": "prosciutto"
+      },
+      {
+        "rawText": "1/4 lb mortadella, sliced",
+        "normalizedName": "mortadella"
+      }
+    ],
+    "instructions": [
+      "Cut bread in half horizontally.",
+      "Spread generous layers of olive salad on both halves.",
+      "Layer salami, mortadella, prosciutto cotto, and provolone cheese.",
+      "Press halves firmly together, wrap tightly and chill before slicing into hearty wedges."
+    ],
+    "notes": "Muffaletta is a type of Sicilian bread with a hollow center. Olive salad can be prepared several days ahead.",
+    "tags": [
+      "Appetizers",
+      "Sandwiches",
+      "Meats",
+      "Sicilian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "mini_muffalata",
+    "title": "Mini Muffalata",
+    "italianTitle": "Bocconcini di Muffalata",
+    "cookbookPage": 19,
+    "category": "APPETIZERS",
+    "contributor": "Vera F.",
+    "servings": "30-35 pieces",
+    "prepTime": "15 mins",
+    "cookTime": "None",
+    "ingredients": [
+      {
+        "rawText": "1 package soft goat cheese (4.5 oz / 140 g)",
+        "normalizedName": "goat cheese"
+      },
+      {
+        "rawText": "1 tablespoon olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1/4 cup black olive paste",
+        "normalizedName": "olives"
+      },
+      {
+        "rawText": "2 roasted red peppers",
+        "normalizedName": "bell pepper"
+      },
+      {
+        "rawText": "8 large basil leaves",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "1 baguette",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "Freshly ground black pepper and salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Mix goat cheese, olive oil, and garlic together. Season and set aside.",
+      "Cut baguette in 1/2 lengthwise. Pull out centre, leaving a thin crust border.",
+      "Spread both halves with olive paste, top with pieces of red pepper.",
+      "Place basil on top half and spread goat cheese on bottom half.",
+      "Sandwich together, wrap tightly in plastic wrap. Chill before serving.",
+      "Cut off ends and slice into 1/2 inch rounds to serve."
+    ],
+    "notes": "Perfect finger food for parties and family gatherings.",
+    "tags": [
+      "Appetizers",
+      "Finger Food",
+      "Vegetarian",
+      "Entertaining"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "hot_mushroom_turnovers",
+    "title": "Hot Mushroom Turnovers",
+    "italianTitle": "Panzerotti ai Funghi",
+    "cookbookPage": 19,
+    "category": "APPETIZERS",
+    "contributor": "Family Heritage",
+    "servings": "20 turnovers",
+    "prepTime": "30 mins",
+    "cookTime": "12 mins",
+    "ingredients": [
+      {
+        "rawText": "3 packages (3 oz each) cream cheese, softened",
+        "normalizedName": "cream cheese"
+      },
+      {
+        "rawText": "1 1/2 cups plus 2 tbsp all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "1/2 cup plus 3 tbsp butter, softened",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "1/2 lb mushrooms, minced",
+        "normalizedName": "mushrooms"
+      },
+      {
+        "rawText": "1 large onion, minced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1/4 cup sour cream",
+        "normalizedName": "sour cream"
+      },
+      {
+        "rawText": "1/4 tsp thyme",
+        "normalizedName": "thyme"
+      },
+      {
+        "rawText": "1 tsp salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "1 egg, beaten",
+        "normalizedName": "eggs"
+      }
+    ],
+    "instructions": [
+      "In medium bowl, mix cream cheese, 1 1/2 cups flour, and 1/2 cup butter. Wrap dough; chill for 1 hour.",
+      "In a 10-inch skillet over medium heat, combine 3 tbsp butter, mushrooms, and onion until tender.",
+      "Add salt, thyme, and 2 tbsp flour until blended. Stir in sour cream.",
+      "On floured surface, roll out 1/2 dough; with cookie cutter cut out 20 (2 3/4 inch) circles.",
+      "On half of each circle put a tsp of mushroom mixture. Brush edges with beaten egg.",
+      "Fold dough over filling; with fork press edges together. Prick tops. Place on ungreased cookie sheets. Brush with egg.",
+      "Cover and chill for 25 minutes.",
+      "Preheat oven to 450°F. Bake for 12 minutes until golden."
+    ],
+    "notes": "Rich and savory pastry with a velvety mushroom filling.",
+    "tags": [
+      "Appetizers",
+      "Baking",
+      "Mushrooms"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "fig_and_goat_cheese_crostini",
+    "title": "Fig and Goat Cheese Crostini",
+    "italianTitle": "Crostini con Fichi e Caprino",
+    "cookbookPage": 21,
+    "category": "APPETIZERS",
+    "contributor": "Christiana Rizzuto",
+    "servings": "24 pieces",
+    "prepTime": "20 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "1/4 lb dried Black Mission figs, finely chopped (3/4 cup)",
+        "normalizedName": "figs"
+      },
+      {
+        "rawText": "6 oz soft mild goat cheese (room temperature)",
+        "normalizedName": "goat cheese"
+      },
+      {
+        "rawText": "2 fresh ripe figs, cut into 1/2-inch pieces",
+        "normalizedName": "figs"
+      },
+      {
+        "rawText": "12 baguette slices (1/2-inch thick)",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "3 tbsp minced shallot",
+        "normalizedName": "shallots"
+      },
+      {
+        "rawText": "1 1/2 tbsp unsalted butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "3/4 cup Port wine",
+        "normalizedName": "port wine"
+      },
+      {
+        "rawText": "Fresh thyme sprigs & minced thyme",
+        "normalizedName": "thyme"
+      },
+      {
+        "rawText": "1 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Cook shallot, thyme sprigs, and bay leaf in butter in a saucepan over medium-low heat until softened, about 2 minutes.",
+      "Add dried figs, Port, salt, and pepper and bring to a boil. Simmer covered until figs are soft, about 10 minutes.",
+      "Remove lid and simmer until most liquid evaporates (3-4 mins). Discard bay leaf and thyme; stir in minced thyme.",
+      "Preheat oven to 350°F. Arrange baguette slices on baking sheet, brush lightly with olive oil, and bake 7 minutes.",
+      "Spread each toast with 1 tsp fig jam and top with 1 1/2 tsp goat cheese and 2 pieces of fresh fig."
+    ],
+    "notes": "Fig jam can be made 1 day ahead and chilled covered.",
+    "tags": [
+      "Appetizers",
+      "Crostini",
+      "Figs",
+      "Entertaining"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "fried_spicy_parmesan_balls",
+    "title": "Fried Spicy Parmesan Balls",
+    "italianTitle": "Palline di Parmigiano Piccanti",
+    "cookbookPage": 22,
+    "category": "APPETIZERS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4-6 servings",
+    "prepTime": "10 mins",
+    "cookTime": "10 mins",
+    "ingredients": [
+      {
+        "rawText": "2 egg whites",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "4 tbsp fresh Parmigiano Reggiano, freshly grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1/2 tsp paprika",
+        "normalizedName": "paprika"
+      },
+      {
+        "rawText": "Pinch of salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Oil for frying",
+        "normalizedName": "oil"
+      }
+    ],
+    "instructions": [
+      "Beat egg whites until stiff but not dry.",
+      "Gradually add the Parmigiano Reggiano, pinch of salt, and half the paprika while continuing to beat.",
+      "In a heavy Dutch oven or deep fryer, heat oil to 360°F.",
+      "With a teaspoon, drop little mounds of the batter into the hot oil.",
+      "Fry until light golden brown.",
+      "Remove with a slotted spoon onto absorbent paper towels.",
+      "Sprinkle with remaining paprika and toss well before serving."
+    ],
+    "notes": "Airy, crispy, cheesy bites with a gentle kick of paprika.",
+    "tags": [
+      "Appetizers",
+      "Cheese",
+      "Vegetarian",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "spinach_and_artichoke_dip",
+    "title": "Spinach and Artichoke Dip",
+    "italianTitle": "Salsa Calda di Spinaci e Carciofi",
+    "cookbookPage": 25,
+    "category": "APPETIZERS",
+    "contributor": "Yvonne Giedroyc",
+    "servings": "12 servings",
+    "prepTime": "15 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 packages (10 oz each) chopped frozen spinach, thawed and drained",
+        "normalizedName": "spinach"
+      },
+      {
+        "rawText": "2 cans (8 oz each) quartered artichoke hearts, drained",
+        "normalizedName": "artichokes"
+      },
+      {
+        "rawText": "1/2 cup fresh shallots, minced",
+        "normalizedName": "shallots"
+      },
+      {
+        "rawText": "4 cloves fresh garlic, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "4 oz garlic herb cheese",
+        "normalizedName": "cream cheese"
+      },
+      {
+        "rawText": "1/4 cup Parmesan, freshly grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "2 cups heavy cream",
+        "normalizedName": "heavy cream"
+      },
+      {
+        "rawText": "4 tbsp unsalted butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "1 tsp salt and 1/2 tsp white pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In large frying pan, sauté shallots and garlic in butter at medium heat.",
+      "Add well-drained spinach and artichokes and cook at low heat briefly.",
+      "Add cream, garlic herb cheese, salt, and pepper.",
+      "Simmer until cheese is melted and mixture is blended.",
+      "Remove from heat, and fold in the grated Parmesan cheese.",
+      "Place on serving platter. Serve warm with tortilla chips, pita chips, or crackers."
+    ],
+    "notes": "Extremely popular for family celebrations and holiday buffets.",
+    "tags": [
+      "Appetizers",
+      "Dips",
+      "Spinach",
+      "Artichokes"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "hummus_homemade",
+    "title": "Homemade Traditional Hummus",
+    "italianTitle": "Crema di Ceci",
+    "cookbookPage": 25,
+    "category": "APPETIZERS",
+    "contributor": "Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "10 mins",
+    "cookTime": "None",
+    "ingredients": [
+      {
+        "rawText": "1 can (15 oz) garbanzo beans (chickpeas), drained and rinsed",
+        "normalizedName": "chickpeas"
+      },
+      {
+        "rawText": "2 to 4 tbsp water",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "2 tbsp extra virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1 tbsp lemon juice",
+        "normalizedName": "lemon juice"
+      },
+      {
+        "rawText": "1 garlic clove, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "3/4 tsp ground cumin",
+        "normalizedName": "cumin"
+      },
+      {
+        "rawText": "1/4 to 1/2 tsp salt",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Add garbanzo beans, 2 tbsp water, olive oil, lemon juice, garlic, cumin, and 1/4 tsp salt to a food processor.",
+      "Process until smooth and creamy.",
+      "If needed, add additional water to thin out hummus and salt to taste.",
+      "Store covered in the refrigerator and drizzle with olive oil before serving."
+    ],
+    "notes": "Silky smooth chickpea spread that pairs wonderfully with crusty bread.",
+    "tags": [
+      "Appetizers",
+      "Dips",
+      "Vegetarian",
+      "Healthy"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "franks_wine_making",
+    "title": "Frank's Wine Making",
+    "italianTitle": "Il Vino di Casa Ruffolo",
+    "cookbookPage": 26,
+    "category": "APPETIZERS",
+    "contributor": "Frank Ruffolo",
+    "servings": "20 bottles",
+    "prepTime": "5 days primary",
+    "cookTime": "8-12 weeks aging",
+    "ingredients": [
+      {
+        "rawText": "1 (4 gallon) pail of Moscato (must or mosto)",
+        "normalizedName": "moscato"
+      },
+      {
+        "rawText": "2 (4 gallon) pails of Ruby Cabernet (must or mosto)",
+        "normalizedName": "cabernet"
+      },
+      {
+        "rawText": "Sterilizer solution",
+        "normalizedName": "sterilizer"
+      },
+      {
+        "rawText": "Antioxidant (1 pack per pail — 23 litres)",
+        "normalizedName": "antioxidant"
+      },
+      {
+        "rawText": "Glass demijohns, airlocks, siphon tubing, and corks",
+        "normalizedName": "demijohns"
+      }
+    ],
+    "instructions": [
+      "Ensure temperature is between 68–75°F. Open pails of mosto at home and stir thoroughly. Keep for 3-5 days in pails.",
+      "Wash and sterilize demijohns thoroughly with sterilizer solution.",
+      "Using plastic tubing, siphon mosto from pails into sanitized demijohns without disturbing sediment.",
+      "Keep demijohns full to about 5-6 inches from top to allow expansion; fit with airlocks.",
+      "First Racking (4 weeks): Siphon wine into clean demijohn using tube with spacer stick so sludge is left behind. Add antioxidant. Fit airlocks.",
+      "Second Racking (8 weeks): Repeat siphoning process until wine is clear.",
+      "Siphon clear wine into clean glass bottles leaving headspace for corks. Store upright at 55°F.",
+      "Red wine should be aged for one year; white wine is ready to drink after six months."
+    ],
+    "notes": "The cantina winemaking craft passed down from Antonio Ruffolo to his son Frank.",
+    "tags": [
+      "Beverages",
+      "Wine",
+      "Frank",
+      "Cantina",
+      "Family Tradition"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Frank pouring his home made wine into gallons in the cantina",
+    "originalPhotoPage": 26
+  },
+  {
+    "id": "brodo_di_carne",
+    "title": "Meat Broth",
+    "italianTitle": "Brodo di Carne",
+    "cookbookPage": 29,
+    "category": "SOUPS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "8 servings",
+    "prepTime": "15 mins",
+    "cookTime": "2 hrs",
+    "ingredients": [
+      {
+        "rawText": "2 lbs (1 kg) meat for broth, cut in large chunks (beef bones, turkey, chicken)",
+        "normalizedName": "beef bones"
+      },
+      {
+        "rawText": "1 whole large onion",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "2-3 cloves garlic",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 whole large carrot",
+        "normalizedName": "carrots"
+      },
+      {
+        "rawText": "2 celery stalks",
+        "normalizedName": "celery"
+      },
+      {
+        "rawText": "1 bunch Italian parsley",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "1 whole tomato",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "4-5 black peppercorns",
+        "normalizedName": "black pepper"
+      },
+      {
+        "rawText": "1 bay leaf",
+        "normalizedName": "bay leaf"
+      },
+      {
+        "rawText": "Pinch of nutmeg",
+        "normalizedName": "nutmeg"
+      },
+      {
+        "rawText": "1 tablespoon salt",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Place the meats in a large stockpot and fill the pot with cold water.",
+      "Stick the cloves on the surface of the onion.",
+      "Add into the pot the onion, carrot, celery, parsley, tomato, peppercorns, and bay leaf. Season with nutmeg and salt.",
+      "Bring water to a boil. When boiling, skim away the foam that forms on surface with a slotted spoon. Cook until meat is tender.",
+      "Remove meat and set aside for another dish.",
+      "Filter broth through a fine strainer to clarify it. Let cool at room temperature.",
+      "When cold, skim off the solidified surface fat. Use as base for soups, risotto, tortellini, or pasta."
+    ],
+    "notes": "The golden foundation of traditional Italian holiday soups and risotto.",
+    "tags": [
+      "Soups",
+      "Broth",
+      "Foundation",
+      "Comfort Food"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "italian_wedding_soup",
+    "title": "Italian Wedding Soup",
+    "italianTitle": "Minestra Maritata",
+    "cookbookPage": 31,
+    "category": "SOUPS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "8 servings",
+    "prepTime": "30 mins",
+    "cookTime": "2 hrs",
+    "ingredients": [
+      {
+        "rawText": "2 lb beef and 1/2 chicken",
+        "normalizedName": "beef"
+      },
+      {
+        "rawText": "1 lb pork meat or 3-4 pork ribs",
+        "normalizedName": "pork ribs"
+      },
+      {
+        "rawText": "1/2 lb Italian pancetta (or unsmoked bacon)",
+        "normalizedName": "pancetta"
+      },
+      {
+        "rawText": "1 head green cabbage, cut in large shreds",
+        "normalizedName": "cabbage"
+      },
+      {
+        "rawText": "1 head escarole, chopped in large pieces",
+        "normalizedName": "escarole"
+      },
+      {
+        "rawText": "1 lb (400 g) Swiss chard",
+        "normalizedName": "swiss chard"
+      },
+      {
+        "rawText": "1 small bunch of herbs (basil and thyme)",
+        "normalizedName": "thyme"
+      },
+      {
+        "rawText": "1 small red chili pepper",
+        "normalizedName": "chili pepper"
+      },
+      {
+        "rawText": "4 oz grated Parmigiano cheese",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Carrot, onion, parsley, celery, bay leaves, salt",
+        "normalizedName": "mirepoix"
+      }
+    ],
+    "instructions": [
+      "Place all the meats in a large empty pot with carrot, onion, parsley, celery, bay leaves, and halved tomatoes.",
+      "Fill pot with water, cover, and bring to boil. Skim off foam, add salt, and simmer until meat is tender.",
+      "Remove meat, filter broth through fine strainer and cool to remove surface fat. Dice meat into small pieces.",
+      "Bring a second pot half full of water to boil. Drop cabbage, escarole, Swiss chard, and herbs in to blanch. Drain and chop.",
+      "Bring clarified broth to a boil, add blanched vegetables and red pepper. Cook 20 minutes until tender.",
+      "Add meat back into the soup and serve piping hot, topped with grated Parmigiano cheese."
+    ],
+    "notes": "The marriage ('maritata') of rich meats and leafy greens makes this a treasured feast day classic.",
+    "tags": [
+      "Soups",
+      "Holiday",
+      "Pork",
+      "Chicken",
+      "Beef",
+      "Greens"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "chicken_stracciatella",
+    "title": "Chicken Stracciatella Soup",
+    "italianTitle": "Stracciatella alla Romana",
+    "cookbookPage": 31,
+    "category": "SOUPS",
+    "contributor": "Rita V.",
+    "servings": "4 servings",
+    "prepTime": "5 mins",
+    "cookTime": "10 mins",
+    "ingredients": [
+      {
+        "rawText": "4 cups chicken broth (or bouillon)",
+        "normalizedName": "chicken broth"
+      },
+      {
+        "rawText": "1/2 package of any kind of small pasta (pastina, ditalini)",
+        "normalizedName": "pasta"
+      },
+      {
+        "rawText": "2 eggs, beaten",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 tbsp Parmesan cheese, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Juice of 1 lemon",
+        "normalizedName": "lemon juice"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Bring chicken broth to a boil in a pot, put in pasta, and cook until tender.",
+      "In a small bowl, whisk together beaten eggs, grated Parmesan cheese, and fresh lemon juice.",
+      "Slowly pour egg mixture into boiling pasta broth, stirring gently. Cook another 2 minutes until soft egg ribbons form.",
+      "Ladle into soup bowls and serve warm with extra grated Parmesan."
+    ],
+    "notes": "Ready in 10 minutes. A classic Roman comforting starter that soothes colds.",
+    "tags": [
+      "Soups",
+      "Quick",
+      "Eggs",
+      "Chicken",
+      "Comfort Food"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pasta_e_fagioli",
+    "title": "Pasta e Fagioli (Pasta Fasul)",
+    "italianTitle": "Pasta e Fagioli Tradizionale",
+    "cookbookPage": 34,
+    "category": "SOUPS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "15 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "11 oz (315 g) dry borlotti beans (or 2 cans romano beans)",
+        "normalizedName": "borlotti beans"
+      },
+      {
+        "rawText": "2 oz (60 g) pancetta or un-smoked bacon, finely chopped",
+        "normalizedName": "pancetta"
+      },
+      {
+        "rawText": "5 oz (140 g) short ditali or broken spaghetti",
+        "normalizedName": "pasta"
+      },
+      {
+        "rawText": "1 medium onion, finely diced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 carrot, finely chopped",
+        "normalizedName": "carrots"
+      },
+      {
+        "rawText": "1 stick celery, finely diced",
+        "normalizedName": "celery"
+      },
+      {
+        "rawText": "2 tbsp fresh ripe tomato, finely diced",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "2 cups broth plus bean cooking water",
+        "normalizedName": "broth"
+      },
+      {
+        "rawText": "3 + 4 tablespoons extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Soak dry borlotti beans overnight. Boil in fresh water for 20 minutes until tender (or use drained canned beans).",
+      "In a stockpot, heat 3 tbsp olive oil over medium heat. Sauté pancetta, onion, celery, and carrot for 2-3 minutes until soft. Stir in diced tomato.",
+      "Transfer 1/3 of the cooked beans to a plate and mash to a paste with a potato masher.",
+      "Add whole beans, bean purée, broth, and cooking water to the pot. Bring to a boil, season with salt and pepper, and simmer 15 minutes.",
+      "Add ditali pasta and cook until al dente.",
+      "Ladle into bowls, drizzle generously with extra-virgin olive oil and cracked black pepper."
+    ],
+    "notes": "The quintessence of Italian home cooking. The mashed beans create the signature rich, creamy texture.",
+    "tags": [
+      "Soups",
+      "Pasta",
+      "Beans",
+      "Traditional",
+      "Pancetta"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "simple_pasta_fagioli",
+    "title": "Simple Pasta and Fagioli Soup",
+    "italianTitle": "Pasta e Fagioli Veloce",
+    "cookbookPage": 35,
+    "category": "SOUPS",
+    "contributor": "Family Heritage",
+    "servings": "8 servings",
+    "prepTime": "15 mins",
+    "cookTime": "30 mins",
+    "ingredients": [
+      {
+        "rawText": "5 slices bacon or pancetta, diced",
+        "normalizedName": "bacon"
+      },
+      {
+        "rawText": "2 cans (19 oz each) romano beans, drained and rinsed",
+        "normalizedName": "beans"
+      },
+      {
+        "rawText": "1 1/2 cups tubetti or other small pasta",
+        "normalizedName": "pasta"
+      },
+      {
+        "rawText": "2 1/2 cups chicken stock",
+        "normalizedName": "chicken stock"
+      },
+      {
+        "rawText": "3 plum tomatoes, diced",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 small potato, peeled and diced",
+        "normalizedName": "potatoes"
+      },
+      {
+        "rawText": "1/2 cup onion, diced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 carrot, diced",
+        "normalizedName": "carrots"
+      },
+      {
+        "rawText": "1/2 cup celery, diced",
+        "normalizedName": "celery"
+      },
+      {
+        "rawText": "2 cloves garlic, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1/4 cup white wine",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "1/2 cup Parmesan cheese, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1 tbsp olive oil, salt and pepper",
+        "normalizedName": "olive oil"
+      }
+    ],
+    "instructions": [
+      "In a Dutch oven, fry bacon over medium heat until golden and crisp (about 8 mins); remove with slotted spoon.",
+      "Drain fat. Heat 1 tbsp oil in same pan; fry onion, celery, carrot, potato, and garlic for 10 minutes until softened.",
+      "Stir in white wine, tomatoes, salt, and pepper; simmer 10 minutes until tomatoes break down.",
+      "Stir in chicken stock, water, beans, and cooked bacon.",
+      "Bring to a boil, add small pasta, and simmer until pasta is al dente (about 8 minutes).",
+      "Serve sprinkled with grated Parmesan and chopped parsley."
+    ],
+    "notes": "Tip: Toss 1 cup chopped spinach or Swiss chard into pot during the final 2 minutes of pasta cooking.",
+    "tags": [
+      "Soups",
+      "Pasta",
+      "Beans",
+      "Quick",
+      "Weeknight"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pasta_e_ceci",
+    "title": "Pasta e Ceci (Chickpea) Roman Soup",
+    "italianTitle": "Pasta e Ceci alla Romana",
+    "cookbookPage": 35,
+    "category": "SOUPS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4-6 servings",
+    "prepTime": "15 mins",
+    "cookTime": "30 mins",
+    "ingredients": [
+      {
+        "rawText": "11 oz (300 g) dry chickpeas soaked overnight (or 2 cans chickpeas)",
+        "normalizedName": "chickpeas"
+      },
+      {
+        "rawText": "6 oz (180 g) short ditali or broken spaghetti",
+        "normalizedName": "pasta"
+      },
+      {
+        "rawText": "2 anchovy fillets, chopped",
+        "normalizedName": "anchovies"
+      },
+      {
+        "rawText": "1 sprig fresh rosemary",
+        "normalizedName": "rosemary"
+      },
+      {
+        "rawText": "1 garlic clove, finely chopped",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "2 oz (60 g) fresh tomato, peeled and diced",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "3 + 2 tbsp extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "4 cups water or light broth",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Drain and rinse chickpeas. Place 1/3 of chickpeas in food processor and blend to a fine paste.",
+      "In a saucepan, heat 3 tbsp olive oil, garlic, and the rosemary sprig over medium heat. Add anchovies and stir until melted into oil (do not burn garlic).",
+      "Immediately add diced tomato, whole chickpeas, chickpea paste, and 4 cups water/broth. Bring to a boil.",
+      "Simmer for 20 minutes until flavors combine. Discard rosemary sprig.",
+      "Add pasta and cook until al dente.",
+      "Transfer to serving bowls and finish with a drizzle of extra-virgin olive oil and freshly ground black pepper."
+    ],
+    "notes": "One of the oldest recipes in Roman cooking. Rosemary and anchovy give an incredible savory depth.",
+    "tags": [
+      "Soups",
+      "Pasta",
+      "Chickpeas",
+      "Roman",
+      "Healthy"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "cuccia_st_lucia",
+    "title": "Cuccia (St. Lucia Heritage Soup)",
+    "italianTitle": "Cuccia Tradizionale di Santa Lucia",
+    "cookbookPage": 37,
+    "category": "SOUPS",
+    "contributor": "Rosina Ruffolo & Lena Orrico",
+    "servings": "Large Family Gathering (15-30 servings)",
+    "prepTime": "Overnight soak",
+    "cookTime": "2 hrs",
+    "ingredients": [
+      {
+        "rawText": "1 bag chickpeas, soaked overnight",
+        "normalizedName": "chickpeas"
+      },
+      {
+        "rawText": "1 bag white kidney beans, soaked",
+        "normalizedName": "white kidney beans"
+      },
+      {
+        "rawText": "1 bag navy beans, soaked",
+        "normalizedName": "navy beans"
+      },
+      {
+        "rawText": "1/2 bag black turtle beans, soaked",
+        "normalizedName": "black beans"
+      },
+      {
+        "rawText": "1 bag Farro wheat grains from Italy",
+        "normalizedName": "farro"
+      },
+      {
+        "rawText": "4 cups hard red wheat berries",
+        "normalizedName": "wheat berries"
+      },
+      {
+        "rawText": "1 bag pearl barley",
+        "normalizedName": "barley"
+      },
+      {
+        "rawText": "4 large onions, chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1/2 bunch celery, chopped",
+        "normalizedName": "celery"
+      },
+      {
+        "rawText": "1 cup olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "3 cubes vegetable broth",
+        "normalizedName": "vegetable broth"
+      },
+      {
+        "rawText": "Salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Day before: Rinse and soak chickpeas and wheat berries in cold water overnight. Soak kidney beans for 6 hours, navy and black beans for 3 hours.",
+      "Cook chickpeas and white kidney beans in a large pot with 4x water, simmering for 1.5 hours.",
+      "Cook navy and black turtle beans in a second pot with 4x water. Drain and rinse black water completely.",
+      "Boil wheat berries and farro until tender.",
+      "In fourth pot, heat olive oil and sauté chopped onions and celery. Add pearl barley, water, and cook 30 minutes.",
+      "Combine all cooked beans, farro, wheat berries, and barley together in largest family stockpot.",
+      "Add hot water to achieve hearty consistency, stir in vegetable broth cubes and salt.",
+      "Simmer all together, stirring well. Serve warm."
+    ],
+    "notes": "Rosina Ruffolo, our matriarch, soaked beans each December 12 and ladled cuccia into containers for all her children on Santa Lucia Day. The tradition continues with Lena Orrico.",
+    "tags": [
+      "Soups",
+      "Heritage Special",
+      "Beans",
+      "Grains",
+      "Vegetarian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Cuccia made by Lena December 13, 2024",
+    "originalPhotoPage": 36
+  },
+  {
+    "id": "minestrone_alla_milanese",
+    "title": "Minestrone alla Milanese",
+    "italianTitle": "Minestrone Tradizionale con Riso",
+    "cookbookPage": 39,
+    "category": "SOUPS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "8 servings",
+    "prepTime": "20 mins",
+    "cookTime": "2 hrs",
+    "ingredients": [
+      {
+        "rawText": "2 potatoes, chopped",
+        "normalizedName": "potatoes"
+      },
+      {
+        "rawText": "2 carrots, chopped",
+        "normalizedName": "carrots"
+      },
+      {
+        "rawText": "1 zucchini, chopped",
+        "normalizedName": "zucchini"
+      },
+      {
+        "rawText": "1 cup 1/2 inch green beans, chopped",
+        "normalizedName": "green beans"
+      },
+      {
+        "rawText": "3 tomatoes, peeled and diced",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 cup savoy cabbage, coarsely grated",
+        "normalizedName": "cabbage"
+      },
+      {
+        "rawText": "1 cup rice (Arborio or short grain)",
+        "normalizedName": "rice"
+      },
+      {
+        "rawText": "1 onion, chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 clove garlic, chopped",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 bunch parsley, chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "2 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Parmesan cheese to serve",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Heat oil in a large stockpot; add garlic, celery, onion, and parsley. Sauté 5 minutes.",
+      "Add potatoes, carrots, zucchini, green beans, and tomatoes.",
+      "Cover generously with water and season with salt.",
+      "Bring to a boil over high heat, then lower heat and simmer covered for 2 hours, adding water as needed.",
+      "After the first hour, add grated savoy cabbage.",
+      "Fifteen minutes before serving, add rice and simmer, keeping rice al dente.",
+      "Serve warm with a generous sprinkling of grated Parmesan cheese."
+    ],
+    "notes": "A hearty vegetable feast where slow simmering develops rich sweet vegetal depth.",
+    "tags": [
+      "Soups",
+      "Vegetarian",
+      "Rice",
+      "Comfort Food"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "french_onion_soup",
+    "title": "French Onion Soup",
+    "italianTitle": "Zuppa di Cipolle Gratinata",
+    "cookbookPage": 40,
+    "category": "SOUPS",
+    "contributor": "Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "40 mins",
+    "ingredients": [
+      {
+        "rawText": "1 large Spanish onion, thinly sliced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 oz butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "2 tsp plain flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "3/4 cup beef stock (or bouillon)",
+        "normalizedName": "beef stock"
+      },
+      {
+        "rawText": "1 tsp sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "French bread slices",
+        "normalizedName": "bread"
+      },
+      {
+        "rawText": "Grated Emmental or Gruyere cheese",
+        "normalizedName": "cheese"
+      },
+      {
+        "rawText": "Salt and freshly ground black pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Melt butter in a heavy-based pan; add thinly sliced onion and cook slowly, stirring continuously until soft and deep golden.",
+      "Stir in flour for 1 minute, then slowly stir in the beef stock.",
+      "Add sugar, season with salt and pepper. Cover and simmer gently for 20 minutes.",
+      "Toast slices of French bread and top generously with grated cheese.",
+      "Ladle soup into oven-safe bowls, top each with cheese toast, and grill/broil until cheese melts and bubbles brown."
+    ],
+    "notes": "Caramelizing the onions slowly with butter without rushing produces rich sweetness.",
+    "tags": [
+      "Soups",
+      "Cheese",
+      "Bread",
+      "Comfort Food"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "butternut_squash_garlic_soup",
+    "title": "Butternut Squash & Roasted Garlic Soup",
+    "italianTitle": "Vellutata di Zucca e Aglio Arrosto",
+    "cookbookPage": 41,
+    "category": "SOUPS",
+    "contributor": "Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "15 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "1 large butternut squash, halved and seeded",
+        "normalizedName": "butternut squash"
+      },
+      {
+        "rawText": "4 large cloves of roasted garlic",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "4 sprigs fresh thyme",
+        "normalizedName": "thyme"
+      },
+      {
+        "rawText": "1 cup warm chicken stock",
+        "normalizedName": "chicken stock"
+      },
+      {
+        "rawText": "Kosher salt and freshly ground black pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 425°F. Line baking sheet with parchment paper.",
+      "Season squash halves with salt and pepper, tuck 2 sprigs thyme in each cavity. Roast cut side down for 40 minutes until fork-tender.",
+      "Squeeze roasted garlic paste from roasted bulbs.",
+      "Discard thyme; scoop out squash pulp into a food processor with roasted garlic and 1/2 cup chicken stock. Puree until smooth.",
+      "Add remaining stock gradually until loose, velvety puree forms. Season with salt and pepper."
+    ],
+    "notes": "Roasting brings out caramelized sweetness in both the squash and garlic.",
+    "tags": [
+      "Soups",
+      "Vegetarian",
+      "Squash",
+      "Roasted Garlic",
+      "Creamy"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pasta_fresca",
+    "title": "Homemade Fresh Pasta",
+    "italianTitle": "Pasta Fresca all'Uovo",
+    "cookbookPage": 87,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4-6 servings",
+    "prepTime": "30 mins",
+    "cookTime": "3-5 mins",
+    "ingredients": [
+      {
+        "rawText": "3 cups (15 oz / 400 g) unbleached all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "4 large eggs (golden farm yolk preferred)",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 tablespoon extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Pinch of salt (optional)",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Sift flour onto wooden board. Shape into a mound and hollow the center to form a deep well.",
+      "Break eggs into hollow, add olive oil and pinch of salt.",
+      "Using a fork, beat eggs together and gently draw flour in from the inner rim a little at a time until absorbed.",
+      "Knead the dough pushing with palms, folding and turning for 8 to 10 minutes until smooth and elastic.",
+      "Shape into a round ball, cover with a moistened cloth or plastic wrap, and rest for 30 to 60 minutes.",
+      "Flatten by hand or pass through pasta machine from widest notch down to desired thinness.",
+      "Fold and cut into Fettuccine (1/4 inch), Pappardelle (1 inch), Farfalle (pinched squares), or Lasagna sheets.",
+      "Boil in abundant salted water for 3 to 5 minutes until perfectly al dente."
+    ],
+    "notes": "The soul of Italian family Sundays. Golden egg yolks give authentic vibrancy and silky bite.",
+    "tags": [
+      "Pasta",
+      "Handmade",
+      "Traditional",
+      "Basics"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Cutting board, rolling pin, and flattening pasta sheets by hand and machine",
+    "originalPhotoPage": 87
+  },
+  {
+    "id": "spaghetti_carbonara",
+    "title": "Spaghetti alla Carbonara",
+    "italianTitle": "Spaghetti alla Carbonara Tradizionale",
+    "cookbookPage": 92,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "1 lb dry fettuccine noodles or spaghetti",
+        "normalizedName": "spaghetti"
+      },
+      {
+        "rawText": "8 slices pancetta or bacon, diced",
+        "normalizedName": "pancetta"
+      },
+      {
+        "rawText": "4 eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1/4 cup Parmesan cheese, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1/4 cup Pecorino Romano cheese, grated",
+        "normalizedName": "pecorino"
+      },
+      {
+        "rawText": "Freshly ground black pepper in abundance",
+        "normalizedName": "black pepper"
+      },
+      {
+        "rawText": "2 tablespoons cream (optional)",
+        "normalizedName": "cream"
+      }
+    ],
+    "instructions": [
+      "Bring a large pot of salted water to a boil. Add pasta and cook 8 to 10 minutes until al dente; reserve 1/2 cup pasta water, then drain.",
+      "Fry pancetta/bacon in skillet over medium heat until crispy. Remove and drain on paper towel.",
+      "Beat eggs, grated Parmesan, Pecorino, and black pepper in a warm bowl.",
+      "Immediately toss hot drained pasta into the egg-cheese bowl. The heat of the pasta cooks the eggs into a luxurious cream.",
+      "Add crisp pancetta with a spoonful of hot fat, and toss vigorously with tongs.",
+      "Finish with abundant freshly cracked black pepper. Serve immediately."
+    ],
+    "notes": "Carbonara means 'in the coal miner way' because Italians grind black pepper on top until it looks like coal.",
+    "tags": [
+      "Pasta",
+      "Classic",
+      "Eggs",
+      "Pancetta",
+      "Pecorino"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "spaghetti_amatriciana",
+    "title": "Spaghetti all'Amatriciana",
+    "italianTitle": "Spaghetti all'Amatriciana con Guanciale",
+    "cookbookPage": 92,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Ornella Fusco",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "12 oz spaghetti (or bucatini)",
+        "normalizedName": "spaghetti"
+      },
+      {
+        "rawText": "1/2 cup pancetta or guanciale, diced",
+        "normalizedName": "pancetta"
+      },
+      {
+        "rawText": "1 lb tomatoes, seeded and diced (or canned plum tomatoes)",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 onion, thinly sliced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 fresh chili pepper, chopped (or crushed red pepper)",
+        "normalizedName": "chili pepper"
+      },
+      {
+        "rawText": "1 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1/4 cup Pecorino Romano cheese, freshly grated",
+        "normalizedName": "pecorino"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Add olive oil and diced pancetta to pan and cook over low heat until golden.",
+      "Add sliced onion and cook 10 minutes until lightly browned.",
+      "Add diced tomatoes and chili pepper; season with salt and pepper.",
+      "Cover and simmer gently for 20 minutes until sauce thickens.",
+      "Cook spaghetti in salted boiling water until al dente. Drain and toss in sauce.",
+      "Top generously with grated Pecorino Romano and serve at once."
+    ],
+    "notes": "Originated in the mountain town of Amatrice near Rome. Famous for combining cured pork with rich tomato tang.",
+    "tags": [
+      "Pasta",
+      "Pancetta",
+      "Spicy",
+      "Pecorino",
+      "Roman"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pasta_alla_gricia",
+    "title": "Pasta alla Gricia",
+    "italianTitle": "Pasta alla Gricia (White Amatriciana)",
+    "cookbookPage": 93,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "5 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "1 lb (450 g) pasta (bucatini, ziti, or spaghetti)",
+        "normalizedName": "pasta"
+      },
+      {
+        "rawText": "4 oz (115 g) guanciale or pancetta, diced",
+        "normalizedName": "pancetta"
+      },
+      {
+        "rawText": "1/4 cup (50 g) Pecorino Romano cheese, freshly grated",
+        "normalizedName": "pecorino"
+      },
+      {
+        "rawText": "5 tablespoons extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Crushed red pepper flakes",
+        "normalizedName": "red pepper flakes"
+      },
+      {
+        "rawText": "Salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Put olive oil in a skillet, add diced guanciale/pancetta and red pepper flakes.",
+      "Fry over medium heat until bacon is golden brown and crispy.",
+      "Cook pasta in abundant boiling salted water until al dente.",
+      "Drain pasta, reserving 1/4 cup starchy pasta cooking water.",
+      "Transfer pasta to skillet with bacon and fat, add cooking water and grated Pecorino Romano.",
+      "Toss vigorously over low heat to form a glossy emulsified cheese coating. Serve hot."
+    ],
+    "notes": "The historic Roman ancestor of Amatriciana and Carbonara. Simple, pure pork cheek and pecorino perfection.",
+    "tags": [
+      "Pasta",
+      "Roman",
+      "Pancetta",
+      "Pecorino",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "penne_alla_vodka",
+    "title": "Penne alla Vodka",
+    "italianTitle": "Penne alla Vodka Cremosa",
+    "cookbookPage": 94,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Ornella Fusco",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "250 grams penne pasta",
+        "normalizedName": "penne"
+      },
+      {
+        "rawText": "1 cup pancetta or bacon, cubed",
+        "normalizedName": "pancetta"
+      },
+      {
+        "rawText": "1 oz vodka",
+        "normalizedName": "vodka"
+      },
+      {
+        "rawText": "1/2 cup cream",
+        "normalizedName": "heavy cream"
+      },
+      {
+        "rawText": "1 cup tomato sauce",
+        "normalizedName": "tomato sauce"
+      },
+      {
+        "rawText": "1 onion, chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 tbsp butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "2 tbsp grated Parmesan cheese",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Salt, pepper & chili peppers",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In a skillet, sauté pancetta in olive oil and butter until lightly crisp.",
+      "Add chopped onion and sauté until translucent.",
+      "Add vodka and let it simmer until alcohol evaporates.",
+      "Add tomato sauce and salt; simmer gently for 15 minutes.",
+      "Stir in cream, chili, and black pepper. Set aside.",
+      "Cook penne in boiling salted water for 8 minutes until al dente.",
+      "Drain pasta, add to sauce, and toss over heat for 1 minute. Top with grated Parmesan."
+    ],
+    "notes": "Silky and luscious with a delicate pink blush from the tomato and cream reduction.",
+    "tags": [
+      "Pasta",
+      "Creamy",
+      "Pancetta",
+      "Vodka",
+      "Entertaining"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pesto_sauce_fresh",
+    "title": "Classic Genovese Pesto Sauce",
+    "italianTitle": "Pesto alla Genovese",
+    "cookbookPage": 94,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Family Heritage",
+    "servings": "4-6 servings",
+    "prepTime": "10 mins",
+    "cookTime": "None",
+    "ingredients": [
+      {
+        "rawText": "2 cups fresh basil leaves, washed & dried",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "3 large cloves garlic",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "3/4 cup pine nuts, lightly toasted",
+        "normalizedName": "pine nuts"
+      },
+      {
+        "rawText": "3/4 cup extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "3/4 cup Parmesan cheese, freshly grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1/2 tsp salt and 1/4 tsp pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Spread pine nuts in a dry skillet over moderate heat; toast lightly until fragrant and golden.",
+      "Place basil, garlic, toasted pine nuts, and olive oil in food processor fitted with metal blade.",
+      "Process until fairly smooth, scraping down sides.",
+      "Add grated cheese, salt, and pepper; pulse briefly to combine.",
+      "Toss with hot pasta (linguine or trofie) along with 2 tbsp hot pasta water. Freeze remainder in ice cube trays!"
+    ],
+    "notes": "S. Vitale's tip: Freeze pesto cubes in ice trays and store in freezer bags for year-round fresh garden flavor.",
+    "tags": [
+      "Sauces",
+      "Basil",
+      "Pesto",
+      "Vegetarian",
+      "Pantry"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pasta_cacio_e_pepe",
+    "title": "Romano Cheese & Black Pepper Pasta",
+    "italianTitle": "Pasta Cacio e Pepe",
+    "cookbookPage": 100,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "5 mins",
+    "cookTime": "10 mins",
+    "ingredients": [
+      {
+        "rawText": "1 lb (450 g) spaghetti",
+        "normalizedName": "spaghetti"
+      },
+      {
+        "rawText": "1/2 cup Pecorino Romano cheese, freshly grated",
+        "normalizedName": "pecorino"
+      },
+      {
+        "rawText": "Generous freshly ground black pepper from the mill",
+        "normalizedName": "black pepper"
+      },
+      {
+        "rawText": "Salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In a serving bowl, mix grated Pecorino Romano cheese and very generous freshly cracked black pepper.",
+      "Cook spaghetti in abundant salted water until al dente.",
+      "Before draining, reserve 1/2 cup of starchy boiling water.",
+      "Drain pasta without shaking too much so it stays moist. Dump immediately over the cheese and pepper in bowl.",
+      "Add 2 to 3 tablespoons of hot cooking water and toss vigorously. The heat creates a velvety sauce.",
+      "Serve immediately while piping hot."
+    ],
+    "notes": "Essential Roman classic. The pasta must be very hot to melt the pecorino into a smooth fondue.",
+    "tags": [
+      "Pasta",
+      "Quick",
+      "Roman",
+      "Pecorino",
+      "Vegetarian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pasta_puttanesca",
+    "title": "Pasta alla Puttanesca",
+    "italianTitle": "Pasta alla Puttanesca (Anchovy, Olives & Tomato)",
+    "cookbookPage": 102,
+    "category": "PASTA_AND_SAUCES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "1 lb (450 g) spaghetti or bucatini",
+        "normalizedName": "spaghetti"
+      },
+      {
+        "rawText": "1 1/2 cups red ripe tomatoes, diced (or plum tomatoes)",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "4 anchovy fillets, chopped",
+        "normalizedName": "anchovies"
+      },
+      {
+        "rawText": "2 oz (60 g) Gaeta or black olives, pitted",
+        "normalizedName": "olives"
+      },
+      {
+        "rawText": "1 tbsp capers in salt, rinsed & drained",
+        "normalizedName": "capers"
+      },
+      {
+        "rawText": "2 garlic cloves, sliced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "4 tbsp extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "2 tbsp fresh parsley, chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "Red pepper flakes and sea salt to taste",
+        "normalizedName": "red pepper flakes"
+      }
+    ],
+    "instructions": [
+      "In a saucepan over medium heat, heat olive oil with garlic and red pepper flakes.",
+      "Add anchovy fillets and stir until dissolved (do not burn garlic or anchovies).",
+      "Add diced tomatoes, capers, olives, and 3/4 of the chopped parsley.",
+      "Simmer on low heat for 15 to 20 minutes until thick and aromatic.",
+      "Cook pasta al dente in salted boiling water; drain.",
+      "Dress pasta with the sauce, toss well, and garnish with remaining parsley. Serve hot."
+    ],
+    "notes": "Bold Neapolitan sauce brimming with briny olives, salty capers, and sweet tomatoes.",
+    "tags": [
+      "Pasta",
+      "Seafood",
+      "Olives",
+      "Tomatoes",
+      "Spicy"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "gnocchi_alla_rosina",
+    "title": "Gnocchi alla Rosina",
+    "italianTitle": "Gnocchi di Patate Tradizionali",
+    "cookbookPage": 106,
+    "category": "BAKED_PASTA",
+    "contributor": "Nonna Rosina Ruffolo",
+    "servings": "6 servings",
+    "prepTime": "40 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 lbs potatoes (old Russet potatoes)",
+        "normalizedName": "potatoes"
+      },
+      {
+        "rawText": "2 3/4 cups all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "1 egg",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 tsp salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Pinch of nutmeg (optional)",
+        "normalizedName": "nutmeg"
+      }
+    ],
+    "instructions": [
+      "Cook unpeeled potatoes in boiling salted water until tender. Drain, peel, and mash hot through a food mill or potato masher.",
+      "Place mashed potatoes in a bowl, let cool slightly, then stir in flour, salt, and egg.",
+      "Knead dough on a floured surface until smooth, elastic, and non-sticky. (Add flour sparingly as needed).",
+      "Shape dough into long ropes (3/8-inch diameter). Cut ropes into 1 1/4-inch lengths.",
+      "Press each gnocchi against fork tines or a 'crivo' with two fingers to form ridged ruffles with a hollow back.",
+      "Drop gnocchi into rapidly boiling salted water in batches. When they float to the surface (1-2 mins), lift out with a slotted spoon.",
+      "Serve hot with homemade tomato meat sauce or browned butter and sage."
+    ],
+    "notes": "Nonna Rosina's tip: Drop one test gnocchi into boiling water first. If it holds shape and floats, dough is ready; if it falls apart, knead in a tiny bit more flour.",
+    "tags": [
+      "Pasta",
+      "Gnocchi",
+      "Nonna Rosina",
+      "Potatoes",
+      "Family Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Work dough until smooth and elastic. Shape dough into long ropes and roll on gnocchi board",
+    "originalPhotoPage": 106
+  },
+  {
+    "id": "cannelloni_balsamella",
+    "title": "Cannelloni with Balsamella White Sauce",
+    "italianTitle": "Cannelloni con la Balsamella",
+    "cookbookPage": 105,
+    "category": "BAKED_PASTA",
+    "contributor": "Traditional Family Heritage",
+    "servings": "8 servings",
+    "prepTime": "30 mins",
+    "cookTime": "40 mins",
+    "ingredients": [
+      {
+        "rawText": "20 dry no-boil cannelloni (manicotti shells)",
+        "normalizedName": "cannelloni"
+      },
+      {
+        "rawText": "2 1/2 lb ground beef (or mix of beef and pork)",
+        "normalizedName": "ground beef"
+      },
+      {
+        "rawText": "3 oz (90 g) plus 2 1/2 oz Parmigiano Reggiano, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "4 1/2 oz butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "5 1/2 oz flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "5 1/3 cups milk",
+        "normalizedName": "milk"
+      },
+      {
+        "rawText": "Pinch of ground nutmeg",
+        "normalizedName": "nutmeg"
+      },
+      {
+        "rawText": "2 tbsp olive oil, salt and pepper",
+        "normalizedName": "olive oil"
+      }
+    ],
+    "instructions": [
+      "Prepare Balsamella: Melt butter in saucepan, whisk in flour, gradually stream in milk stirring constantly until boiling and thickened. Stir in nutmeg, salt, and Parmesan.",
+      "In skillet, brown ground meat with olive oil, salt, and pepper. Process meat finely in food processor.",
+      "Blend 4 tbsp white sauce, nutmeg, and Parmigiano into meat until soft compound forms.",
+      "Preheat oven to 350°F. Spread 1/2 cup white sauce in bottom of baking pan (11x14 inch).",
+      "Stuff cannelloni tubes with meat filling and arrange in pan side by side.",
+      "Pour remaining white sauce evenly over cannelloni and sprinkle with grated Parmigiano.",
+      "Cover with foil and bake 30 minutes. Uncover and bake 5-10 minutes until golden."
+    ],
+    "notes": "A holiday and Sunday classic. Creamy white balsamella pairs gloriously with tender seasoned meat.",
+    "tags": [
+      "Baked Pasta",
+      "Cannelloni",
+      "Ground Beef",
+      "Balsamella",
+      "Feast"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "meat_lasagna",
+    "title": "Traditional Meat Lasagna",
+    "italianTitle": "Lasagne al Forno con Sugo di Carne",
+    "cookbookPage": 108,
+    "category": "BAKED_PASTA",
+    "contributor": "Traditional Family Heritage",
+    "servings": "10 servings",
+    "prepTime": "45 mins",
+    "cookTime": "1 hr",
+    "ingredients": [
+      {
+        "rawText": "1 box lasagna noodles, cooked al dente",
+        "normalizedName": "lasagna noodles"
+      },
+      {
+        "rawText": "1 1/2 lb lean ground beef",
+        "normalizedName": "ground beef"
+      },
+      {
+        "rawText": "Italian sausage, cooked and sliced",
+        "normalizedName": "italian sausage"
+      },
+      {
+        "rawText": "1 can (7 oz) tomato paste",
+        "normalizedName": "tomato paste"
+      },
+      {
+        "rawText": "56 oz jar/cans peeled Italian tomatoes",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 medium onion and 2 cloves garlic, minced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "Ricotta cheese",
+        "normalizedName": "ricotta"
+      },
+      {
+        "rawText": "Mozzarella cheese, grated",
+        "normalizedName": "mozzarella"
+      },
+      {
+        "rawText": "Parmesan cheese, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Cooked eggs, sliced or grated (traditional)",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "Basil, oregano, thyme, parsley, nutmeg, salt, pepper",
+        "normalizedName": "herbs"
+      }
+    ],
+    "instructions": [
+      "Brown ground beef in skillet and drain. Sauté onion and garlic in oil, add tomato paste and crushed tomatoes with herbs. Simmer meat sauce 1.5 to 2 hours.",
+      "Preheat oven to 350°F. Boil lasagna noodles until al dente.",
+      "Spread a thin layer of sauce in bottom of 10x14 inch lasagna pan.",
+      "Cover with flat layer of noodles, then layer ricotta, sliced sausage, sliced hard-boiled eggs, mozzarella, and meat sauce.",
+      "Repeat layers ending with noodles, sauce, and generous Parmesan cheese on top.",
+      "Bake for 45 minutes until bubbly and golden. Cool 10 minutes before slicing."
+    ],
+    "notes": "The quintessential Ruffolo-Vitale holiday centerpiece. Prepare a day ahead for maximum flavor development.",
+    "tags": [
+      "Baked Pasta",
+      "Lasagna",
+      "Beef",
+      "Sausage",
+      "Ricotta",
+      "Family Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "ravioli_spinach_ricotta",
+    "title": "Ravioli Stuffed with Spinach & Ricotta",
+    "italianTitle": "Ravioli di Magro con Burro e Salvia",
+    "cookbookPage": 115,
+    "category": "BAKED_PASTA",
+    "contributor": "Traditional Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "45 mins",
+    "cookTime": "5 mins",
+    "ingredients": [
+      {
+        "rawText": "1 recipe fresh pasta dough (3 cups flour, 4 eggs, 1 tbsp olive oil)",
+        "normalizedName": "pasta dough"
+      },
+      {
+        "rawText": "1 lb (450 g) fresh spinach, boiled and squeezed dry",
+        "normalizedName": "spinach"
+      },
+      {
+        "rawText": "1 lb (450 g) ricotta cheese, thoroughly drained",
+        "normalizedName": "ricotta"
+      },
+      {
+        "rawText": "4 oz (115 g) Parmigiano Reggiano, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1 egg",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "Pinch of grated nutmeg, salt and pepper",
+        "normalizedName": "nutmeg"
+      },
+      {
+        "rawText": "4 oz unsalted butter and 10 fresh sage leaves",
+        "normalizedName": "butter"
+      }
+    ],
+    "instructions": [
+      "Boil spinach in salted water. Squeeze in cheesecloth until completely dry, then chop finely.",
+      "Combine chopped spinach, drained ricotta, egg, Parmigiano, salt, pepper, and generous pinch of nutmeg.",
+      "Roll out fresh pasta dough into two thin matching sheets.",
+      "Place 1 teaspoon portions of filling spaced 2 inches apart on first dough sheet.",
+      "Cover with second sheet, press air out around fillings, and cut with pastry wheel into squares.",
+      "Drop ravioli into boiling salted water; cook 3-4 minutes until al dente. Lift with slotted spoon.",
+      "Toss in skillet with melted foaming butter and fresh sage leaves. Top with grated cheese."
+    ],
+    "notes": "Draining spinach and ricotta thoroughly is essential to prevent ravioli from opening during boiling.",
+    "tags": [
+      "Pasta",
+      "Handmade",
+      "Spinach",
+      "Ricotta",
+      "Vegetarian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "ukrainian_perogies",
+    "title": "Ukrainian Perogies (Pyrohy)",
+    "italianTitle": "Perogies Tradizionali",
+    "cookbookPage": 117,
+    "category": "BAKED_PASTA",
+    "contributor": "Georgina V.",
+    "servings": "8 servings (about 50 perogies)",
+    "prepTime": "45 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 cups flour, 1 tsp salt, 1 egg, 1 tbsp oil, 1/2 cup water",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "2 cups mashed potatoes",
+        "normalizedName": "potatoes"
+      },
+      {
+        "rawText": "1 cup cottage cheese or cream cheese",
+        "normalizedName": "cheese"
+      },
+      {
+        "rawText": "1 large onion, chopped & sautéed in 1/2 cup butter",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "Pork rinds or bacon, crumbled",
+        "normalizedName": "bacon"
+      },
+      {
+        "rawText": "Sour cream to serve",
+        "normalizedName": "sour cream"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Mix flour, salt, egg, oil, and water into a medium soft dough. Knead lightly; rest covered 10 minutes.",
+      "Mix mashed potatoes with sautéed buttered onions, cheese, salt, and pepper until thick.",
+      "Roll dough out thin, cut 2.5-inch rounds with a glass. Spoon filling in center, fold into half moon, and pinch edges firmly.",
+      "Drop perogies into rapidly boiling water; cook 3-4 minutes until they float to the surface.",
+      "Remove gently, drain, and coat in melted butter, sautéed onions, and fried bacon. Serve with sour cream."
+    ],
+    "notes": "A beloved heritage recipe passed on through Georgina V. Cherished for holiday and family dinners.",
+    "tags": [
+      "Dumplings",
+      "Potatoes",
+      "Cheese",
+      "Heritage",
+      "Comfort Food"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "osso_buco_milanese",
+    "title": "Osso Buco with Gremolata",
+    "italianTitle": "Ossobuco alla Milanese con Gremolada",
+    "cookbookPage": 120,
+    "category": "MEATS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4-6 servings",
+    "prepTime": "25 mins",
+    "cookTime": "2 hrs",
+    "ingredients": [
+      {
+        "rawText": "3-4 whole veal shanks (or beef shanks, about 1 lb each)",
+        "normalizedName": "veal"
+      },
+      {
+        "rawText": "All-purpose flour for dredging",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "1 small onion, diced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 small carrot, diced",
+        "normalizedName": "carrots"
+      },
+      {
+        "rawText": "1 stalk celery, diced",
+        "normalizedName": "celery"
+      },
+      {
+        "rawText": "1 tablespoon tomato paste",
+        "normalizedName": "tomato paste"
+      },
+      {
+        "rawText": "1 cup dry white wine",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "3 cups chicken or beef stock",
+        "normalizedName": "stock"
+      },
+      {
+        "rawText": "1 bouquet garni (rosemary, thyme, bay leaf, cloves)",
+        "normalizedName": "herbs"
+      },
+      {
+        "rawText": "3 tbsp fresh parsley, 1 garlic clove minced, zest of 1 lemon (Gremolata)",
+        "normalizedName": "lemon zest"
+      },
+      {
+        "rawText": "Olive oil, butter, salt, black pepper",
+        "normalizedName": "olive oil"
+      }
+    ],
+    "instructions": [
+      "Pat veal shanks dry, tie with twine, season with salt and pepper, and dredge lightly in flour.",
+      "Heat oil in large Dutch oven until hot; brown shanks on all sides (3 mins per side). Transfer to plate.",
+      "In same pot, sauté onion, carrot, and celery until soft (about 8 minutes). Stir in tomato paste.",
+      "Return shanks to pan, pour in white wine and reduce liquid to half (5 mins).",
+      "Add bouquet garni and chicken stock. Bring to a boil, reduce heat to low, cover, and simmer 1.5 to 2 hours until fork tender.",
+      "Prepare Gremolata: finely chop parsley, lemon zest, and minced garlic together.",
+      "During last 15 minutes of simmering, stir in 1-2 tsp gremolata.",
+      "Serve shanks topped with rich braising pan sauce and remaining fresh gremolata."
+    ],
+    "notes": "'Buco' means hole, referring to the marrow in the center bone. Make sure to offer small spoons for scooping out the marrow.",
+    "tags": [
+      "Meats",
+      "Veal",
+      "Braised",
+      "Milanese",
+      "Gremolata"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "italian_meatballs",
+    "title": "Italian Simple Meatballs",
+    "italianTitle": "Polpette della Nonna",
+    "cookbookPage": 122,
+    "category": "MEATS",
+    "contributor": "Teresa R.",
+    "servings": "6 servings",
+    "prepTime": "20 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "1 lb ground veal (or beef, pork, or a combination)",
+        "normalizedName": "ground beef"
+      },
+      {
+        "rawText": "1/4 cup grated Parmesan or Romano cheese",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1 large egg, slightly beaten",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1/4 cup breadcrumbs",
+        "normalizedName": "breadcrumbs"
+      },
+      {
+        "rawText": "1 garlic clove, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 garlic clove, whole",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "Fresh parsley, chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "2 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Simmering tomato sauce (sugo)",
+        "normalizedName": "tomato sauce"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In a bowl, mix ground meat, cheese, beaten egg, breadcrumbs, minced garlic, parsley, salt, and pepper.",
+      "Blend thoroughly with hands. If too moist, add more breadcrumbs; if too dry, add another egg.",
+      "Form into uniform-sized meatballs, then coat with a light layer of breadcrumbs.",
+      "Heat olive oil with the whole garlic clove in a skillet over medium heat.",
+      "Lightly brown meatballs on all sides (they don't need to cook through inside).",
+      "Transfer browned meatballs directly into a pot of simmering tomato sauce and cook for 20-30 minutes until tender."
+    ],
+    "notes": "Teresa R.'s recipe: Finishing the browned meatballs inside homemade sugo infuses the sauce with meat richness and keeps meatballs incredibly juicy.",
+    "tags": [
+      "Meats",
+      "Meatballs",
+      "Ground Beef",
+      "Family Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "serbian_cevapcici",
+    "title": "Serbian Cevapcici",
+    "italianTitle": "Cevapcici alla Griglia",
+    "cookbookPage": 124,
+    "category": "MEATS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "30 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 pounds ground beef",
+        "normalizedName": "ground beef"
+      },
+      {
+        "rawText": "1 pound ground pork",
+        "normalizedName": "ground pork"
+      },
+      {
+        "rawText": "3 tablespoons fresh parsley, chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "1 tablespoon garlic, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 tablespoon hot Hungarian paprika",
+        "normalizedName": "paprika"
+      },
+      {
+        "rawText": "1 teaspoon seasoned salt",
+        "normalizedName": "seasoned salt"
+      },
+      {
+        "rawText": "2 teaspoons black pepper",
+        "normalizedName": "black pepper"
+      },
+      {
+        "rawText": "1 egg white",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1/3 cup red wine",
+        "normalizedName": "red wine"
+      },
+      {
+        "rawText": "Pinch of nutmeg (optional)",
+        "normalizedName": "nutmeg"
+      },
+      {
+        "rawText": "Olive oil for brushing",
+        "normalizedName": "olive oil"
+      }
+    ],
+    "instructions": [
+      "Place beef, pork, parsley, and minced garlic in a large mixing bowl.",
+      "Season with salt, pepper, paprika, and nutmeg. Add egg white and red wine.",
+      "Knead mixture thoroughly by hand until well blended. Chill for 30-60 minutes.",
+      "Roll meat mixture into finger-length sticks (about 1 inch thick by 3 inches long).",
+      "Preheat outdoor grill or grill pan to medium-high; brush grates and cevapcici with olive oil.",
+      "Grill until browned on the outside and cooked through, turning frequently, about 10-12 minutes.",
+      "Serve in warm flatbread or pita with diced raw onions and creamy yogurt-cucumber sauce."
+    ],
+    "notes": "A celebrated dish from the family's heritage, incorporating subtle Italian spices for a unique family signature.",
+    "tags": [
+      "Meats",
+      "Grilled",
+      "Serbian",
+      "Pork",
+      "Beef",
+      "BBQ"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "veal_milanese_cutlets",
+    "title": "Milanese Veal Cutlets",
+    "italianTitle": "Cotolette alla Milanese",
+    "cookbookPage": 134,
+    "category": "MEATS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "6-8 servings",
+    "prepTime": "20 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 lbs veal cutlets (14-16 thin slices)",
+        "normalizedName": "veal"
+      },
+      {
+        "rawText": "2 cups Italian semolina or breadcrumbs",
+        "normalizedName": "breadcrumbs"
+      },
+      {
+        "rawText": "3 eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1/4 cup milk",
+        "normalizedName": "milk"
+      },
+      {
+        "rawText": "1 cup grated Pecorino Romano cheese",
+        "normalizedName": "pecorino"
+      },
+      {
+        "rawText": "1 tsp garlic powder",
+        "normalizedName": "garlic powder"
+      },
+      {
+        "rawText": "1 handful fresh parsley, chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "Oil and butter for frying",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Lemon wedges to serve",
+        "normalizedName": "lemon"
+      }
+    ],
+    "instructions": [
+      "In one bowl, whisk together eggs and milk.",
+      "In a second shallow bowl, combine breadcrumbs, Pecorino cheese, garlic powder, and chopped parsley.",
+      "Dip each veal cutlet into egg mixture, then press into breadcrumb mixture on both sides to coat evenly.",
+      "Heat oil and butter in a heavy frying pan over medium-high heat until hot.",
+      "Fry cutlets in batches for 1 to 2 minutes per side until golden brown and crispy (do not overcrowd pan).",
+      "Drain on paper towels and season with sea salt.",
+      "Serve immediately with fresh lemon wedges and a crisp tomato-arugula salad."
+    ],
+    "notes": "Thin cutlets cook very quickly! The semolina breadcrumb crust creates an unforgettable crunch.",
+    "tags": [
+      "Meats",
+      "Veal",
+      "Milanese",
+      "Crispy",
+      "Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "saltimbocca_alla_romana",
+    "title": "Saltimbocca alla Romana",
+    "italianTitle": "Saltimbocca alla Romana (Veal, Prosciutto & Sage)",
+    "cookbookPage": 135,
+    "category": "MEATS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "10 mins",
+    "ingredients": [
+      {
+        "rawText": "4 veal scallopini slices (about 1 lb / 450 g)",
+        "normalizedName": "veal"
+      },
+      {
+        "rawText": "4 prosciutto slices (about 3 oz / 80 g)",
+        "normalizedName": "prosciutto"
+      },
+      {
+        "rawText": "4 fresh sage leaves",
+        "normalizedName": "sage"
+      },
+      {
+        "rawText": "2 oz (60 g) flour for dredging",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "3 tablespoons butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "2-3 tbsp extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1/2 cup (120 cc) dry white wine",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Dredge veal slices in flour with a pinch of salt; shake away excess.",
+      "Place a slice of prosciutto and a fresh sage leaf on top of each veal slice. Secure with a toothpick.",
+      "In a large frying pan, melt butter with olive oil over medium heat.",
+      "Place veal in pan and fry gently on both sides until lightly browned (about 2 minutes per side).",
+      "Pour in white wine, turn heat to medium-high, and let wine evaporate and reduce into a glossy pan glaze.",
+      "Remove toothpicks, arrange cutlets on warm plates, spoon buttery pan juices over top, and serve warm."
+    ],
+    "notes": "Saltimbocca literally translates to 'jump in the mouth' because it is so mouthwatering.",
+    "tags": [
+      "Meats",
+      "Veal",
+      "Prosciutto",
+      "Sage",
+      "Roman",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "slow_cooked_porchetta",
+    "title": "Slow Cooked Porchetta Roast",
+    "italianTitle": "Arrosto di Maiale alla Porchetta",
+    "cookbookPage": 140,
+    "category": "MEATS",
+    "contributor": "Family Heritage",
+    "servings": "8-10 servings",
+    "prepTime": "25 mins",
+    "cookTime": "6 hrs",
+    "ingredients": [
+      {
+        "rawText": "6-8 lb pork picnic shoulder (bone-in, skin-on)",
+        "normalizedName": "pork roast"
+      },
+      {
+        "rawText": "3 large garlic cloves, halved",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "Coarse salt and freshly cracked black pepper",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Fennel seeds, rosemary, oregano",
+        "normalizedName": "herbs"
+      },
+      {
+        "rawText": "1 cup chicken broth",
+        "normalizedName": "chicken broth"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 450°F. Line a large rimmed baking sheet with foil.",
+      "Pat pork dry. Score crosshatch pattern (1/2 inch apart) through skin and fat, but not into meat.",
+      "Rub generous salt, pepper, and herbs into the slits and all over pork.",
+      "Make deep slits into meaty bottom of roast and push garlic pieces into each slit.",
+      "Roast uncovered at 450°F for 30 minutes to start the crust.",
+      "Remove, cover tightly with heavy-duty foil, reduce heat to 300°F, and roast for 5.5 to 6 hours until fork tender.",
+      "To crisp skin, remove foil and raise heat to 450°F for 10-15 minutes until skin is puffy, crispy, and crackling.",
+      "Rest 15 minutes, then carve or pull into succulent chunks."
+    ],
+    "notes": "The pride of central Italian festivities. Crispy crackling on the outside, meltingly tender within.",
+    "tags": [
+      "Meats",
+      "Pork",
+      "Porchetta",
+      "Slow Cook",
+      "Heritage Special"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "chicken_marsala",
+    "title": "Chicken Marsala",
+    "italianTitle": "Petti di Pollo al Marsala",
+    "cookbookPage": 162,
+    "category": "MEATS",
+    "contributor": "Mary V.",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "4 skinless, boneless chicken breasts (about 1 1/2 lbs)",
+        "normalizedName": "chicken breast"
+      },
+      {
+        "rawText": "8 oz crimini or porcini mushrooms, sliced",
+        "normalizedName": "mushrooms"
+      },
+      {
+        "rawText": "4 oz prosciutto, thinly sliced",
+        "normalizedName": "prosciutto"
+      },
+      {
+        "rawText": "1/2 cup sweet Marsala wine",
+        "normalizedName": "marsala wine"
+      },
+      {
+        "rawText": "1/2 cup chicken stock",
+        "normalizedName": "chicken stock"
+      },
+      {
+        "rawText": "1/4 cup extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "2 tbsp unsalted butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "1/4 cup flat-leaf parsley, chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "All-purpose flour for dredging, salt and pepper",
+        "normalizedName": "flour"
+      }
+    ],
+    "instructions": [
+      "Pound chicken breasts between plastic wrap to 1/4-inch thickness. Season flour with salt and pepper; dredge cutlets.",
+      "Heat olive oil in skillet over medium-high heat. Fry chicken cutlets 5 minutes per side until golden; transfer to plate.",
+      "In same pan, sauté prosciutto for 1 minute to render fat. Add mushrooms and sauté 5 minutes until browned.",
+      "Pour in Marsala wine and boil down for 30 seconds to cook out alcohol.",
+      "Add chicken stock, simmer 1 minute to reduce slightly, then stir in butter.",
+      "Return chicken to pan, simmer gently 1 minute to reheat through. Garnish with parsley and serve."
+    ],
+    "notes": "Mary V.'s beloved recipe: Sweet Marsala pairs with earthy mushrooms and salty prosciutto.",
+    "tags": [
+      "Poultry",
+      "Chicken",
+      "Mushrooms",
+      "Marsala",
+      "Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "baked_chicken_parmesan",
+    "title": "Baked Chicken Parmesan",
+    "italianTitle": "Pollo alla Parmigiana al Forno",
+    "cookbookPage": 162,
+    "category": "MEATS",
+    "contributor": "Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "30 mins",
+    "ingredients": [
+      {
+        "rawText": "4 chicken breasts, sliced in half lengthwise (8 cutlets)",
+        "normalizedName": "chicken breast"
+      },
+      {
+        "rawText": "3/4 cup seasoned breadcrumbs",
+        "normalizedName": "breadcrumbs"
+      },
+      {
+        "rawText": "1/4 cup Parmesan cheese, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "3/4 cup mozzarella cheese, shredded",
+        "normalizedName": "mozzarella"
+      },
+      {
+        "rawText": "1 cup tomato sauce",
+        "normalizedName": "tomato sauce"
+      },
+      {
+        "rawText": "2 tbsp butter, melted (or olive oil)",
+        "normalizedName": "butter"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 450°F. Spray a large baking sheet lightly with oil.",
+      "Combine seasoned breadcrumbs and grated Parmesan cheese in a shallow bowl.",
+      "Brush melted butter onto chicken cutlets, then dip into breadcrumb mixture to coat both sides.",
+      "Place cutlets on baking sheet, mist lightly with cooking spray, and bake 25 minutes.",
+      "Spoon 1 tbsp tomato sauce over each piece of chicken and top each with mozzarella cheese.",
+      "Bake 5 more minutes until cheese is bubbly and melted. Serve immediately."
+    ],
+    "notes": "A lighter, cleaner, oven-baked family favorite with ultra crispy crust.",
+    "tags": [
+      "Poultry",
+      "Chicken",
+      "Parmesan",
+      "Mozzarella",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "chicken_cacciatore",
+    "title": "Chicken Cacciatore",
+    "italianTitle": "Pollo alla Cacciatora",
+    "cookbookPage": 169,
+    "category": "MEATS",
+    "contributor": "Sandy V.",
+    "servings": "6 servings",
+    "prepTime": "15 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "2 lbs chicken parts (thighs, drumsticks, breasts)",
+        "normalizedName": "chicken"
+      },
+      {
+        "rawText": "1 clove garlic, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1/2 cup red or white wine",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "1 can (14 oz) tomatoes",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 medium green pepper, sliced",
+        "normalizedName": "bell pepper"
+      },
+      {
+        "rawText": "1 can (10 oz) mushrooms",
+        "normalizedName": "mushrooms"
+      },
+      {
+        "rawText": "1/2 cup onion, chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1/3 cup olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1 tsp oregano, 1 tsp black pepper, 1 tsp salt",
+        "normalizedName": "oregano"
+      }
+    ],
+    "instructions": [
+      "Heat oil in large deep skillet and sauté chicken pieces with garlic for 10 minutes until golden.",
+      "Pour off excess fat and add wine, letting it simmer and reduce.",
+      "Add chopped onion, sliced peppers, mushrooms, canned tomatoes, oregano, salt, and pepper.",
+      "Cover tightly and simmer over medium-low heat for 45 minutes, stirring occasionally.",
+      "Serve hot over polenta, pasta, or with crusty bread for dipping."
+    ],
+    "notes": "Calabrese style 'Pollo in Umido' can also be baked in the oven with zucchini and eggplant (Dina M. variation).",
+    "tags": [
+      "Poultry",
+      "Chicken",
+      "Stew",
+      "Peppers",
+      "Mushrooms"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "pesce_acqua_pazza",
+    "title": "Fish Stew with Tomato, Parsley & Lemon",
+    "italianTitle": "Pesce all'Acqua Pazza",
+    "cookbookPage": 178,
+    "category": "SEAFOOD",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 lb (900 g) white fish fillets (cod, haddock, bass, or orange roughy)",
+        "normalizedName": "fish fillets"
+      },
+      {
+        "rawText": "1 lb (500 g) cherry tomatoes, chopped",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "4 tbsp extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "2 garlic cloves, diced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 lemon, sliced",
+        "normalizedName": "lemon"
+      },
+      {
+        "rawText": "4 tbsp Italian parsley, finely chopped",
+        "normalizedName": "parsley"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Place olive oil and garlic in a wide skillet over medium heat. When fragrant, remove garlic and let oil cool slightly.",
+      "Add water to pan about 1/2 inch (1 cm) deep.",
+      "Add half the parsley, lemon slices, and cherry tomatoes.",
+      "Place fish fillets in pan, top with remaining parsley, and season lightly with salt.",
+      "Bring water to a boil over medium heat. Cook 10-15 minutes, turning fish gently so both sides cook in the 'crazy water' broth.",
+      "Serve warm with crusty Italian bread to sop up the delicate poaching juices."
+    ],
+    "notes": "'Acqua Pazza' (crazy water) is an ancient Neapolitan fisherman's poaching method that keeps white fish extraordinarily moist.",
+    "tags": [
+      "Seafood",
+      "Fish",
+      "Tomatoes",
+      "Healthy",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "mussels_marinara",
+    "title": "Mussels Marinara",
+    "italianTitle": "Cozze alla Marinara",
+    "cookbookPage": 181,
+    "category": "SEAFOOD",
+    "contributor": "Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "24 fresh mussels, scrubbed and debearded",
+        "normalizedName": "mussels"
+      },
+      {
+        "rawText": "1 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "2 tbsp diced onion",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 tbsp garlic, minced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 tbsp tomato paste",
+        "normalizedName": "tomato paste"
+      },
+      {
+        "rawText": "2 tbsp red wine",
+        "normalizedName": "red wine"
+      },
+      {
+        "rawText": "1 3/4 cups plum tomatoes, cut",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 tsp basil, 1 tsp oregano, 1 bay leaf",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In a deep pot, sauté onions and garlic in olive oil until soft.",
+      "Add tomato paste, red wine, chopped plum tomatoes, basil, oregano, bay leaf, salt, and pepper.",
+      "Simmer sauce for 15 to 20 minutes on medium heat until rich.",
+      "Add cleaned mussels to the boiling sauce. Cover with lid and cook for 5-7 minutes until shells open.",
+      "Discard any unopened mussels. Serve immediately with warm crusty bread."
+    ],
+    "notes": "A Christmas Eve Feast of the Seven Fishes essential.",
+    "tags": [
+      "Seafood",
+      "Mussels",
+      "Tomatoes",
+      "Christmas Eve"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "calabrese_homemade_sausage_salami",
+    "title": "Calabrese Sausage & Salami",
+    "italianTitle": "Salsicce e Soppressata di Casa",
+    "cookbookPage": 145,
+    "category": "MEATS",
+    "contributor": "Nonna Rosina, Fiore, Vito, Sam & Hunter",
+    "servings": "12-16 servings",
+    "prepTime": "2 hrs",
+    "cookTime": "Curing",
+    "ingredients": [
+      {
+        "rawText": "Pork shoulder and belly, coarsely ground",
+        "normalizedName": "pork"
+      },
+      {
+        "rawText": "Coarse sea salt (calculated strictly by meat weight)",
+        "normalizedName": "sea salt"
+      },
+      {
+        "rawText": "Sweet and hot ground Calabrian red pepper",
+        "normalizedName": "chili pepper"
+      },
+      {
+        "rawText": "Fennel seeds (semi di finocchio selvatico)",
+        "normalizedName": "fennel seed"
+      },
+      {
+        "rawText": "Natural pork casings, cleaned and soaked in vinegar/wine",
+        "normalizedName": "casings"
+      }
+    ],
+    "instructions": [
+      "Mix coarsely ground pork with salt, hot and sweet Calabrian pepper, and wild fennel seeds.",
+      "Turn the meat mixer vigorously until seasoning is completely incorporated.",
+      "Stuff prepared casings tightly using sausage horn, piercing air pockets with needle.",
+      "Tie links with natural twine.",
+      "Hang high on wooden rafters in the cold cantina to cure for several weeks to months."
+    ],
+    "notes": "Sausage or Salami making is an all-hands family group effort. Generations gather in the cold winter cellar.",
+    "tags": [
+      "Meats",
+      "Sausage",
+      "Salami",
+      "Cantina",
+      "Family Tradition"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Nonna Rosina, Fiore, Vito, Sam & Hunter making sausages; Liver sausages hanging",
+    "originalPhotoPage": 148
+  },
+  {
+    "id": "homemade_capicollo_pancetta",
+    "title": "Homemade Capicollo & Pancetta",
+    "italianTitle": "Capicollo e Pancetta Tesa",
+    "cookbookPage": 149,
+    "category": "MEATS",
+    "contributor": "Antonio & Frank Ruffolo",
+    "servings": "10 servings",
+    "prepTime": "1 hr",
+    "cookTime": "Curing",
+    "ingredients": [
+      {
+        "rawText": "Whole pork neck / collar (capicollo) or pork belly",
+        "normalizedName": "pork collar"
+      },
+      {
+        "rawText": "Coarse salt, crushed black peppercorns",
+        "normalizedName": "sea salt"
+      },
+      {
+        "rawText": "Ground hot Calabrian red pepper",
+        "normalizedName": "chili powder"
+      },
+      {
+        "rawText": "Red wine for washing",
+        "normalizedName": "red wine"
+      }
+    ],
+    "instructions": [
+      "Rub pork collar thoroughly with salt and let cure in cold cellar for designated days.",
+      "Wash with red wine, rub generously with fiery Calabrian pepper.",
+      "Wrap tightly in beef bung casing or parchment, bind tightly with butcher's twine in crisscross pattern.",
+      "Hang high from cantina ceiling until firm and dried to weight."
+    ],
+    "notes": "Tenderloins and capicolli hung high to dry in the traditional cold cellar.",
+    "tags": [
+      "Meats",
+      "Cured",
+      "Capicollo",
+      "Heritage Special"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Capicolli hung high for drying; tenderloins tied and hung to dry",
+    "originalPhotoPage": 149
+  },
+  {
+    "id": "bacalhau_a_rosa",
+    "title": "Bacalhau à Rosa (Salt Cod)",
+    "italianTitle": "Baccalà con Patate e Olive",
+    "cookbookPage": 176,
+    "category": "SEAFOOD",
+    "contributor": "Rosa Ruffolo",
+    "servings": "6 servings",
+    "prepTime": "30 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "1.5 lbs salt cod, soaked in cold water 48 hrs with frequent changes",
+        "normalizedName": "salt cod"
+      },
+      {
+        "rawText": "4 medium potatoes, peeled and sliced",
+        "normalizedName": "potatoes"
+      },
+      {
+        "rawText": "2 onions, sliced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1/2 cup black and green olives",
+        "normalizedName": "olives"
+      },
+      {
+        "rawText": "1/2 cup extra virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Fresh parsley and freshly ground black pepper",
+        "normalizedName": "parsley"
+      }
+    ],
+    "instructions": [
+      "Drain thoroughly desalted cod and cut into portioned pieces.",
+      "Parboil sliced potatoes for 6 minutes; drain.",
+      "In a large baking dish, layer sliced onions, potatoes, and cod pieces.",
+      "Scatter black and green olives, drizzle generously with extra virgin olive oil and season with pepper.",
+      "Bake at 375°F (190°C) for 40-45 minutes until potatoes are golden and tender.",
+      "Garnish with chopped fresh flat-leaf parsley and serve hot."
+    ],
+    "notes": "Rosa's festive salt cod specialty, savory and rich with olive oil.",
+    "tags": [
+      "Seafood",
+      "Baccalà",
+      "Holiday",
+      "Family Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Bacalhau à Rosa baked with golden potatoes, onions, and black olives",
+    "originalPhotoPage": 176
+  },
+  {
+    "id": "milanese_saffron_risotto",
+    "title": "Milanese Saffron Risotto",
+    "italianTitle": "Risotto alla Milanese con Zafferano",
+    "cookbookPage": 81,
+    "category": "RICE_AND_RISOTTO",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "1 1/2 cups (300 g) Arborio or Carnaroli rice",
+        "normalizedName": "arborio rice"
+      },
+      {
+        "rawText": "5 cups (1 litre) chicken or beef broth, simmering",
+        "normalizedName": "broth"
+      },
+      {
+        "rawText": "1/2 cup (120 cc) dry white wine",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "1/4 teaspoon saffron powder or threads",
+        "normalizedName": "saffron"
+      },
+      {
+        "rawText": "1 medium onion, very finely chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "3 + 2 tablespoons butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "4 oz Parmigiano Reggiano cheese, freshly grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Warm broth to a simmer. Dissolve saffron in 1/2 cup warm broth and set aside.",
+      "In a saucepan, melt 3 tbsp butter over medium heat. Add finely chopped onion and sauté until soft and translucent.",
+      "Add Arborio rice; toast and stir 2 minutes until translucent with a chalky core.",
+      "Add white wine and stir until completely evaporated.",
+      "Add simmering broth one ladle at a time, stirring constantly and allowing rice to absorb liquid before adding more.",
+      "After about 10 minutes, stir in the saffron-infused broth.",
+      "Continue adding broth until rice is tender and creamy yet al dente (about 18-20 minutes total).",
+      "Mantecatura: Turn off heat, stir in remaining 2 tbsp butter and grated Parmigiano Reggiano. Cover 2 minutes and serve."
+    ],
+    "notes": "Saffron gives the signature golden yellow color and floral aroma. Never rinse Arborio rice!",
+    "tags": [
+      "Risotto",
+      "Saffron",
+      "Rice",
+      "Milanese",
+      "Gluten Free"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "asparagus_risotto",
+    "title": "Asparagus Risotto",
+    "italianTitle": "Risotto con gli Asparagi",
+    "cookbookPage": 81,
+    "category": "RICE_AND_RISOTTO",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "1 1/2 cups (300 g) Arborio rice",
+        "normalizedName": "arborio rice"
+      },
+      {
+        "rawText": "1 lb (450 g) fresh asparagus, woody ends trimmed",
+        "normalizedName": "asparagus"
+      },
+      {
+        "rawText": "5 cups vegetable broth, hot",
+        "normalizedName": "vegetable broth"
+      },
+      {
+        "rawText": "1/2 cup white wine",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "4 oz (100 g) onion, finely chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "2 tbsp olive oil and 4 tbsp butter",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "4-5 tbsp Parmigiano Reggiano, grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Slice asparagus stems into rounds, keeping the tender tips whole for later.",
+      "Heat olive oil and 2 tbsp butter in a heavy saucepan; sauté onion until soft.",
+      "Add Arborio rice and toast for 2 minutes. Pour in white wine and stir until absorbed.",
+      "Add sliced asparagus stems and first ladle of hot broth.",
+      "Continue adding hot broth gradually, stirring constantly as rice absorbs liquid.",
+      "After 12 minutes, add the tender asparagus tips to the pot.",
+      "When rice reaches al dente (approx 18 minutes), turn off heat and stir in remaining butter and Parmigiano.",
+      "Rest covered for 2 minutes, then serve warm."
+    ],
+    "notes": "Springtime family favorite. Adding the tips late keeps them bright green and tender-crisp.",
+    "tags": [
+      "Risotto",
+      "Asparagus",
+      "Vegetarian",
+      "Spring"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "eggplant_caponata",
+    "title": "Eggplant Caponata",
+    "italianTitle": "Caponata Siciliana di Melanzane",
+    "cookbookPage": 57,
+    "category": "VEGETABLES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "20 mins",
+    "cookTime": "30 mins",
+    "ingredients": [
+      {
+        "rawText": "2 lbs (900 g) eggplant, cut into 3/4-inch dice",
+        "normalizedName": "eggplant"
+      },
+      {
+        "rawText": "1 lb (450 g) celery, boiled and diced",
+        "normalizedName": "celery"
+      },
+      {
+        "rawText": "1/2 lb (225 g) onion, diced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "2 garlic cloves, diced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "1 cup (230 g) tomatoes, pureed",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "6 oz (180 g) Sicilian green olives, pitted",
+        "normalizedName": "olives"
+      },
+      {
+        "rawText": "4 tbsp capers in salt, rinsed and drained",
+        "normalizedName": "capers"
+      },
+      {
+        "rawText": "2 tablespoons sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "3-4 tablespoons red wine vinegar",
+        "normalizedName": "vinegar"
+      },
+      {
+        "rawText": "4-5 fresh basil leaves",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "Olive oil for frying and sautéing",
+        "normalizedName": "olive oil"
+      }
+    ],
+    "instructions": [
+      "Boil celery sticks for 6-7 minutes until tender; dice finely.",
+      "In a saucepan, heat 4 tbsp olive oil, sauté garlic, onion, and red pepper flakes until soft.",
+      "Add pureed tomatoes, basil, olives, and capers. Simmer for 10 minutes and set aside.",
+      "In a separate large frying pan, fry diced eggplant in hot oil until golden brown (8-10 mins). Add a pinch of salt.",
+      "Transfer fried eggplant and cooked celery into the tomato mixture.",
+      "Whisk sugar and vinegar in a small bowl until dissolved, then stir into the pan.",
+      "Cover and cook 5 minutes until thick and glossy.",
+      "Transfer to a dish and let cool. Caponata tastes best the next day served lukewarm as an antipasto or side."
+    ],
+    "notes": "The sweet and sour (agrodolce) glaze creates an extraordinary balance with the creamy fried eggplant.",
+    "tags": [
+      "Vegetables",
+      "Antipasto",
+      "Eggplant",
+      "Sicilian",
+      "Vegetarian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "eggplant_rollatini",
+    "title": "Eggplant Rollatini",
+    "italianTitle": "Involtini di Melanzane con Ricotta e Prosciutto",
+    "cookbookPage": 58,
+    "category": "VEGETABLES",
+    "contributor": "Family Heritage",
+    "servings": "6 servings",
+    "prepTime": "25 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "1 large eggplant, sliced lengthwise into 1/4 inch slices",
+        "normalizedName": "eggplant"
+      },
+      {
+        "rawText": "1 egg, beaten",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 cup Italian seasoned breadcrumbs",
+        "normalizedName": "breadcrumbs"
+      },
+      {
+        "rawText": "1 cup ricotta cheese",
+        "normalizedName": "ricotta"
+      },
+      {
+        "rawText": "10 slices prosciutto",
+        "normalizedName": "prosciutto"
+      },
+      {
+        "rawText": "2 cups shredded mozzarella cheese",
+        "normalizedName": "mozzarella"
+      },
+      {
+        "rawText": "1 jar (14 oz) spaghetti sauce",
+        "normalizedName": "tomato sauce"
+      },
+      {
+        "rawText": "Olive oil for frying",
+        "normalizedName": "olive oil"
+      }
+    ],
+    "instructions": [
+      "Dip eggplant slices in beaten egg, then coat thoroughly with breadcrumbs.",
+      "Fry eggplant slices in olive oil over medium-high heat until golden brown on both sides. Drain on paper towels.",
+      "Preheat oven to 350°F.",
+      "Spread a thin layer of ricotta cheese onto each fried eggplant slice, then top with a slice of prosciutto.",
+      "Roll up tightly and arrange seam side down in a 9x13 inch baking dish.",
+      "Pour tomato sauce over rolls and cover generously with shredded mozzarella.",
+      "Bake for 15 minutes until cheese is melted, bubbling, and golden brown.",
+      "Serve rolls hot as a main course or side dish."
+    ],
+    "notes": "Can be served alongside tender angel hair pasta for a complete Sunday meal.",
+    "tags": [
+      "Vegetables",
+      "Eggplant",
+      "Ricotta",
+      "Prosciutto",
+      "Mozzarella"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "rosina_stuffed_peppers",
+    "title": "Rosina’s Stuffed Peppers",
+    "italianTitle": "Peperoni Ripieni di Nonna Rosina",
+    "cookbookPage": 61,
+    "category": "VEGETABLES",
+    "contributor": "Nonna Rosina Ruffolo",
+    "servings": "8 servings",
+    "prepTime": "30 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "9 medium-sized green peppers",
+        "normalizedName": "green peppers"
+      },
+      {
+        "rawText": "11 oz rice, parboiled for 10 minutes",
+        "normalizedName": "rice"
+      },
+      {
+        "rawText": "1/2 cup cooked lean ground beef",
+        "normalizedName": "ground beef"
+      },
+      {
+        "rawText": "1/2 cup grated Parmesan cheese",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "2 1/2 cups diced ripe tomatoes",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 anchovy in oil, chopped",
+        "normalizedName": "anchovies"
+      },
+      {
+        "rawText": "2 tbsp chopped parsley and 2 tbsp fresh basil",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "1/4 tsp nutmeg",
+        "normalizedName": "nutmeg"
+      },
+      {
+        "rawText": "1/4 cup olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Wash peppers and set one aside. Cut around stems of 8 peppers and remove seeds and membranes.",
+      "Cut out 8 little circles from the reserved pepper to plug the stem holes so filling won't spill.",
+      "Parboil rice in salted water for 10 minutes, drain and cool.",
+      "In a bowl, combine cooked ground beef, rice, olive oil, Parmesan, parsley, basil, chopped anchovy, nutmeg, and half the tomatoes.",
+      "Stuff peppers upside down with rice mixture and cover holes with pepper circles.",
+      "Arrange stuffed peppers side by side in a baking dish. Spoon remaining diced tomatoes over top.",
+      "Drizzle with olive oil, season with salt, and bake at 350°F for 45 minutes.",
+      "Delicious hot or cold the next day."
+    ],
+    "notes": "Nonna Rosina's signature technique of cutting small pepper plugs keeps the savory filling sealed inside.",
+    "tags": [
+      "Vegetables",
+      "Nonna Rosina",
+      "Peppers",
+      "Rice",
+      "Family Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "sauteed_rapini",
+    "title": "Sautéed Rapini (Broccoletti Ripassati)",
+    "italianTitle": "Broccoletti Ripassati in Padella",
+    "cookbookPage": 65,
+    "category": "VEGETABLES",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "2 bunches fresh rapini (broccoli rabe)",
+        "normalizedName": "rapini"
+      },
+      {
+        "rawText": "2 garlic cloves, coarsely diced",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "3-4 tbsp extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Crushed red pepper flakes to taste",
+        "normalizedName": "red pepper flakes"
+      },
+      {
+        "rawText": "Salt to taste",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Pull and discard tough outer leaves. Cut hard stem base; slice remaining stems in half into 4-inch lengths.",
+      "Wash rapini thoroughly in fresh water and drain.",
+      "To eliminate part of the natural bitterness, drop briefly in boiling salted water for 2 minutes, then drain.",
+      "In a large sauté pan, heat olive oil, garlic, and crushed red pepper over medium heat (do not let garlic brown).",
+      "Add rapini to the pan, cover with lid, and sauté for 10 minutes, stirring occasionally.",
+      "Season with salt to taste and serve hot or lukewarm."
+    ],
+    "notes": "The quintessential Calabrese green side dish. A staple for sausage dinners and holiday menus.",
+    "tags": [
+      "Vegetables",
+      "Rapini",
+      "Garlic",
+      "Spicy",
+      "Vegetarian",
+      "Keto"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "rapini_and_sausages",
+    "title": "Rapini and Italian Sausages",
+    "italianTitle": "Salsicce e Friarielli (Broccoletti)",
+    "cookbookPage": 66,
+    "category": "MEATS",
+    "contributor": "Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "15 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "10 ounces sweet Italian sausage links",
+        "normalizedName": "italian sausage"
+      },
+      {
+        "rawText": "1 pound bunch fresh rapini",
+        "normalizedName": "rapini"
+      },
+      {
+        "rawText": "6 whole garlic cloves, smashed",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "3 tablespoons olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1/4 teaspoon hot pepper flakes",
+        "normalizedName": "red pepper flakes"
+      },
+      {
+        "rawText": "1 tablespoon water, salt and black pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 500°F. Prick sausages with a fork and bake in skillet for 15 minutes, turning occasionally. Cool and slice.",
+      "Clean rapini, removing tough outer stems. Split stems in half.",
+      "In a 4-5 quart pot, sauté smashed garlic gently in olive oil until golden.",
+      "Add trimmed rapini, salt, pepper flakes, black pepper, and 1 tbsp water.",
+      "Cover tightly and cook 5 to 7 minutes until tender.",
+      "Add sliced cooked sausages to the rapini, toss together over heat for 2 minutes, and serve immediately."
+    ],
+    "notes": "The bitter-almond notes of rapini perfectly offset the sweet fennel and pork in the sausage.",
+    "tags": [
+      "Meats",
+      "Sausage",
+      "Rapini",
+      "Comfort Food",
+      "Keto"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "uova_in_purgatorio",
+    "title": "Eggs in Purgatory",
+    "italianTitle": "Uova in Purgatorio",
+    "cookbookPage": 187,
+    "category": "EGGS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4 servings",
+    "prepTime": "10 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "4 large eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "28 ounce can chopped tomatoes",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1 red bell pepper, coarsely chopped",
+        "normalizedName": "bell pepper"
+      },
+      {
+        "rawText": "1 small yellow onion, thinly sliced",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 garlic clove, crushed",
+        "normalizedName": "garlic"
+      },
+      {
+        "rawText": "3 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Generous pinch red pepper flakes",
+        "normalizedName": "red pepper flakes"
+      },
+      {
+        "rawText": "5-8 fresh basil leaves, torn",
+        "normalizedName": "basil"
+      },
+      {
+        "rawText": "3-4 tbsp grated Parmigiano or Romano cheese",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "Crusty bread for dipping",
+        "normalizedName": "bread"
+      }
+    ],
+    "instructions": [
+      "In a wide skillet with lid, heat olive oil over medium-low; sauté onion, garlic, red pepper, and chili flakes for 10 minutes until soft.",
+      "Stir in chopped tomatoes, bring to a simmer, and cook uncovered 15 minutes until rich and thickened.",
+      "Use the back of a spoon to carve 4 deep wells in the simmering sauce.",
+      "Crack an egg into each well; season each with a pinch of salt.",
+      "Cover pan and gently cook for 2 to 3 minutes until egg whites are set and yolks remain golden and runny.",
+      "Remove from heat, shower with torn fresh basil and grated Parmigiano cheese.",
+      "Serve immediately right out of the skillet with thick slices of country bread."
+    ],
+    "notes": "An absolute family comfort food classic. Dipping crusty warm bread into the runny yolk and spicy sugo is heaven.",
+    "tags": [
+      "Eggs",
+      "Breakfast",
+      "Tomatoes",
+      "Quick",
+      "Vegetarian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "asparagus_frittata",
+    "title": "Asparagus Frittata",
+    "italianTitle": "Frittata con Asparagi",
+    "cookbookPage": 189,
+    "category": "EGGS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "4-6 servings",
+    "prepTime": "10 mins",
+    "cookTime": "12 mins",
+    "ingredients": [
+      {
+        "rawText": "6 large eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1/2 pound fresh asparagus, cut in 1/2-inch pieces",
+        "normalizedName": "asparagus"
+      },
+      {
+        "rawText": "4 oz grated Parmigiano Reggiano",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "2 tbsp extra virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1/4 cup dry breadcrumbs (for firmer frittata)",
+        "normalizedName": "breadcrumbs"
+      },
+      {
+        "rawText": "1/4 tsp sea salt and 1/8 tsp black pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Boil cut asparagus in salted water for 3 minutes; drain thoroughly.",
+      "In a bowl, beat eggs with salt, pepper, grated Parmigiano, and breadcrumbs.",
+      "In a 9-inch skillet, heat olive oil over medium heat. Sauté asparagus for 2 minutes.",
+      "Pour egg mixture over asparagus, stirring gently for 2 minutes to distribute.",
+      "Cook until bottom is golden brown (about 6 minutes).",
+      "Place a flat plate over the skillet, flip pan and plate together, and slide frittata back into the skillet to finish cooking the other side.",
+      "Slide onto a platter, cut into wedges, and serve warm or at room temperature."
+    ],
+    "notes": "The plate-flip technique ensures an evenly golden, tender frittata without tearing.",
+    "tags": [
+      "Eggs",
+      "Frittata",
+      "Asparagus",
+      "Vegetarian",
+      "Quick"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "rosina_pizza_dough",
+    "title": "Rosina’s Authentic Pizza Dough",
+    "italianTitle": "Pasta per la Pizza di Nonna Rosina",
+    "cookbookPage": 204,
+    "category": "BREADS_AND_PIZZA",
+    "contributor": "Nonna Rosina Ruffolo",
+    "servings": "3 large pizzas",
+    "prepTime": "20 mins (+ 1 hr rise)",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "3 cups lukewarm water",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "3 tbsp instant yeast",
+        "normalizedName": "yeast"
+      },
+      {
+        "rawText": "1/2 cup olive oil (or rendered pork fat)",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "9 cups flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "2 1/2 tbsp salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Pinch of white pepper",
+        "normalizedName": "white pepper"
+      }
+    ],
+    "instructions": [
+      "Mix olive oil and lukewarm water in a large bowl.",
+      "Combine flour, salt, white pepper, and yeast; blend into oil and water.",
+      "Knead until smooth and elastic. Place in large greased bowl, turn to coat, cover with tea towel until doubled.",
+      "Punch down dough and knead four or five times.",
+      "Divide and stretch dough onto baking sheets.",
+      "Add toppings of choice (tomato sauce, mozzarella, mushrooms, pepperoni, fresh basil).",
+      "Bake in a preheated hot oven at 425°F for 20 minutes until crust is crispy and golden."
+    ],
+    "notes": "Nonna Rosina's secret touch of rendered pork fat or pure olive oil produces an airy, golden crust with unmatched flavor.",
+    "tags": [
+      "Pizza",
+      "Breads",
+      "Nonna Rosina",
+      "Baking",
+      "Family Classic"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Grandchildren making personal pizzas; Justin slices his personal pizza with cutter",
+    "originalPhotoPage": 204
+  },
+  {
+    "id": "focaccia_rosemary",
+    "title": "Focaccia with Rosemary",
+    "italianTitle": "Focaccia Tradizionale al Rosmarino",
+    "cookbookPage": 210,
+    "category": "BREADS_AND_PIZZA",
+    "contributor": "Traditional Family Heritage",
+    "servings": "8-10 servings",
+    "prepTime": "25 mins (+ 2 hrs rise)",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "4 cups all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "1 packet (7 g) dry active yeast",
+        "normalizedName": "yeast"
+      },
+      {
+        "rawText": "Warm water (105°F)",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "6 tbsp + extra extra-virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "Fresh rosemary leaves",
+        "normalizedName": "rosemary"
+      },
+      {
+        "rawText": "Coarse sea salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "1/2 tsp salt",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "In a bowl combine flour, salt, yeast, and 6 tbsp olive oil. Slowly add warm water mixing with a fork until pliable dough forms.",
+      "Knead on work surface for 10 minutes, shape into a ball, and let rise in a warm place covered for 1 hour.",
+      "Work dough briefly, then press out onto a round 14-inch baking pan greased with olive oil.",
+      "Poke deep dimples all over the dough with fingers. Let rise again for 1 hour.",
+      "Brush generously with extra-virgin olive oil and sprinkle coarse sea salt.",
+      "Bake in preheated oven at 450°F for 15-20 minutes.",
+      "Halfway through baking, brush with olive oil and scatter fresh rosemary leaves on top.",
+      "Bake until golden brown. Serve warm with sliced prosciutto and provolone."
+    ],
+    "notes": "Dimpling the dough allows olive oil and salt to pool in pockets, creating iconic flavor bursts.",
+    "tags": [
+      "Breads",
+      "Focaccia",
+      "Rosemary",
+      "Olive Oil",
+      "Baking"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "spinach_calzone",
+    "title": "Unbelievable Spinach Calzones",
+    "italianTitle": "Calzoni Ripieni di Spinaci e Ricotta",
+    "cookbookPage": 208,
+    "category": "BREADS_AND_PIZZA",
+    "contributor": "Family Heritage",
+    "servings": "8 calzones",
+    "prepTime": "25 mins",
+    "cookTime": "30 mins",
+    "ingredients": [
+      {
+        "rawText": "1 package (32 oz) pizza dough or bread dough, thawed",
+        "normalizedName": "pizza dough"
+      },
+      {
+        "rawText": "1 container (15 oz) ricotta cheese",
+        "normalizedName": "ricotta"
+      },
+      {
+        "rawText": "3 cups mozzarella cheese, shredded",
+        "normalizedName": "mozzarella"
+      },
+      {
+        "rawText": "1 cup Parmesan cheese, freshly grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "1 package (10 oz) frozen chopped spinach, thawed and squeezed dry",
+        "normalizedName": "spinach"
+      },
+      {
+        "rawText": "2 eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "2 tbsp dried Italian seasoning",
+        "normalizedName": "italian seasoning"
+      },
+      {
+        "rawText": "Salt and pepper to taste",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Marinara sauce for dipping",
+        "normalizedName": "marinara sauce"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 400°F (200°C).",
+      "In a large bowl, mix together ricotta, eggs, Italian seasoning, mozzarella, Parmesan, and well-squeezed spinach.",
+      "Divide bread/pizza dough into 8 equal pieces.",
+      "Roll each piece out to an 8-inch circle.",
+      "Spoon about 1/2 cup of ricotta-spinach filling onto one half of each circle.",
+      "Fold over into half-moons and crimp edges firmly with fork tines to seal.",
+      "Place onto greased cookie sheets and bake for 30 minutes until golden brown.",
+      "Serve hot with warm marinara dipping sauce."
+    ],
+    "notes": "Calzones are classic Italian 'finger food' turnovers. Perfect for casual family gatherings.",
+    "tags": [
+      "Breads",
+      "Calzone",
+      "Spinach",
+      "Ricotta",
+      "Mozzarella"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "aidens_first_communion_bread",
+    "title": "Aiden's First Communion Italian Bread",
+    "italianTitle": "Pane di Prima Comunione",
+    "cookbookPage": 195,
+    "category": "BREADS_AND_PIZZA",
+    "contributor": "Aiden & Samantha Jovanovich",
+    "servings": "3 large loaves",
+    "prepTime": "30 mins (+ 2.5 hrs rise)",
+    "cookTime": "40 mins",
+    "ingredients": [
+      {
+        "rawText": "9 cups all-purpose flour (up to 12 if needed)",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "3 1/2 tbsp instant yeast",
+        "normalizedName": "yeast"
+      },
+      {
+        "rawText": "3 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "3 tbsp granulated sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "2 1/4 tbsp salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "3 3/4 cups warm water",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "1 large egg white for brushing on loaves",
+        "normalizedName": "egg white"
+      }
+    ],
+    "instructions": [
+      "Knead flour, yeast, oil, sugar, salt, and warm water in stand mixer or by hand for 6-10 minutes until dough forms a smooth ball.",
+      "Place in greased bowl, cover with plastic wrap, and let rise for 2 hours.",
+      "Gently punch down dough and let rise another 40 minutes.",
+      "Preheat oven to 425°F. Place a metal pan halfway filled with hot water on bottom rack for a steam bath to create a crispier crust.",
+      "Divide dough into 3 balls. Shape each into a 10-inch loaf and score vertical or horizontal slits along the top surface.",
+      "Bake for 10 minutes at 425°F, then lower temperature to 400°F and bake 30-35 minutes until tapping underside sounds hollow.",
+      "Cool loaves on a wire rack."
+    ],
+    "notes": "Traditional celebratory Italian bread prepared for communion milestones and family feasts.",
+    "tags": [
+      "Breads",
+      "Italian Bread",
+      "Aiden",
+      "Samantha",
+      "Communion",
+      "Heritage"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Aiden's First Communion Italian Bread; Samantha's First Communion Bread",
+    "originalPhotoPage": 195
+  },
+  {
+    "id": "tomato_canning_tradition",
+    "title": "Tomato Canning Tradition",
+    "italianTitle": "I Pomodori di Casa Ruffolo",
+    "cookbookPage": 75,
+    "category": "PICKLING",
+    "contributor": "Nonna Rosina, Frank, Sandy, Ethan, Hunter, Justin, Sam & Daniel",
+    "servings": "5 bushels (numerous jars)",
+    "prepTime": "Full Day Family Event",
+    "cookTime": "2 hrs boiling",
+    "ingredients": [
+      {
+        "rawText": "5 bushels of fresh, ripe plum tomatoes",
+        "normalizedName": "tomatoes"
+      },
+      {
+        "rawText": "1/2 cup coarse salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Vegetable spray for stainless steel pot",
+        "normalizedName": "cooking spray"
+      },
+      {
+        "rawText": "Tomato squeezer machine, propane burner, and 100-quart pot",
+        "normalizedName": "equipment"
+      },
+      {
+        "rawText": "Sterilized Mason jars, lids, and warm cloths",
+        "normalizedName": "canning jars"
+      }
+    ],
+    "instructions": [
+      "Wash tomatoes thoroughly in three water bins.",
+      "Cut tomatoes into quarters and discard any bruised spots.",
+      "Pass quartered tomatoes through the tomato squeezer machine to separate seeds and peels from fresh juice.",
+      "Pour juice into a 100-quart stainless steel pot over the outdoor propane burner.",
+      "Add salt and bring to a rolling boil for 1.5 to 2 hours, stirring constantly with a tall wooden spoon so it doesn't burn.",
+      "Pour boiling sauce into hot, clean jars leaving 1/2-inch headspace. Seal immediately with lids.",
+      "Place sealed jars into bushels lined with blankets to let heat slowly seal the jars overnight.",
+      "Store cooled sealed jars in the cantina (cold room) for the entire year's pasta feasts."
+    ],
+    "notes": "An all-hands late-summer family ritual spanning generations from Antonio and Nonna Rosina to the great-grandchildren.",
+    "tags": [
+      "Canning",
+      "Tomatoes",
+      "Nonna Rosina",
+      "Cantina",
+      "Family Tradition"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Grandsons (Ethan, Hunter, Justin, Sam, Daniel) washing and grinding tomatoes; Nonna Rosina stirring sauce",
+    "originalPhotoPage": 75
+  },
+  {
+    "id": "tiramisu_classic",
+    "title": "Classic Italian Tiramisu",
+    "italianTitle": "Tiramisù Tradizionale al Mascarpone",
+    "cookbookPage": 309,
+    "category": "CAKES_AND_DESSERTS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "8-10 servings",
+    "prepTime": "25 mins",
+    "cookTime": "No bake (6 hrs chill)",
+    "ingredients": [
+      {
+        "rawText": "500 g mascarpone cheese",
+        "normalizedName": "mascarpone"
+      },
+      {
+        "rawText": "4 eggs, separated",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "3/4 cup sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "250 g Savoiardi (ladyfinger) biscuits",
+        "normalizedName": "savoiardi"
+      },
+      {
+        "rawText": "1/3 cup strong espresso coffee, cooled",
+        "normalizedName": "coffee"
+      },
+      {
+        "rawText": "1/4 cup dark rum or Marsala wine",
+        "normalizedName": "rum"
+      },
+      {
+        "rawText": "50 g dark chocolate, grated",
+        "normalizedName": "chocolate"
+      },
+      {
+        "rawText": "Unsweetened cocoa powder for dusting",
+        "normalizedName": "cocoa powder"
+      }
+    ],
+    "instructions": [
+      "Beat egg yolks with sugar until creamy and pale yellow.",
+      "Add mascarpone cheese and whisk gently until smooth and velvety.",
+      "In a clean dry bowl, beat egg whites with a pinch of salt until stiff peaks form.",
+      "Gently fold beaten egg whites into mascarpone cream with a spatula using top-to-bottom strokes.",
+      "Combine espresso coffee and rum in a shallow bowl.",
+      "Quickly dunk Savoiardi biscuits one by one in the espresso mix and arrange a layer in the bottom of a rectangular glass dish.",
+      "Spread half of the mascarpone cream over the biscuits and sprinkle with grated dark chocolate.",
+      "Add a second layer of dipped ladyfingers, top with remaining cream, and smooth the surface.",
+      "Cover and refrigerate for at least 6 hours (preferably overnight).",
+      "Generously dust with unsweetened cocoa powder just before serving cold."
+    ],
+    "notes": "Four family variations in the cookbook (Rita, Lina, Teresa, and Classic) celebrate this beloved dessert.",
+    "tags": [
+      "Desserts",
+      "Tiramisu",
+      "Mascarpone",
+      "Coffee",
+      "No Bake"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "rosina_taralle_2008",
+    "title": "Rosina’s Traditional Taralle (2008)",
+    "italianTitle": "Taralli Tradizionali Calabresi",
+    "cookbookPage": 201,
+    "category": "HOLIDAY_TRADITIONS",
+    "contributor": "Nonna Rosina Ruffolo",
+    "servings": "Large Family Batch (50-60 taralli)",
+    "prepTime": "45 mins",
+    "cookTime": "30 mins",
+    "ingredients": [
+      {
+        "rawText": "18 cups all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "4 cups warm water",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "1 cup vegetable oil",
+        "normalizedName": "oil"
+      },
+      {
+        "rawText": "3 tbsp quick rise yeast",
+        "normalizedName": "yeast"
+      },
+      {
+        "rawText": "1 tbsp anise (fennel) seeds",
+        "normalizedName": "anise"
+      },
+      {
+        "rawText": "1 tbsp salt",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Pour warm water into a large bowl. Add yeast, stir, and let bubble for 5 minutes.",
+      "Add oil, salt, and anise seeds.",
+      "Slowly add flour, mixing by hand. Turn dough onto floured board and knead until a fingerprint springs back.",
+      "Oil dough, place in bowl, cover, and let rise until doubled.",
+      "Divide dough into loaves, then cut into even slices. Roll each slice into an 8-inch rope (1/2 inch thick).",
+      "Form into circles and squeeze ends together firmly.",
+      "Bring a large pot of water to a boil. Drop 5 taralle at a time into boiling water. When they float to top, remove with slotted spoon onto dry cloth to dry.",
+      "Preheat convection oven to 350°F. Place boiled and dried taralle directly on oven racks.",
+      "Bake for about 30 minutes until golden brown on top and bottom.",
+      "Slide hot taralle onto clean tablecloth to cool. Can be frozen and reheated in oven before serving."
+    ],
+    "notes": "Nonna Rosina's secret: Boiling the taralle before baking gives them their signature crisp, tender crumb and golden sheen.",
+    "tags": [
+      "Holiday",
+      "Taralle",
+      "Nonna Rosina",
+      "Baking",
+      "Calabrese"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Nonna Rosina rolling, boiling, drying on clean tablecloths, and baking golden taralle",
+    "originalPhotoPage": 201
+  },
+  {
+    "id": "glazed_egg_taralli",
+    "title": "Glazed Egg Taralli",
+    "italianTitle": "Taralli all'Uovo Glassati",
+    "cookbookPage": 202,
+    "category": "COOKIES_AND_BISCOTTI",
+    "contributor": "Maria Vanelli",
+    "servings": "30-40 taralli",
+    "prepTime": "40 mins",
+    "cookTime": "35 mins",
+    "ingredients": [
+      {
+        "rawText": "3 1/2 cups (500 g) all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "6 eggs at room temperature",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "2 tablespoons sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "2 tablespoons vegetable or olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "2 tsp Sambuca, grappa, or Marsala",
+        "normalizedName": "liqueur"
+      },
+      {
+        "rawText": "Zest of 1 lemon",
+        "normalizedName": "lemon zest"
+      },
+      {
+        "rawText": "1/2 teaspoon baking powder and pinch of salt",
+        "normalizedName": "baking powder"
+      },
+      {
+        "rawText": "3 cups icing sugar, 4 tbsp water, 2 tsp lemon juice (Glaze)",
+        "normalizedName": "icing sugar"
+      }
+    ],
+    "instructions": [
+      "In a stand mixer with whisk, beat eggs on medium-high for 4-5 minutes until doubled in volume.",
+      "Add sugar, oil, vanilla, lemon zest, and Sambuca. Whisk together.",
+      "Switch to dough hook and knead in flour and baking powder for 7-10 minutes until soft and smooth.",
+      "Wrap dough in plastic and rest for 30 minutes at room temperature.",
+      "Divide into 8 pieces, then shape into small balls. Poke hole in center and stretch into donut rings.",
+      "Bring water to 200°F (just before boiling). Drop taralli in water; when they float (2-3 mins), remove to tea towel and air dry 15 minutes.",
+      "Preheat oven to 400°F. Score a shallow line around circumference with razor blade.",
+      "Bake at 375°F for 10 minutes, then lower to 325°F for 20-25 minutes until cracked and golden brown.",
+      "Warm icing sugar, water, and lemon juice in small pot. Dip cooled taralli in glaze and let dry on wire rack."
+    ],
+    "notes": "Maria Vanelli's heirloom recipe: The crisp outer crust with sweet lemon glaze makes these irresistible.",
+    "tags": [
+      "Cookies",
+      "Taralli",
+      "Glazed",
+      "Easter",
+      "Italian"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Glazed Egg Taralli after baking with scored circumference and lemon glaze on wire rack",
+    "originalPhotoPage": 202
+  },
+  {
+    "id": "pizzelle_della_nonna",
+    "title": "Pizzelle della Nonna",
+    "italianTitle": "Pizzelle Tradizionali all'Anice",
+    "cookbookPage": 240,
+    "category": "COOKIES_AND_BISCOTTI",
+    "contributor": "Maria Vanelli",
+    "servings": "30 pizzelle",
+    "prepTime": "15 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "1 1/4 cups all-purpose flour (177 g)",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "3 eggs at room temperature",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1/2 cup sugar (100 g)",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "1/4 cup vegetable oil",
+        "normalizedName": "oil"
+      },
+      {
+        "rawText": "1 teaspoon vanilla extract",
+        "normalizedName": "vanilla"
+      },
+      {
+        "rawText": "1 teaspoon anise extract (optional)",
+        "normalizedName": "anise"
+      },
+      {
+        "rawText": "3/4 teaspoon baking powder and pinch of salt",
+        "normalizedName": "baking powder"
+      }
+    ],
+    "instructions": [
+      "Preheat pizzelle iron.",
+      "In a medium bowl, sift together flour, baking powder, and salt.",
+      "In mixer bowl, beat eggs until frothy and thickening (2-3 minutes). Add sugar and continue beating 3 minutes until thick.",
+      "Add oil, vanilla, and anise extract; mix well.",
+      "Slowly add flour mixture on low speed until soft sticky dough forms.",
+      "Drop 1 tablespoon of batter onto the hot pizzelle press.",
+      "Close lid firmly and cook for 30 to 45 seconds until light golden.",
+      "Carefully remove with a fork or spatula and let cool flat on a rack.",
+      "Chocolate option: Replace 1/4 cup flour with 1/4 cup unsweetened cocoa powder."
+    ],
+    "notes": "Crisp, wafer-thin snowflake cookies that evoke Italian Christmas and Easter celebrations.",
+    "tags": [
+      "Cookies",
+      "Pizzelle",
+      "Anise",
+      "Holiday",
+      "Traditional"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Justin sifts flour and drops batter on pizzelle iron; Pizzelle removed when golden",
+    "originalPhotoPage": 242
+  },
+  {
+    "id": "cuddruriaddri_calabresi",
+    "title": "Cuddruriaddri (Calabrese Potato Donuts)",
+    "italianTitle": "Cullurielli / Grispuli di Patate",
+    "cookbookPage": 278,
+    "category": "HOLIDAY_TRADITIONS",
+    "contributor": "Nonna Rosina Ruffolo",
+    "servings": "15 large donuts",
+    "prepTime": "30 mins (+ 2 hrs rise)",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "500 g (2 cups) flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "250 g (1 cup) potatoes, boiled and mashed",
+        "normalizedName": "potatoes"
+      },
+      {
+        "rawText": "1 tsp dry yeast",
+        "normalizedName": "yeast"
+      },
+      {
+        "rawText": "500 ml (about 2 cups) lukewarm water",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "13 g (3 tsp) salt",
+        "normalizedName": "salt"
+      },
+      {
+        "rawText": "Oil for frying (peanut or sunflower oil)",
+        "normalizedName": "oil"
+      },
+      {
+        "rawText": "Granulated sugar for sweet version, or anchovies for savory",
+        "normalizedName": "sugar"
+      }
+    ],
+    "instructions": [
+      "Boil potatoes in skins until tender; peel and press through potato masher into large bowl.",
+      "Dissolve yeast in warm water. Alternately mix flour, mashed potatoes, and yeast water with a fork to make soft dough.",
+      "Add salt halfway through. Knead lightly on floured board until soft and slightly sticky.",
+      "Divide dough into 15 balls, folding edges underneath to maintain fluffiness.",
+      "Place balls on floured cloth, cover, and let rise in a warm spot for 2-3 hours until doubled.",
+      "Heat oil in deep pan. Lightly oil hands, take one ball, poke a hole in center and twirl around wooden spoon handle to form donut ring.",
+      "Gently lower into hot oil. Fry until puffed and golden brown on both sides.",
+      "Drain on paper towels. Immediately toss in granulated sugar for dessert, or insert anchovy inside before frying for dinner!"
+    ],
+    "notes": "Traditionally eaten on the Eve of the Immaculate Conception (Dec 8) and throughout the Christmas season.",
+    "tags": [
+      "Holiday",
+      "Donuts",
+      "Calabrese",
+      "Potatoes",
+      "Nonna Rosina",
+      "Christmas Eve"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Anna fries and places Cudorelli on paper towels; Risen dough balls and donuts",
+    "originalPhotoPage": 278
+  },
+  {
+    "id": "scalille_calabresi",
+    "title": "Scalille (Calabrese Honey Ladders)",
+    "italianTitle": "Scalille Tradizionali al Miele",
+    "cookbookPage": 282,
+    "category": "HOLIDAY_TRADITIONS",
+    "contributor": "Traditional Family Heritage",
+    "servings": "40-50 cookies",
+    "prepTime": "40 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "3 1/2 cups flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "6 eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "6 tbsp oil (1/4 cup)",
+        "normalizedName": "oil"
+      },
+      {
+        "rawText": "1 tsp baking powder",
+        "normalizedName": "baking powder"
+      },
+      {
+        "rawText": "Pure honey for coating (2 cups)",
+        "normalizedName": "honey"
+      },
+      {
+        "rawText": "Oil for frying",
+        "normalizedName": "oil"
+      }
+    ],
+    "instructions": [
+      "Beat eggs and oil together.",
+      "Add flour and baking powder; knead until smooth and a fingerprint holds in the dough.",
+      "Roll dough into 1/2-inch ropes, 6 inches long. With a rolling pin flatten slightly.",
+      "Traditional shaping: Wind dough around a floured dowel or wooden spoon handle to form little ladders ('scalille'), or braid 3 strips.",
+      "Fry in hot oil until they puff up to the surface and turn golden brown. Drain on parchment.",
+      "Heat honey with a splash of water in a skillet until foaming.",
+      "Drop fried scalille into hot honey, turn to coat thoroughly, and transfer to a colander to drain excess.",
+      "Store in tins with parchment paper between layers."
+    ],
+    "notes": "'Scalille' means little ladders, representing climbing to heaven at Christmas time.",
+    "tags": [
+      "Holiday",
+      "Honey",
+      "Christmas",
+      "Calabrese",
+      "Tradition"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Maya, Rita, Chiara and Sandy forming scalilli; Braided ladders and honey glaze",
+    "originalPhotoPage": 284
+  },
+  {
+    "id": "turdilli_calabresi",
+    "title": "Nonna’s Turdilli",
+    "italianTitle": "Turdilli / Turdiddri al Miele",
+    "cookbookPage": 285,
+    "category": "HOLIDAY_TRADITIONS",
+    "contributor": "Nonna Rosina Ruffolo",
+    "servings": "60 cookies",
+    "prepTime": "30 mins",
+    "cookTime": "20 mins",
+    "ingredients": [
+      {
+        "rawText": "1 pound flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "4.5 ounces extra virgin olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "8.5 ounces sweet Moscato wine (or sweet white/vermouth)",
+        "normalizedName": "white wine"
+      },
+      {
+        "rawText": "Zest of 1 orange, finely grated",
+        "normalizedName": "orange"
+      },
+      {
+        "rawText": "1/2 tsp cinnamon powder",
+        "normalizedName": "cinnamon"
+      },
+      {
+        "rawText": "5 ounces pure honey",
+        "normalizedName": "honey"
+      },
+      {
+        "rawText": "Juice of 1 orange",
+        "normalizedName": "orange"
+      },
+      {
+        "rawText": "Oil for deep frying",
+        "normalizedName": "oil"
+      }
+    ],
+    "instructions": [
+      "In a mixing bowl, combine flour, extra-virgin olive oil, sweet wine, cinnamon, and grated orange zest.",
+      "Work dough gently until smooth and cohesive.",
+      "Roll dough into 1-inch flat strips, then cut into 1-inch pieces.",
+      "Roll each piece on the back of a fork or gnocchi board to impress ridges and curl into small hollow cylinders.",
+      "Deep fry in hot oil (350°F) until golden brown and cooked in the middle. Drain on paper towels.",
+      "In a pan over low heat, melt honey with fresh orange juice.",
+      "Pour warm honey glaze over Turdilli and toss to coat completely.",
+      "Allow to cool before serving. They keep well for over a week!"
+    ],
+    "notes": "Calabrese deep-fried and honeyed Christmas cookies made with fragrant wine and citrus.",
+    "tags": [
+      "Holiday",
+      "Turdilli",
+      "Honey",
+      "Christmas",
+      "Nonna Rosina"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Nonna Rosina: Golden honey-glazed Calabrese Christmas Turdilli with ridges",
+    "originalPhotoPage": 285
+  },
+  {
+    "id": "almond_biscotti",
+    "title": "Traditional Almond Biscotti (Cantucci)",
+    "italianTitle": "Biscotti alle Mandorle di Prato",
+    "cookbookPage": 214,
+    "category": "COOKIES_AND_BISCOTTI",
+    "contributor": "Laura Tabul",
+    "servings": "40 biscotti",
+    "prepTime": "20 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "4 1/2 cups all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "2 cups white sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "1 cup butter, softened",
+        "normalizedName": "butter"
+      },
+      {
+        "rawText": "4 eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 cup whole almonds, toasted",
+        "normalizedName": "almonds"
+      },
+      {
+        "rawText": "2 tablespoons anise seeds",
+        "normalizedName": "anise"
+      },
+      {
+        "rawText": "1 1/2 teaspoons anise extract",
+        "normalizedName": "anise"
+      },
+      {
+        "rawText": "1/3 cup brandy",
+        "normalizedName": "brandy"
+      },
+      {
+        "rawText": "1 teaspoon vanilla extract",
+        "normalizedName": "vanilla"
+      },
+      {
+        "rawText": "4 teaspoons baking powder and 3/4 tsp salt",
+        "normalizedName": "baking powder"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 350°F. Line two cookie sheets with parchment paper.",
+      "Beat sugar and butter until light and fluffy. Add eggs one at a time, beating well.",
+      "Mix brandy, anise extract, and vanilla together. Whisk flour, baking powder, and salt.",
+      "Alternately add dry ingredients and brandy mixture to butter cream. Stir in whole almonds and anise seeds.",
+      "Drop dough onto sheets to form two 2x13 inch logs. Smooth tops with moistened fingers.",
+      "Bake 30-35 minutes until golden and firm. Cool completely on racks (15 mins). Reduce oven to 300°F.",
+      "Cut logs on diagonal into 3/4-inch slices with a serrated knife. Lay slices flat on sheets.",
+      "Bake 20 minutes (turn after 10 mins) until crisp, dry, and lightly toasted."
+    ],
+    "notes": "'Biscotti' means twice-baked ('bis-cotto'). Perfect for dipping in espresso, Vin Santo, or sweet dessert wine.",
+    "tags": [
+      "Biscotti",
+      "Almonds",
+      "Anise",
+      "Cookies",
+      "Traditional"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "amaretti_cookies",
+    "title": "Chewy Almond Amaretti Cookies",
+    "italianTitle": "Amaretti Morbidi alle Mandorle",
+    "cookbookPage": 214,
+    "category": "COOKIES_AND_BISCOTTI",
+    "contributor": "Traditional Family Heritage",
+    "servings": "30 cookies",
+    "prepTime": "15 mins",
+    "cookTime": "25 mins",
+    "ingredients": [
+      {
+        "rawText": "2 1/2 cups almond flour (or 3 cups blanched almonds, finely ground)",
+        "normalizedName": "almond flour"
+      },
+      {
+        "rawText": "1 1/4 cups baker's sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "3 egg whites",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 teaspoon almond extract",
+        "normalizedName": "almond extract"
+      },
+      {
+        "rawText": "1/2 teaspoon vanilla extract",
+        "normalizedName": "vanilla"
+      },
+      {
+        "rawText": "Extra powdered sugar for dusting",
+        "normalizedName": "icing sugar"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 300°F. Line baking sheets with parchment paper.",
+      "In a food processor, pulse almond flour and sugar together.",
+      "Add vanilla and almond extract. Pulse briefly.",
+      "Add egg whites one at a time and process until a smooth, stiff paste forms.",
+      "Roll teaspoons of dough into balls, roll in powdered sugar, and place on parchment.",
+      "Bake for 24-30 minutes until golden on the outside with delicate crackles.",
+      "Cool completely. Crisp outside, tender and chewy almond marzipan center."
+    ],
+    "notes": "Naturally gluten-free and dairy-free! Stored in an airtight container, they stay chewy and delicious for weeks.",
+    "tags": [
+      "Cookies",
+      "Amaretti",
+      "Almonds",
+      "Gluten Free",
+      "Chewy"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "easter_pie_pasqualina",
+    "title": "Easter Pie Pasqualina",
+    "italianTitle": "Torta Pasqualina Ligure",
+    "cookbookPage": 290,
+    "category": "HOLIDAY_TRADITIONS",
+    "contributor": "Laura Vitale",
+    "servings": "8 servings",
+    "prepTime": "30 mins",
+    "cookTime": "1 hr",
+    "ingredients": [
+      {
+        "rawText": "2 1/2 cups all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "1/4 cup + 2 tbsp olive oil",
+        "normalizedName": "olive oil"
+      },
+      {
+        "rawText": "1/2 cup ice water",
+        "normalizedName": "water"
+      },
+      {
+        "rawText": "2 boxes (10 oz each) frozen spinach, thawed and squeezed dry",
+        "normalizedName": "spinach"
+      },
+      {
+        "rawText": "1/2 yellow onion, finely chopped",
+        "normalizedName": "onion"
+      },
+      {
+        "rawText": "1 lb whole milk ricotta cheese",
+        "normalizedName": "ricotta"
+      },
+      {
+        "rawText": "1/2 cup Parmigiano Reggiano, freshly grated",
+        "normalizedName": "parmesan"
+      },
+      {
+        "rawText": "6 large eggs (2 for filling, 4 cracked whole inside)",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "Pinch of dried oregano, salt, and black pepper",
+        "normalizedName": "salt"
+      }
+    ],
+    "instructions": [
+      "Make crust: Pulse flour, salt, and 1/4 cup olive oil in food processor; add ice water until dough forms a ball. Chill 1 hour.",
+      "Make filling: Sauté onion and spinach in 2 tbsp olive oil with salt for 2 minutes; cool. Stir in ricotta, 2 beaten eggs, Parmigiano, oregano, and pepper.",
+      "Roll out 2/3 of dough to line bottom and sides of a 9-inch springform pan.",
+      "Fill with spinach-ricotta mixture. Make 4 deep wells in filling and crack 1 whole raw egg into each well.",
+      "Roll out remaining dough, place on top, crimp edges tightly, cut a small vent slit, and brush with olive oil.",
+      "Bake at 400°F for about 1 hour until deeply golden brown.",
+      "Cool completely before un-molding and slicing to reveal the whole baked egg cross-section."
+    ],
+    "notes": "The classic Italian Easter masterpiece symbolising rebirth, with beautiful baked whole eggs revealed inside each slice.",
+    "tags": [
+      "Holiday",
+      "Easter",
+      "Ricotta",
+      "Spinach",
+      "Eggs",
+      "Pie"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "",
+    "originalPhotoPage": null
+  },
+  {
+    "id": "fiadone_easter",
+    "title": "Fiadone Easter Mini Ricotta Pies",
+    "italianTitle": "Fiadoni Dolci di Pasqua",
+    "cookbookPage": 291,
+    "category": "HOLIDAY_TRADITIONS",
+    "contributor": "Bruna Sabusco",
+    "servings": "36 mini pies",
+    "prepTime": "40 mins",
+    "cookTime": "45 mins",
+    "ingredients": [
+      {
+        "rawText": "4 cups all-purpose flour (568 g)",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "6 eggs (for dough)",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "6 tbsp sugar + 6 tbsp vegetable oil",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "900 grams (2 lb) whole milk ricotta, strained overnight",
+        "normalizedName": "ricotta"
+      },
+      {
+        "rawText": "6 tbsp sugar (for filling)",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "2 eggs, lightly beaten (for filling)",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "2 egg yolks with 1 tsp milk (egg wash)",
+        "normalizedName": "eggs"
+      }
+    ],
+    "instructions": [
+      "Make dough: Whisk 6 eggs with 6 tbsp sugar and oil; knead in flour until soft, smooth dough forms. Rest covered 1 hour.",
+      "Make filling: Mix strained dry ricotta with 6 tbsp sugar and 2 beaten eggs until creamy.",
+      "Roll dough thinly to 1/16-inch thick. Cut out 6-inch circles.",
+      "Place 1 tablespoon ricotta filling on each circle, fold over into half-moons, and seal edges tightly with fork tines.",
+      "Brush tops with egg yolk wash. With scissors, make three small steam vents in each pie.",
+      "Bake at 350°F for 20 minutes, then lower heat to 325°F and bake 25-30 minutes until golden brown.",
+      "Cool on wire racks. Can be frozen and enjoyed throughout Easter."
+    ],
+    "notes": "Bruna Sabusco's cherished recipe. Savory cheese variation uses grated Pecorino, Caciotta, and parsley.",
+    "tags": [
+      "Holiday",
+      "Easter",
+      "Ricotta",
+      "Pies",
+      "Calabrese"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "Fiadone egg washed and cut, ready for baking; Baked Fiadone ready for serving",
+    "originalPhotoPage": 292
+  },
+  {
+    "id": "samanthas_s_cookies",
+    "title": "Samantha's S Cookies",
+    "italianTitle": "Biscotti a 'S' delle Feste",
+    "cookbookPage": 234,
+    "category": "COOKIES_AND_BISCOTTI",
+    "contributor": "Samantha Jovanovich",
+    "servings": "30-40 cookies",
+    "prepTime": "20 mins",
+    "cookTime": "15 mins",
+    "ingredients": [
+      {
+        "rawText": "3 cups (750 mL) all-purpose flour",
+        "normalizedName": "flour"
+      },
+      {
+        "rawText": "3 eggs",
+        "normalizedName": "eggs"
+      },
+      {
+        "rawText": "1 cup (250 mL) granulated sugar",
+        "normalizedName": "sugar"
+      },
+      {
+        "rawText": "1/2 cup (125 mL) vegetable oil",
+        "normalizedName": "oil"
+      },
+      {
+        "rawText": "2 tsp (10 mL) baking powder",
+        "normalizedName": "baking powder"
+      },
+      {
+        "rawText": "2 tsp ground cinnamon mixed with 1/3 cup sugar or colored sprinkles",
+        "normalizedName": "cinnamon sugar"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 350°F (180°C). Grease or line cookie sheet with parchment paper.",
+      "In a small bowl, combine cinnamon and 1/3 cup sugar for coating.",
+      "In a large bowl, combine eggs, 1 cup sugar, and oil. Add flour and baking powder; mix well.",
+      "Divide dough into two loaves. Cut 1/3 inch slices (or use 1 tablespoon of dough for each cookie).",
+      "Roll dough into a rope about 1 cm in diameter and 5 inches long.",
+      "Shape each roll into an 'S' shape.",
+      "Drop upside down in cinnamon-sugar mixture or colored sprinkles.",
+      "Place on parchment paper-lined cookie sheet. Bake for 12-15 minutes until golden.",
+      "Cool on wire racks."
+    ],
+    "notes": "A wonderful family tradition for kids of all generations to roll, shape, and decorate together.",
+    "tags": [
+      "Cookies",
+      "S Cookies",
+      "Samantha",
+      "Kids Baking",
+      "Heirloom"
+    ],
+    "defaultRating": 4.8,
+    "ratingCount": 32,
+    "originalPhotoCaption": "S Cookies shaped by kids with cinnamon sugar",
+    "originalPhotoPage": 234
+  }
+]

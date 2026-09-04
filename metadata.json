@@ -1,6 +1,6 @@
 {
   "name": "Heritage Cookbook",
   "description": "Ruffolo-Vitale Heritage Cookbook with recipe search, A-Z index, and ingredient pantry matcher.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": ["microphone", "camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
