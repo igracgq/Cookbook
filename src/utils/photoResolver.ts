@@ -1,125 +1,54 @@
 import { Recipe, RecipeCategory } from '../types';
 
+// Photos come from the original cookbook PDF (named cook_p<page>_<n>.jpg).
+// A recipe uses its own photo when the book has one on its page; otherwise it
+// falls back to a representative photo for its chapter.
+const img = (name: string) => `/images/${name}.jpg`;
+
+const RECIPE_PHOTOS: Record<string, string> = {
+  franks_wine_making: 'cook_p26_1',
+  tomato_canning_tradition: 'cook_p75_7',
+  gnocchi_alla_rosina: 'cook_p107_1',
+  calabrese_homemade_sausage_salami: 'cook_p146_1',
+  homemade_capicollo_pancetta: 'cook_p149_1',
+  bacalhau_a_rosa: 'cook_p176_1',
+  aidens_first_communion_bread: 'cook_p195_1',
+  rosina_taralle_2008: 'cook_p202_1',
+  glazed_egg_taralli: 'cook_p203_1',
+  rosina_pizza_dough: 'cook_p204_1',
+  samanthas_s_cookies: 'cook_p234_1',
+  pizzelle_della_nonna: 'cook_p242_2',
+  cuddruriaddri_calabresi: 'cook_p278_1',
+  scalille_calabresi: 'cook_p282_7',
+  turdilli_calabresi: 'cook_p285_1',
+  easter_pie_pasqualina: 'cook_p293_1',
+  fiadone_easter: 'cook_p292_1',
+};
+
+const CATEGORY_PHOTOS: Partial<Record<RecipeCategory, string>> = {
+  [RecipeCategory.APPETIZERS]: 'cook_p74_1',
+  [RecipeCategory.SOUPS]: 'cook_p50_1',
+  [RecipeCategory.SALADS]: 'cook_p49_1',
+  [RecipeCategory.VEGETABLES]: 'cook_p72_1',
+  [RecipeCategory.PICKLING]: 'cook_p71_1',
+  [RecipeCategory.RICE_AND_RISOTTO]: 'cook_p49_1',
+  [RecipeCategory.PASTA_AND_SAUCES]: 'cook_p76_1',
+  [RecipeCategory.BAKED_PASTA]: 'cook_p107_2',
+  [RecipeCategory.MEATS]: 'cook_p148_1',
+  [RecipeCategory.SEAFOOD]: 'cook_p176_1',
+  [RecipeCategory.EGGS]: 'cook_p289_1',
+  [RecipeCategory.BREADS_AND_PIZZA]: 'cook_p206_1',
+  [RecipeCategory.COOKIES_AND_BISCOTTI]: 'cook_p236_1',
+  [RecipeCategory.CAKES_AND_DESSERTS]: 'cook_p301_1',
+  [RecipeCategory.HOLIDAY_TRADITIONS]: 'cook_p288_1',
+  [RecipeCategory.TARTS_AND_PIES]: 'cook_p293_1',
+  [RecipeCategory.DIETS]: 'cook_p49_1',
+};
+
+const DEFAULT_PHOTO = 'cook_p2_1';
+
+export const FAMILY_PHOTO_URL = img('cook_p1_1');
+
 export function getHeritagePhotoUrl(recipe: Recipe): string {
-  const id = recipe.id.toLowerCase();
-  const title = recipe.title.toLowerCase();
-
-  // Specific matching logic identical to Android RecipePhotoResolver.kt
-  if (id.includes('taralle') || id.includes('taralli') || title.includes('tarall')) {
-    return '/images/heritage_taralli.jpg';
-  }
-  if (id.includes('gnocchi') || title.includes('gnocchi')) {
-    return '/images/heritage_gnocchi.jpg';
-  }
-  if (id.includes('pizza') || title.includes('pizza') || id.includes('calzone')) {
-    return '/images/heritage_pizza.jpg';
-  }
-  if (id.includes('lasagna') || title.includes('lasagna')) {
-    return '/images/heritage_lasagna.jpg';
-  }
-  if (id.includes('bruschetta') || title.includes('bruschetta') || id.includes('crostini')) {
-    return '/images/heritage_bruschetta.jpg';
-  }
-  if (id.includes('eggplant') || id.includes('melanzane') || title.includes('eggplant') || title.includes('parmigiana')) {
-    return '/images/heritage_eggplant.jpg';
-  }
-  if (id.includes('cannoli') || title.includes('cannoli')) {
-    return '/images/heritage_cannoli.jpg';
-  }
-  if (id.includes('tiramisu') || title.includes('tiramisu')) {
-    return '/images/heritage_tiramisu.jpg';
-  }
-  if (id.includes('polenta') || title.includes('polenta')) {
-    return '/images/heritage_polenta.jpg';
-  }
-  if (id.includes('wine') || title.includes('wine')) {
-    return '/images/heritage_wine.jpg';
-  }
-  if (id.includes('pepper') || id.includes('olive') || id.includes('peperoncino') || id.includes('cantina')) {
-    return '/images/heritage_calabrese_peppers.jpg';
-  }
-  if (
-    id.includes('sausage') || id.includes('salami') || id.includes('salumi') || id.includes('soppressata') ||
-    id.includes('capicollo') || id.includes('prosciutto') || id.includes('pancetta')
-  ) {
-    return '/images/heritage_cured_meats.jpg';
-  }
-  if (
-    id.includes('scalille') || id.includes('turdilli') || id.includes('pizzelle') || id.includes('biscotti') ||
-    id.includes('cookie') || id.includes('cuddruriaddri') || id.includes('cullurielli') || id.includes('anise')
-  ) {
-    return '/images/heritage_cookies.jpg';
-  }
-  if (
-    id.includes('bread') || id.includes('focaccia') || id.includes('brioche') || id.includes('pane') || id.includes('cucullo')
-  ) {
-    return '/images/heritage_bread.jpg';
-  }
-  if (id.includes('meatball') || id.includes('polpette')) {
-    return '/images/heritage_meatballs.jpg';
-  }
-  if (
-    id.includes('cuccia') || id.includes('soup') || id.includes('minestrone') || id.includes('broth') ||
-    id.includes('lentil') || id.includes('stracciatella')
-  ) {
-    return '/images/heritage_soup.jpg';
-  }
-  if (
-    id.includes('baccal') || id.includes('fish') || id.includes('salmon') || id.includes('shrimp') || id.includes('calamari')
-  ) {
-    return '/images/heritage_seafood.jpg';
-  }
-  if (id.includes('salad') || id.includes('cucumber') || id.includes('insalata')) {
-    return '/images/heritage_salad.jpg';
-  }
-  if (
-    id.includes('lamb') || id.includes('roast') || id.includes('cotoletta') || id.includes('chicken') ||
-    id.includes('pork') || id.includes('beef') || id.includes('steak') || id.includes('brasato')
-  ) {
-    return '/images/heritage_roast.jpg';
-  }
-  if (
-    id.includes('pastiera') || id.includes('fiadone') || id.includes('ricotta_pie') || id.includes('puff') ||
-    id.includes('crostata') || id.includes('cake') || id.includes('dolce')
-  ) {
-    return '/images/heritage_dessert.jpg';
-  }
-  if (
-    id.includes('pasta') || id.includes('spaghetti') || id.includes('fettuccine') || id.includes('cannelloni') ||
-    id.includes('tagliatelle') || id.includes('carbonara') || id.includes('penne') || id.includes('rigatoni')
-  ) {
-    return '/images/heritage_pasta.jpg';
-  }
-
-  // Category fallback
-  switch (recipe.category) {
-    case RecipeCategory.APPETIZERS:
-      return '/images/heritage_bruschetta.jpg';
-    case RecipeCategory.PASTA_AND_SAUCES:
-    case RecipeCategory.BAKED_PASTA:
-      return '/images/heritage_pasta.jpg';
-    case RecipeCategory.SOUPS:
-      return '/images/heritage_soup.jpg';
-    case RecipeCategory.MEATS:
-      return '/images/heritage_roast.jpg';
-    case RecipeCategory.SEAFOOD:
-      return '/images/heritage_seafood.jpg';
-    case RecipeCategory.VEGETABLES:
-      return '/images/heritage_eggplant.jpg';
-    case RecipeCategory.SALADS:
-      return '/images/heritage_salad.jpg';
-    case RecipeCategory.BREADS_AND_PIZZA:
-      return '/images/heritage_pizza.jpg';
-    case RecipeCategory.COOKIES_AND_BISCOTTI:
-    case RecipeCategory.HOLIDAY_TRADITIONS:
-      return '/images/heritage_cookies.jpg';
-    case RecipeCategory.CAKES_AND_DESSERTS:
-    case RecipeCategory.TARTS_AND_PIES:
-      return '/images/heritage_dessert.jpg';
-    case RecipeCategory.EGGS:
-    case RecipeCategory.PICKLING:
-      return '/images/heritage_calabrese_peppers.jpg';
-    default:
-      return '/images/heritage_pasta.jpg';
-  }
+  return img(RECIPE_PHOTOS[recipe.id] ?? CATEGORY_PHOTOS[recipe.category] ?? DEFAULT_PHOTO);
 }

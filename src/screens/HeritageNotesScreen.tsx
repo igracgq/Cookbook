@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
+import { FAMILY_PHOTO_URL } from '../utils/photoResolver';
 import {
   helpfulHints,
   roastingGuides,
@@ -96,7 +97,7 @@ export const HeritageNotesScreen: React.FC = () => {
         <div className="bg-[#FAF7F2] rounded-3xl border border-[#D2C4B1] overflow-hidden shadow-sm space-y-6">
           <div className="relative h-64 sm:h-80 w-full bg-[#EBE3D6]">
             <img
-              src="/images/heritage_family.jpg"
+              src={FAMILY_PHOTO_URL}
               alt="Ruffolo-Vitale Family Heritage"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover"
