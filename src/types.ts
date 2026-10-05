@@ -1,5 +1,6 @@
 export enum RecipeCategory {
   APPETIZERS = "APPETIZERS",
+  BEVERAGES = "BEVERAGES",
   SOUPS = "SOUPS",
   SALADS = "SALADS",
   VEGETABLES = "VEGETABLES",
@@ -26,10 +27,11 @@ export interface CategoryMetadata {
 
 export const CATEGORY_INFO: Record<RecipeCategory, CategoryMetadata> = {
   [RecipeCategory.APPETIZERS]: { displayName: "Appetizers & Dips", pageRange: "p. 19–25", icon: "Utensils" },
+  [RecipeCategory.BEVERAGES]: { displayName: "Beverages & Cocktails", pageRange: "p. 26–28", icon: "GlassWater" },
   [RecipeCategory.SOUPS]: { displayName: "Soups & Broths", pageRange: "p. 29–41", icon: "Soup" },
   [RecipeCategory.SALADS]: { displayName: "Salads", pageRange: "p. 42–50", icon: "Salad" },
   [RecipeCategory.VEGETABLES]: { displayName: "Vegetables & Sides", pageRange: "p. 51–69", icon: "Carrot" },
-  [RecipeCategory.PICKLING]: { displayName: "Pickling & Preserving", pageRange: "p. 70–76", icon: "Package" },
+  [RecipeCategory.PICKLING]: { displayName: "Pickling & Preserving", pageRange: "p. 70–77", icon: "Package" },
   [RecipeCategory.RICE_AND_RISOTTO]: { displayName: "Rice & Risotto", pageRange: "p. 78–85", icon: "Wheat" },
   [RecipeCategory.PASTA_AND_SAUCES]: { displayName: "Pasta & Sauces", pageRange: "p. 87–104", icon: "CookingPot" },
   [RecipeCategory.BAKED_PASTA]: { displayName: "Cannelloni & Lasagna", pageRange: "p. 105–117", icon: "Layers" },
@@ -40,7 +42,7 @@ export const CATEGORY_INFO: Record<RecipeCategory, CategoryMetadata> = {
   [RecipeCategory.COOKIES_AND_BISCOTTI]: { displayName: "Cookies & Biscotti", pageRange: "p. 212–249", icon: "Cookie" },
   [RecipeCategory.CAKES_AND_DESSERTS]: { displayName: "Cakes & Puddings", pageRange: "p. 250–269", icon: "Cake" },
   [RecipeCategory.HOLIDAY_TRADITIONS]: { displayName: "Holiday Heritage", pageRange: "p. 270–294", icon: "Sparkles" },
-  [RecipeCategory.TARTS_AND_PIES]: { displayName: "Pies, Tarts & Crepes", pageRange: "p. 295–320", icon: "PieChart" },
+  [RecipeCategory.TARTS_AND_PIES]: { displayName: "Pies, Tarts & Cheesecakes", pageRange: "p. 295–320", icon: "PieChart" },
   [RecipeCategory.DIETS]: { displayName: "Keto & Diets", pageRange: "p. 321–329", icon: "Activity" }
 };
 
@@ -105,6 +107,8 @@ export interface Recipe {
   ratingCount: number;
   originalPhotoCaption?: string;
   originalPhotoPage?: number | null;
+  /** Photo file names (without extension) from the original cookbook, in display order. */
+  photos?: string[];
 }
 
 export interface MatchResult {

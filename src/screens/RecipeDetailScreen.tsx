@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
 import {
   CATEGORY_INFO,
@@ -10,16 +10,18 @@ import {
 } from '../types';
 import { generateAutoTags } from '../utils/autoTagging';
 import { scaleAndConvert } from '../utils/ingredientScaler';
-import { getHeritagePhotoUrl } from '../utils/photoResolver';
+import { getRecipePhotoUrls } from '../utils/photoResolver';
+import { RecipePhoto } from '../components/RecipePhoto';
 import { calculateDifficulty, calculateNutrition, scaleNutrition } from '../utils/recipeCalculator';
 import { optimizeImageFile } from '../utils/imageOptimizer';
 import { allRecipes } from '../data/cookbookDataSource';
 import {
   ArrowLeft,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
   Heart,
   Clock,
-  ChefHat,
   Printer,
   Sparkles,
   Camera,
@@ -81,6 +83,8 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
   const [pantryAddedToast, setPantryAddedToast] = useState(false);
   const [photoFeedbackToast, setPhotoFeedbackToast] = useState<string | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [photoIdx, setPhotoIdx] = useState(0);
+  useEffect(() => setPhotoIdx(0), [recipeId]);
 
   // Swipe detection refs
   const touchStartX = useRef<number | null>(null);
@@ -111,8 +115,9 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
   const currentSpice = getEffectiveSpiceLevel(recipe);
   const autoTags = generateAutoTags(recipe);
   const nutrition = scaleNutrition(calculateNutrition(recipe), servingMultiplier);
-  const photoUrl = customRecipePhotos[recipe.id] || getHeritagePhotoUrl(recipe);
   const isCustomPhoto = !!customRecipePhotos[recipe.id];
+  const photos = [...(isCustomPhoto ? [customRecipePhotos[recipe.id]] : []), ...getRecipePhotoUrls(recipe)];
+  const activePhoto = photos[Math.min(photoIdx, Math.max(photos.length - 1, 0))];
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -257,71 +262,72 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
         </div>
       </div>
 
-      {/* Hero Photo Card (NO PAGE NUMBER ON PHOTO) */}
-      <div className="relative rounded-3xl overflow-hidden shadow-lg border border-[#D2C4B1] bg-[#EBE3D6] aspect-[16/9] sm:aspect-[21/9]">
-        <img
-          src={photoUrl}
-          alt={recipe.title}
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35" />
+      {/* Photos: whole picture visible, no text on top of it */}
+      <div className="space-y-3">
+        <div className="rounded-3xl overflow-hidden shadow-lg border border-[#D2C4B1]">
+          <RecipePhoto src={activePhoto} alt={recipe.title} aspect={activePhoto ? 'aspect-[4/3] sm:aspect-[16/10]' : 'aspect-[16/6]'}>
+            {photos.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous photo"
+                  onClick={() => setPhotoIdx((Math.min(photoIdx, photos.length - 1) - 1 + photos.length) % photos.length)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/85 hover:bg-white text-[#4A3B2C] shadow-sm cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next photo"
+                  onClick={() => setPhotoIdx((Math.min(photoIdx, photos.length - 1) + 1) % photos.length)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/85 hover:bg-white text-[#4A3B2C] shadow-sm cursor-pointer"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+          </RecipePhoto>
+        </div>
 
-        {/* Top Badges (Category only - No page numbers on photo) */}
-        <div className="absolute top-3.5 left-3.5 flex flex-wrap items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md text-[#4A3B2C] text-xs font-bold uppercase tracking-wider shadow-sm">
-            {CATEGORY_INFO[recipe.category]?.displayName}
-          </span>
-          {isCustomPhoto && (
-            <span className="px-2.5 py-1 rounded-full bg-emerald-700/90 text-white text-[11px] font-bold backdrop-blur-sm shadow-sm flex items-center gap-1">
-              <ImageIcon className="w-3 h-3" />
-              <span>Your Photo</span>
+        {photos.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {photos.map((url, idx) => (
+              <button
+                key={url}
+                type="button"
+                aria-label={`Show photo ${idx + 1} of ${photos.length}`}
+                onClick={() => setPhotoIdx(idx)}
+                className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
+                  idx === Math.min(photoIdx, photos.length - 1) ? 'border-[#4A3B2C] shadow-sm' : 'border-transparent opacity-70 hover:opacity-100'
+                }`}
+              >
+                <img src={url} alt="" className="w-full h-full object-cover" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Title block sits below the photo */}
+        <div className="pt-1 space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-3 py-1 rounded-full bg-[#EBE3D6] border border-[#D2C4B1] text-[#4A3B2C] text-[11px] font-bold uppercase tracking-wider">
+              {CATEGORY_INFO[recipe.category]?.displayName}
             </span>
-          )}
-        </div>
-
-        {/* Photo Upload & Change Buttons Overlay */}
-        <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5">
-          <button
-            id="upload_recipe_photo_hero_btn"
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            title="Upload your own photo of this dish"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all text-xs flex items-center gap-1.5 border border-white/20 cursor-pointer shadow-sm"
-          >
-            <Camera className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Change Photo</span>
-          </button>
-
-          {isCustomPhoto && (
-            <button
-              id="reset_recipe_photo_hero_btn"
-              type="button"
-              onClick={handleResetPhoto}
-              title="Reset to original heritage cookbook photo"
-              className="p-2 rounded-full bg-red-900/80 hover:bg-red-900 text-white backdrop-blur-md transition-colors border border-white/20 cursor-pointer shadow-sm"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
-
-        {/* Bottom Hero Overlay */}
-        <div className="absolute bottom-4 left-4 right-4 text-white">
-          <h1 className="font-serif-heritage text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white drop-shadow-md">
+            {isCustomPhoto && (
+              <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[11px] font-bold flex items-center gap-1">
+                <ImageIcon className="w-3 h-3" />
+                <span>Your photo is first</span>
+              </span>
+            )}
+          </div>
+          <h1 className="font-serif-heritage text-3xl sm:text-4xl font-bold tracking-tight text-[#261D16]">
             {recipe.title}
           </h1>
           {recipe.italianTitle && (
-            <p className="font-serif-heritage italic text-base sm:text-xl text-[#FAF7F2]/95 mt-0.5">
+            <p className="font-serif-heritage italic text-lg sm:text-xl text-[#7D6C5A]">
               {recipe.italianTitle}
             </p>
           )}
-          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-[#FAF7F2]/85">
-            <span className="flex items-center gap-1">
-              <ChefHat className="w-4 h-4 text-amber-300" />
-              Contributed by <strong>{recipe.contributor}</strong>
-            </span>
-          </div>
         </div>
       </div>
 
@@ -396,7 +402,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
 
       {/* Main Action Bar (Hands-Free, Timer, Add to Pantry) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <button
+        {recipe.instructions.length > 0 && <button
           id="start_hands_free_btn"
           type="button"
           onClick={() => openHandsFree(0)}
@@ -404,7 +410,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
         >
           <PlaySquare className="w-4 h-4 text-amber-300" />
           <span>Hands-Free Cooking</span>
-        </button>
+        </button>}
 
         <button
           id="detail_timer_btn"
@@ -429,7 +435,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
 
       {/* Quick Specs Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#FAF7F2] p-4 rounded-2xl border border-[#D2C4B1]">
-        <div className="space-y-0.5">
+        {recipe.prepTime && <div className="space-y-0.5">
           <span className="text-[11px] uppercase tracking-wider text-[#7D6C5A] font-semibold">
             Prep Time
           </span>
@@ -437,9 +443,9 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
             <Clock className="w-4 h-4 text-[#A69480]" />
             {recipe.prepTime}
           </p>
-        </div>
+        </div>}
 
-        <div className="space-y-0.5">
+        {recipe.cookTime && <div className="space-y-0.5">
           <span className="text-[11px] uppercase tracking-wider text-[#7D6C5A] font-semibold">
             Cook Time
           </span>
@@ -447,7 +453,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
             <Flame className="w-4 h-4 text-[#B8452D]" />
             {recipe.cookTime}
           </p>
-        </div>
+        </div>}
 
         <div className="space-y-0.5">
           <span className="text-[11px] uppercase tracking-wider text-[#7D6C5A] font-semibold">
@@ -511,7 +517,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
                 <span className="text-[11px] font-bold text-[#4A3B2C] uppercase tracking-wider">
                   Yield / Servings
                 </span>
-                <p className="text-xs text-[#5C4E40]">Original: {recipe.servings}</p>
+                <p className="text-xs text-[#5C4E40]">Original: {recipe.servings || 'not listed'}</p>
               </div>
 
               <div className="flex items-center gap-2">
@@ -604,6 +610,11 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
             </div>
 
             {/* Instruction Steps */}
+            {recipe.instructions.length === 0 && (
+              <p className="font-serif-heritage italic text-[#7D6C5A]">
+                The original cookbook lists only the ingredients for this one.
+              </p>
+            )}
             <ol className="space-y-4">
               {recipe.instructions.map((inst, idx) => (
                 <li key={idx} className="flex items-start gap-4">

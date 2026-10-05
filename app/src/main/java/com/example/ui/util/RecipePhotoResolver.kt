@@ -12,23 +12,20 @@ import com.example.data.model.RecipeCategory
 object RecipePhotoResolver {
 
   private val recipePhotos: Map<String, Int> = mapOf(
-    "franks_wine_making" to R.drawable.cook_p26_1,
-    "tomato_canning_tradition" to R.drawable.cook_p75_7,
-    "gnocchi_alla_rosina" to R.drawable.cook_p107_1,
-    "calabrese_homemade_sausage_salami" to R.drawable.cook_p146_1,
-    "homemade_capicollo_pancetta" to R.drawable.cook_p149_1,
-    "bacalhau_a_rosa" to R.drawable.cook_p176_1,
     "aidens_first_communion_bread" to R.drawable.cook_p195_1,
-    "rosina_taralle_2008" to R.drawable.cook_p202_1,
-    "glazed_egg_taralli" to R.drawable.cook_p203_1,
+    "bacalhau_a_rosa" to R.drawable.cook_p176_1,
+    "calabrese_homemade_sausage_salami" to R.drawable.cook_p146_1,
+    "cuccia_st_lucia" to R.drawable.cook_p36_1,
+    "cuddruriaddri_calabresi" to R.drawable.cook_p278_1,
+    "fiadone_easter" to R.drawable.cook_p292_1,
+    "franks_wine_making" to R.drawable.cook_p26_1,
+    "glazed_egg_taralli" to R.drawable.cook_p202_2,
+    "gnocchi_alla_rosina" to R.drawable.cook_p106_1,
     "rosina_pizza_dough" to R.drawable.cook_p204_1,
     "samanthas_s_cookies" to R.drawable.cook_p234_1,
-    "pizzelle_della_nonna" to R.drawable.cook_p242_2,
-    "cuddruriaddri_calabresi" to R.drawable.cook_p278_1,
-    "scalille_calabresi" to R.drawable.cook_p282_7,
+    "scalille_calabresi" to R.drawable.cook_p282_5,
+    "tomato_canning_tradition" to R.drawable.cook_p75_1,
     "turdilli_calabresi" to R.drawable.cook_p285_1,
-    "easter_pie_pasqualina" to R.drawable.cook_p293_1,
-    "fiadone_easter" to R.drawable.cook_p292_1,
   )
 
   private fun categoryPhoto(category: RecipeCategory): Int = when (category) {

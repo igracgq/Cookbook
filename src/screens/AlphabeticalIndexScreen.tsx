@@ -36,7 +36,7 @@ export const AlphabeticalIndexScreen: React.FC = () => {
           Complete Master Index
         </h2>
         <p className="text-xs sm:text-sm text-[#5C4E40]">
-          Search through all 74 family recipes alphabetically, by cookbook category sections, or by family contributor.
+          Search through all {allRecipes.length} family recipes alphabetically, by cookbook category sections, or by family contributor.
         </p>
       </div>
 
@@ -197,7 +197,7 @@ export const AlphabeticalIndexScreen: React.FC = () => {
                           {recipe.title}
                         </h4>
                         <p className="text-[11px] text-[#7D6C5A] truncate mt-0.5">
-                          {recipe.contributor} • {recipe.cookTime}
+                          {[recipe.contributor, recipe.cookTime].filter(Boolean).join(' • ')}
                         </p>
                       </div>
 

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
 import { commonPantryIngredients } from '../data/cookbookDataSource';
 import { MatcherFilter } from '../types';
-import { getHeritagePhotoUrl } from '../utils/photoResolver';
+import { getRecipePhotoUrls } from '../utils/photoResolver';
+import { RecipePhoto } from '../components/RecipePhoto';
+import { allRecipes } from '../data/cookbookDataSource';
 import {
   UtensilsCrossed,
   Plus,
@@ -51,7 +53,7 @@ export const PantryMatcherScreen: React.FC = () => {
           What Can I Cook Tonight?
         </h2>
         <p className="text-xs sm:text-sm text-[#5C4E40]">
-          Tell us what ingredients you have on your counter, in your fridge, or in your cantina. We'll cross-reference all 74 Ruffolo-Vitale family heirloom recipes.
+          Tell us what ingredients you have on your counter, in your fridge, or in your cantina. We'll cross-reference all {allRecipes.length} Ruffolo-Vitale family heirloom recipes.
         </p>
       </div>
 
@@ -203,7 +205,7 @@ export const PantryMatcherScreen: React.FC = () => {
           {pantryMatches.map(match => {
             const { recipe, matchedCount, totalKeyIngredients, matchPercentage, missingIngredients } =
               match;
-            const photoUrl = customRecipePhotos[recipe.id] || getHeritagePhotoUrl(recipe);
+            const photoUrl = customRecipePhotos[recipe.id] || getRecipePhotoUrls(recipe)[0];
             const is100Percent = matchPercentage === 100;
 
             return (
@@ -213,14 +215,9 @@ export const PantryMatcherScreen: React.FC = () => {
                 onClick={() => navigateTo({ type: 'detail', recipeId: recipe.id })}
                 className="bg-[#FAF7F2] rounded-2xl border border-[#D2C4B1] p-4 flex gap-4 hover:shadow-md transition-all cursor-pointer group"
               >
-                {/* Photo Thumbnail */}
-                <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-xl overflow-hidden bg-[#EBE3D6] shrink-0">
-                  <img
-                    src={photoUrl}
-                    alt={recipe.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                {/* Photo Thumbnail (whole picture visible) */}
+                <div className="w-28 sm:w-32 shrink-0 self-start rounded-xl overflow-hidden">
+                  <RecipePhoto src={photoUrl} alt={recipe.title} aspect="aspect-square" />
                 </div>
 
                 {/* Content */}
@@ -247,10 +244,12 @@ export const PantryMatcherScreen: React.FC = () => {
                         </span>
                       </span>
 
-                      <span className="text-[11px] text-[#7D6C5A] flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {recipe.cookTime}
-                      </span>
+                      {recipe.cookTime && (
+                        <span className="text-[11px] text-[#7D6C5A] flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {recipe.cookTime}
+                        </span>
+                      )}
                     </div>
 
                     <h3 className="font-serif-heritage text-lg font-bold text-[#261D16] group-hover:text-[#4A3B2C] leading-tight truncate">

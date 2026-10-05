@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { allRecipes } from './data/cookbookDataSource';
 import { CulinaryMonochromeBackground } from './components/CulinaryMonochromeBackground';
 import { GlobalTimerBar } from './components/GlobalTimerBar';
 import { Navigation } from './components/Navigation';
@@ -130,7 +131,7 @@ const OfflineStatusBar: React.FC = () => {
       <div className="flex items-center gap-2 max-w-4xl mx-auto w-full">
         <WifiOff className="w-4 h-4 text-amber-300 shrink-0" />
         <span>
-          <strong>Offline Mode Active:</strong> All 74 recipes, pantry data, and your kitchen notes are safely cached offline.
+          <strong>Offline Mode Active:</strong> All {allRecipes.length} recipes, pantry data, and your kitchen notes are safely cached offline.
         </span>
       </div>
       <button

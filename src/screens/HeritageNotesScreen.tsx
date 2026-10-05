@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { FAMILY_PHOTO_URL } from '../utils/photoResolver';
+import { FAMILY_PHOTO_URL, FAMILY_GALLERY_URLS } from '../utils/photoResolver';
+import { RecipePhoto } from '../components/RecipePhoto';
 import {
   helpfulHints,
   roastingGuides,
@@ -95,25 +96,17 @@ export const HeritageNotesScreen: React.FC = () => {
       {/* 1. Family Dedication Card */}
       {activeTab === 'family' && (
         <div className="bg-[#FAF7F2] rounded-3xl border border-[#D2C4B1] overflow-hidden shadow-sm space-y-6">
-          <div className="relative h-64 sm:h-80 w-full bg-[#EBE3D6]">
-            <img
-              src={FAMILY_PHOTO_URL}
-              alt="Ruffolo-Vitale Family Heritage"
-              referrerPolicy="no-referrer"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-              <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider">
-                Preserved Forever
-              </span>
-              <h3 className="font-serif-heritage text-2xl sm:text-4xl font-bold">
-                The Hearth & Table of Ruffolo-Vitale
-              </h3>
-              <p className="text-xs sm:text-sm text-white/80">
-                From San Lucido and Cosenza, Calabria to the Sunday family table.
-              </p>
-            </div>
+          <RecipePhoto src={FAMILY_PHOTO_URL} alt="The Ruffolo-Vitale family gathered together" aspect="aspect-[20/9]" />
+          <div className="px-6 sm:px-8 pt-6 space-y-1.5">
+            <span className="inline-block px-3 py-1 rounded-full bg-[#EBE3D6] border border-[#D2C4B1] text-[#4A3B2C] text-xs font-bold uppercase tracking-wider">
+              Preserved Forever
+            </span>
+            <h3 className="font-serif-heritage text-2xl sm:text-4xl font-bold text-[#261D16]">
+              The Hearth & Table of Ruffolo-Vitale
+            </h3>
+            <p className="text-xs sm:text-sm text-[#7D6C5A]">
+              From San Lucido and Cosenza, Calabria to the Sunday family table.
+            </p>
           </div>
 
           <div className="p-6 sm:p-8 space-y-5 text-sm sm:text-base text-[#4A3B2C] leading-relaxed">
@@ -128,6 +121,12 @@ export const HeritageNotesScreen: React.FC = () => {
             <p>
               Every recipe recorded in these 329 pages—from Nonna Rosina's handmade fresh egg pasta to Sandy's classic Easter fiadone—was preserved so that our children and grandchildren will always know the taste of home.
             </p>
+
+            {FAMILY_GALLERY_URLS.map(url => (
+              <div key={url} className="rounded-2xl overflow-hidden border border-[#D2C4B1]">
+                <RecipePhoto src={url} alt="Family members in the kitchen" aspect="aspect-[16/9]" />
+              </div>
+            ))}
 
             <div className="pt-4 flex items-center justify-between border-t border-[#D2C4B1]">
               <span className="text-xs text-[#7D6C5A] font-medium">
