@@ -1,18 +1,22 @@
-const CACHE_VERSION = 'heritage-cookbook-v2';
+const CACHE_VERSION = 'heritage-cookbook-v3';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
+// Resolve paths against the service worker scope so the app works from a
+// sub-path (e.g. GitHub Pages at /Cookbook/) as well as a root domain.
+const scopeUrl = (path) => new URL(path, self.registration.scope).href;
+
 const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/apple-touch-icon.png',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/favicon.png',
-  '/favicon.svg'
-];
+  './',
+  'index.html',
+  'manifest.webmanifest',
+  'apple-touch-icon.png',
+  'icon-192.png',
+  'icon-512.png',
+  'favicon.png',
+  'favicon.svg'
+].map(scopeUrl);
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -106,7 +110,7 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          return caches.match('/index.html') || caches.match('/');
+          return caches.match(scopeUrl('index.html')).then((r) => r || caches.match(scopeUrl('./')));
         })
     );
     return;

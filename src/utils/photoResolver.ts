@@ -3,7 +3,7 @@ import { Recipe, RecipeCategory } from '../types';
 // Photos come from the original cookbook PDF (named cook_p<page>_<n>.jpg).
 // A recipe uses its own photo when the book has one on its page; otherwise it
 // falls back to a representative photo for its chapter.
-const img = (name: string) => `/images/${name}.jpg`;
+const img = (name: string) => `${import.meta.env.BASE_URL}images/${name}.jpg`;
 
 const RECIPE_PHOTOS: Record<string, string> = {
   franks_wine_making: 'cook_p26_1',
