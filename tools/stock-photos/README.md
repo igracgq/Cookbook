@@ -21,3 +21,11 @@ as `public/images/stock_<name>.jpg`, list each in `src/data/photoCredits.json`, 
   Pixabay images to `public/images/stock_<group>.jpg` and updates `photoCredits.json` and `recipes.json`.
 - Left without a photo on purpose: groups with no good match (mostly dialect names like turdilli/chinulille,
   empty searches like manicotti/cannelloni), non-dishes, and invented cocktail names.
+
+### Second pass: the rest
+
+The remaining 361 recipes (dialect names, icings/creams/sauces, diets, cocktails, etc.) were each given a
+hand-written, best-guess search in `extra_queries.json` (recipe id -> query), based on the title or, when the
+title says nothing, the main ingredients (e.g. "Prostitute Pie" -> chocolate pudding dessert, "Turdilli" -> honey
+balls). `pixabay_extra.py` searches them and `apply_extra.py` applies the reviewed picks. Every recipe now has a
+photo; the ones from this pass are looser matches than the first pass, so treat them as mood images.
