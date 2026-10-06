@@ -17,6 +17,7 @@ import {
   volumeConversions
 } from '../data/cookbookDataSource';
 import { RecipeCategory } from '../types';
+import { ModalPortal } from './ModalPortal';
 
 export const PrintExportModal: React.FC = () => {
   const { isPrintExportOpen, printExportRecipeId, closePrintExport } = useCookbook();
@@ -426,6 +427,7 @@ ${r.notes ? `\nHeirloom Note: ${r.notes}` : ''}
   };
 
   return (
+    <ModalPortal>
     <div
       id="print_export_modal"
       className="fixed inset-0 z-50 bg-[#261D16]/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
@@ -632,5 +634,6 @@ ${r.notes ? `\nHeirloom Note: ${r.notes}` : ''}
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 };

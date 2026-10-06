@@ -12,6 +12,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Recipe } from '../types';
+import { ModalPortal } from './ModalPortal';
 
 interface HandsFreeCookingModalProps {
   recipe: Recipe;
@@ -103,6 +104,7 @@ export const HandsFreeCookingModal: React.FC<HandsFreeCookingModalProps> = ({ re
   };
 
   return (
+    <ModalPortal>
     <div
       id="hands_free_cooking_modal"
       className="fixed inset-0 z-50 bg-[#1F1710]/90 backdrop-blur-md flex flex-col justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))] px-3 sm:px-8 text-[#FAF7F2] select-none"
@@ -341,5 +343,6 @@ export const HandsFreeCookingModal: React.FC<HandsFreeCookingModalProps> = ({ re
         </div>
       </footer>
     </div>
+    </ModalPortal>
   );
 };

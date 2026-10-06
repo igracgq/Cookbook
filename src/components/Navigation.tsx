@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer, Plus, ShoppingCart, RefreshCw } from 'lucide-react';
+import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Share2, Plus, ShoppingCart, RefreshCw } from 'lucide-react';
 import { AuthButton } from './AuthButton';
+import { ShareCookbookModal } from './ShareCookbookModal';
 import { useAppUpdate } from '../context/AppUpdateContext';
 
 export const Navigation: React.FC = () => {
   const { currentScreen, navigateTo, openPrintExport, shoppingList } = useCookbook();
   const { status: updateStatus, applyUpdate } = useAppUpdate();
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const toBuyCount = shoppingList.filter(i => !i.bought).length;
 
   const isExplore = currentScreen.type === 'explore';
@@ -144,18 +146,25 @@ export const Navigation: React.FC = () => {
               )}
             </button>
             <button
-              id="global_print_btn"
-              onClick={() => openPrintExport()}
-              title="Print & Keepsake Book Export"
+              id="global_share_btn"
+              onClick={() => setIsShareOpen(true)}
+              title="Share the cookbook, or print it"
+              aria-label="Share the cookbook or print it"
               className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-medium whitespace-nowrap text-[#4A3B2C] bg-[#EBE3D6] border border-[#D2C4B1] rounded-lg hover:bg-[#E4DBCF] transition-colors"
             >
-              <Printer className="w-3.5 h-3.5" />
-              <span className="hidden xl:inline">Print Cookbook</span>
+              <Share2 className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Share Cookbook</span>
             </button>
             <AuthButton />
           </div>
         </div>
       </header>
+
+      <ShareCookbookModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        onPrint={() => { setIsShareOpen(false); openPrintExport(); }}
+      />
 
       {/* Mobile Bottom Navigation Bar (Hidden when in Detail screen to match Android BackHandler/Scaffold behavior) */}
       {!isDetail && (
