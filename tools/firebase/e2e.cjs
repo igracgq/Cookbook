@@ -240,6 +240,39 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(2000);
   ok(/Agreed, Nonna would love it/.test(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').innerText()), 'the remaining comment is still there after a reload');
 
+  // Owner moderation: an admins/{uid} document (made in the console) lets the owner delete anyone's post
+  const ctxA = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const pa = await ctxA.newPage();
+  await pa.route('**/fonts.g*/**', r => r.abort()); await pa.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await pa.goto('http://localhost:5173/Cookbook/'); await pa.waitForTimeout(2500);
+  await pa.evaluate(() => window.__cookbookTestSignIn('root-uid', 'root@example.com'));
+  await pa.waitForSelector('#account_btn', { timeout: 15000 });
+  const rootUid = await pa.evaluate(() => window.__cookbookTestUid());
+  await pa.click('#nav_photos_desktop'); await pa.waitForSelector('#photos_screen'); await pa.waitForTimeout(1500);
+  ok(await pa.locator('text=Delete (owner)').count() === 0, 'before being made owner there are no owner delete buttons');
+  const mk = await fetch(`http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents/admins/${rootUid}`, {
+    method: 'PATCH', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' }, body: JSON.stringify({ fields: { note: { stringValue: 'owner' } } }) });
+  ok(mk.ok, 'owner record created the way you will do it in the console');
+  await pa.reload(); await pa.waitForSelector('#account_btn', { timeout: 15000 });
+  await pa.click('#nav_photos_desktop'); await pa.waitForSelector('#photos_screen'); await pa.waitForTimeout(2000);
+  const postA = pa.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  ok(await postA.locator('button:has-text("Delete (owner)")').count() === 1, 'the owner sees a delete button on another member\'s comment');
+  ok(await post3.locator('button:has-text("Delete (owner)")').count() === 0, 'an ordinary member does not');
+  await postA.locator('button:has-text("Delete (owner)")').click(); await pa.waitForTimeout(1500);
+  ok(!/Agreed, Nonna/.test(await postA.innerText()), 'the owner deleted a member\'s comment');
+  await page.waitForTimeout(500);
+  ok(!/Agreed, Nonna/.test(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').innerText()), 'and it disappeared for everyone else too');
+  await pa.click('#nav_explore_desktop'); await pa.fill('#recipe_search_input', 'Tiramisu'); await pa.waitForTimeout(600);
+  await pa.locator('h3').first().click(); await pa.waitForSelector('#recipe_tips_box'); await pa.waitForTimeout(1500);
+  await pa.locator('#recipe_tips_box button:has-text("Delete (owner)")').click(); await pa.waitForTimeout(1500);
+  ok(!/Rest the dough/.test(await pa.locator('#recipe_tips_box').innerText()), 'the owner deleted a member\'s tip');
+  await pa.click('#back_to_cookbook_btn'); await pa.fill('#recipe_search_input', 'Zia Ann Test Lasagna'); await pa.waitForTimeout(800);
+  await pa.locator('h3:has-text("Zia Ann Test Lasagna")').first().click(); await pa.waitForSelector('#owner_controls');
+  await pa.click('#owner_controls >> text=Delete this shared recipe'); await pa.click('#owner_controls >> text=Yes, delete'); await pa.waitForTimeout(1500);
+  await pa.fill('#recipe_search_input', 'Zia Ann Test Lasagna'); await pa.waitForTimeout(800);
+  ok(await pa.locator('h3:has-text("Zia Ann Test Lasagna")').count() === 0, 'the owner deleted a member\'s shared recipe');
+  await ctxA.close();
+
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const p4 = await ctx4.newPage();

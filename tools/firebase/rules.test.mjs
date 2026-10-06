@@ -215,3 +215,35 @@ test('reactions are validated', async () => {
   const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
   await assertFails(setDoc(doc(guest, 'photoReactions/p/reactions/g1'), reaction()));
 });
+
+const makeAdmin = uid => env.withSecurityRulesDisabled(async c => { await setDoc(doc(c.firestore(), `admins/${uid}`), { note: 'owner' }); });
+
+test('an admin can delete anything members posted, an ordinary member cannot', async () => {
+  await makeAdmin('boss');
+  await env.withSecurityRulesDisabled(async c => {
+    const f = c.firestore();
+    await setDoc(doc(f, 'photoComments/p/comments/c1'), { text: 'hi', authorUid: 'u1', authorName: 'Ann', createdAt: new Date() });
+    await setDoc(doc(f, 'recipeTips/r/tips/u1'), { text: 'tip', authorName: 'Ann', updatedAt: new Date() });
+    await setDoc(doc(f, 'recipes/r1'), { title: 'x', authorUid: 'u1' });
+    await setDoc(doc(f, 'recipePhotos/r2'), { imageUrl: IMG, uploadedBy: 'u1' });
+  });
+  const paths = ['photoComments/p/comments/c1', 'recipeTips/r/tips/u1', 'recipes/r1', 'recipePhotos/r2'];
+  for (const p of paths) await assertFails(deleteDoc(doc(as('u2'), p)));          // another member: no
+  for (const p of paths) await assertSucceeds(deleteDoc(doc(as('boss'), p)));     // the owner: yes
+});
+
+test('admin rights cannot be granted from the app', async () => {
+  await assertFails(setDoc(doc(as('u1'), 'admins/u1'), { note: 'me' }));           // nobody can make themselves admin
+  await makeAdmin('boss');
+  await assertSucceeds(getDoc(doc(as('boss'), 'admins/boss')));                    // you can check your own status
+  await assertFails(getDoc(doc(as('u1'), 'admins/boss')));                         // but not anyone else's
+  await assertFails(setDoc(doc(as('boss'), 'admins/boss'), { note: 'x' }));        // and not even an admin writes it
+  await assertFails(deleteDoc(doc(as('boss'), 'admins/boss')));
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'admins/boss')));
+});
+
+test('an admin still cannot post as someone else or edit', async () => {
+  await makeAdmin('boss');
+  await assertFails(setDoc(doc(as('boss'), 'photoComments/p/comments/z'), { text: 'hi', authorUid: 'u1', authorName: 'Ann', createdAt: serverTimestamp() }));
+  await assertFails(setDoc(doc(as('boss'), 'recipeTips/r/tips/u1'), { text: 'tip', authorName: 'Ann', updatedAt: serverTimestamp() }));
+});

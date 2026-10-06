@@ -19,7 +19,7 @@ interface Tip {
  * write one tip of their own (shared in recipeTips/{recipeId}/tips/{uid}).
  */
 export const RecipeTips: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
-  const { cloudAvailable, user, signIn } = useAuth();
+  const { cloudAvailable, user, isAdmin, signIn } = useAuth();
   const [tips, setTips] = useState<Tip[]>([]);
   const [loadFailed, setLoadFailed] = useState(false);
   const [text, setText] = useState('');
@@ -72,6 +72,11 @@ export const RecipeTips: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
     } finally {
       setBusy(false);
     }
+  };
+
+  const removeTip = async (authorUid: string) => {
+    try { await deleteDoc(doc(db!, 'recipeTips', recipe.id, 'tips', authorUid)); }
+    catch { setMsg({ ok: false, text: 'That tip could not be removed. Please try again.' }); }
   };
 
   const remove = async () => {
@@ -162,6 +167,9 @@ export const RecipeTips: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
                 <p className="mt-1 text-[11px] text-[#857566]">
                   {t.authorName}
                   {t.updatedAt && ` · ${t.updatedAt.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`}
+                  {isAdmin && (
+                    <button type="button" onClick={() => removeTip(t.id)} className="ml-3 hover:text-[#B8452D] cursor-pointer">Delete (owner)</button>
+                  )}
                 </p>
               </li>
             ))}

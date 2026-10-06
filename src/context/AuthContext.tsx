@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut as fbSignOut, type User } from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db, googleProvider, isCloudConfigured } from '../services/firebase';
 
 interface AuthContextType {
   /** False when Firebase is not set up (see docs/SHARING_SETUP.md); the cookbook then works as before. */
   cloudAvailable: boolean;
   user: User | null;
+  /** True for the owner(s) of the cookbook (a document admins/{uid} exists in Firestore). Shows the moderation buttons. */
+  isAdmin: boolean;
   /** True until Firebase has told us whether someone is already signed in. */
   loading: boolean;
   signIn: () => Promise<void>;
@@ -19,6 +21,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(isCloudConfigured);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,6 +29,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return onAuthStateChanged(auth, u => {
       setUser(u);
       setLoading(false);
+      setIsAdmin(false);
+      if (u && db) {
+        // The rules let a person read only their own admins document; it simply does not exist for ordinary members.
+        getDoc(doc(db, 'admins', u.uid)).then(snap => setIsAdmin(snap.exists())).catch(() => setIsAdmin(false));
+      }
       if (u && db) {
         // Keep a small profile document for each member (users/{uid}); favorites live in the same document.
         setDoc(
@@ -62,7 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ cloudAvailable: isCloudConfigured, user, loading, signIn, signOut, authError }}>
+    <AuthContext.Provider value={{ cloudAvailable: isCloudConfigured, user, isAdmin, loading, signIn, signOut, authError }}>
       {children}
     </AuthContext.Provider>
   );

@@ -11,7 +11,7 @@ import { Recipe } from '../types';
  * one shared photo, or delete a recipe you added.
  */
 export const SharedPhotoPanel: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
-  const { cloudAvailable, user, signIn } = useAuth();
+  const { cloudAvailable, user, isAdmin, signIn } = useAuth();
   const { shareRecipePhoto, removeSharedPhoto, deleteRecipe, photoOwners } = useCommunity();
   const { navigateTo } = useCookbook();
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -101,6 +101,25 @@ export const SharedPhotoPanel: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
               <button type="button" disabled={busy} onClick={del} className="px-2.5 py-1 rounded-lg bg-[#B8452D] text-white font-semibold cursor-pointer">Yes, delete</button>
               <button type="button" onClick={() => setConfirmDelete(false)} className="px-2.5 py-1 rounded-lg bg-[#EBE3D6] border border-[#D2C4B1] cursor-pointer">Keep it</button>
             </span>
+          )}
+        </div>
+      )}
+
+      {isAdmin && !mine && (recipe.community || hasShared) && (
+        <div id="owner_controls" className="pt-2 border-t border-[#E4DBCF] flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#7D6C5A]">Owner</span>
+          {recipe.community ? (
+            !confirmDelete ? (
+              <button type="button" onClick={() => setConfirmDelete(true)} className="underline hover:text-[#B8452D] cursor-pointer">Delete this shared recipe</button>
+            ) : (
+              <span className="flex flex-wrap items-center gap-2">
+                Delete this recipe for everyone?
+                <button type="button" disabled={busy} onClick={del} className="px-2.5 py-1 rounded-lg bg-[#B8452D] text-white font-semibold cursor-pointer">Yes, delete</button>
+                <button type="button" onClick={() => setConfirmDelete(false)} className="px-2.5 py-1 rounded-lg bg-[#EBE3D6] border border-[#D2C4B1] cursor-pointer">Keep it</button>
+              </span>
+            )
+          ) : (
+            <button type="button" disabled={busy} onClick={remove} className="underline hover:text-[#B8452D] disabled:opacity-60 cursor-pointer">Remove this shared photo</button>
           )}
         </div>
       )}

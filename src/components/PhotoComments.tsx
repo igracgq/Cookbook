@@ -33,7 +33,7 @@ const Avatar: React.FC<{ name: string; photo?: string }> = ({ name, photo }) => 
  * They live in photoComments/{photoId}/comments, so a photo always shows the same conversation.
  */
 export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) => void }> = ({ photoId, onCount }) => {
-  const { cloudAvailable, user, signIn } = useAuth();
+  const { cloudAvailable, user, isAdmin, signIn } = useAuth();
   const [comments, setComments] = useState<Comment[]>([]);
   const [loadFailed, setLoadFailed] = useState(false);
   const [text, setText] = useState('');
@@ -122,8 +122,8 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
                 </div>
                 <p className="mt-0.5 ml-3 text-[11px] text-[#857566] flex items-center gap-3">
                   <span>{c.at ? timeAgo(c.at) : 'just now'}</span>
-                  {user?.uid === c.authorUid && (
-                    <button type="button" onClick={() => remove(c.id)} className="hover:text-[#B8452D] cursor-pointer">Delete</button>
+                  {(user?.uid === c.authorUid || isAdmin) && (
+                    <button type="button" onClick={() => remove(c.id)} className="hover:text-[#B8452D] cursor-pointer">{user?.uid === c.authorUid ? 'Delete' : 'Delete (owner)'}</button>
                   )}
                 </p>
               </div>

@@ -127,3 +127,17 @@ Either way the published site is public: anyone with the link can read the cookb
 
 Whenever `firestore.rules` changes (most recently for photo reactions), paste the whole file into
 Firebase console > Firestore Database > Rules and click **Publish**. Until then the new features show "could not be saved".
+
+## Owner: deleting anything
+
+You can always delete any document in the Firebase console (Firestore Database > Data). To also get **Delete (owner)**
+buttons inside the app (on any comment, tip, shared recipe or shared photo):
+
+1. Firebase console > Authentication > Users: copy your **User UID**.
+2. Firestore Database > Data > **Start collection**: collection ID `admins`, document ID = your UID, add one field
+   (for example `note` = `owner`), Save.
+3. Publish the current `firestore.rules`, then sign in on the site. Your account sees the owner buttons; nobody can
+   make themselves an admin from the app, because only the console can write to `admins`.
+
+Deleting a recipe or photo removes it from the app, not from Cloudinary; clear the file in the Cloudinary Media Library
+if you want the storage back.

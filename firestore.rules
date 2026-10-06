@@ -10,6 +10,11 @@ service cloud.firestore {
     function isCloudinaryUrl(u) {
       return u is string && u.size() <= 500 && u.matches('^https://res\\.cloudinary\\.com/.+');
     }
+    // The owner(s) of the cookbook: a person is an admin when a document admins/{their uid} exists. Only the
+    // Firebase console can create those documents (nobody can write to /admins from the app).
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
     function shortText(v, max) {
       return v is string && v.size() <= max;
     }
@@ -17,6 +22,11 @@ service cloud.firestore {
       return c in ['APPETIZERS', 'BEVERAGES', 'SOUPS', 'SALADS', 'VEGETABLES', 'PICKLING', 'RICE_AND_RISOTTO',
                    'PASTA_AND_SAUCES', 'BAKED_PASTA', 'MEATS', 'SEAFOOD', 'EGGS', 'BREADS_AND_PIZZA',
                    'COOKIES_AND_BISCOTTI', 'CAKES_AND_DESSERTS', 'HOLIDAY_TRADITIONS', 'TARTS_AND_PIES', 'DIETS'];
+    }
+
+    // A signed-in person may check whether they themselves are an admin (to show the moderation buttons).
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
     }
 
     // One document per member: profile and favorites. Only that member can read or change it.
@@ -80,7 +90,7 @@ service cloud.firestore {
         && request.resource.data.authorUid == resource.data.authorUid
         && request.resource.data.createdAt == resource.data.createdAt
         && validRecipe(request.resource.data);
-      allow delete: if signedIn() && resource.data.authorUid == request.auth.uid;
+      allow delete: if signedIn() && (resource.data.authorUid == request.auth.uid || isAdmin());
     }
 
     // One shared photo per cookbook recipe (the document id is the recipe id). Only the person who
@@ -97,7 +107,7 @@ service cloud.firestore {
       allow read: if true;
       allow create: if signedIn() && recipeId.matches('^[A-Za-z0-9_-]{1,100}$') && validPhoto(request.resource.data);
       allow update: if signedIn() && resource.data.uploadedBy == request.auth.uid && validPhoto(request.resource.data);
-      allow delete: if signedIn() && resource.data.uploadedBy == request.auth.uid;
+      allow delete: if signedIn() && (resource.data.uploadedBy == request.auth.uid || isAdmin());
     }
 
     // Tips shared with everyone, one per member per recipe (the document id is the member's uid).
@@ -112,11 +122,11 @@ service cloud.firestore {
       allow read: if true;
       allow create, update: if signedIn() && request.auth.uid == uid
         && recipeId.matches('^[A-Za-z0-9_-]{1,100}$') && validTip(request.resource.data);
-      allow delete: if signedIn() && request.auth.uid == uid;
+      allow delete: if signedIn() && (request.auth.uid == uid || isAdmin());
     }
 
     // Comments under the photos in the Photos section. The document path is photoComments/{photoId}/comments/{id}.
-    // Anyone can read them; signed-in members add their own; only the author can delete theirs. No editing.
+    // Anyone can read them; signed-in members add their own; only the author (or an admin) can delete one. No editing.
     match /photoComments/{photoId}/comments/{commentId} {
       function validComment(d) {
         return d.keys().hasOnly(['text', 'authorUid', 'authorName', 'authorPhoto', 'createdAt'])
@@ -128,7 +138,7 @@ service cloud.firestore {
       }
       allow read: if true;
       allow create: if signedIn() && photoId.matches('^[A-Za-z0-9_-]{1,120}$') && validComment(request.resource.data);
-      allow delete: if signedIn() && resource.data.authorUid == request.auth.uid;
+      allow delete: if signedIn() && (resource.data.authorUid == request.auth.uid || isAdmin());
     }
 
     // Reactions to the photos in the Photos section: one per member per photo (the document id is the member's uid).
