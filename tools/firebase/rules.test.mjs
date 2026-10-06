@@ -192,3 +192,26 @@ test('photo comments are validated', async () => {
   const noPhoto = comment('u1'); delete noPhoto.authorPhoto;                                    // the Google photo is optional
   await assertSucceeds(setDoc(doc(db, 'photoComments/p/comments/f'), noPhoto));
 });
+
+const reaction = (over = {}) => ({ type: 'love', authorName: 'Ann', updatedAt: serverTimestamp(), ...over });
+
+test('everyone sees reactions; members set, change and remove only their own', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoReactions/cook_p195_1/reactions/u1'), reaction()));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'photoReactions/cook_p195_1/reactions/u1')));
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoReactions/cook_p195_1/reactions/u1'), reaction({ type: 'yum' })));   // change it
+  await assertFails(setDoc(doc(as('u2'), 'photoReactions/cook_p195_1/reactions/u1'), reaction()));                     // not someone else's
+  await assertFails(deleteDoc(doc(as('u2'), 'photoReactions/cook_p195_1/reactions/u1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'photoReactions/cook_p195_1/reactions/x'), reaction()));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'photoReactions/cook_p195_1/reactions/u1')));
+});
+
+test('reactions are validated', async () => {
+  const db = as('u1');
+  for (const t of ['like', 'love', 'yum', 'haha']) await assertSucceeds(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: t })));
+  await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: 'angry' })));
+  await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ extra: 1 })));
+  await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ updatedAt: new Date('2001-01-01') })));
+  await assertFails(setDoc(doc(db, 'photoReactions/bad id!/reactions/u1'), reaction()));
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'photoReactions/p/reactions/g1'), reaction()));
+});

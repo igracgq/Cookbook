@@ -212,6 +212,13 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await page.waitForTimeout(1500);
   ok(/Agreed, Nonna would love it/.test(await post.innerText()), 'the second comment shows up live for the first member');
 
+  // Reactions: one per member, shown live to everyone
+  const cnt = (loc, type) => loc.locator(`[data-reaction=${type}] [data-reaction-count]`).innerText().catch(() => '0');
+  await post.locator('[data-reaction=love]').click(); await page.waitForTimeout(800);
+  ok(await post.locator('[data-reaction=love]').getAttribute('aria-pressed') === 'true' && await cnt(post, 'love') === '1', 'a member can react with a heart');
+  await post3.locator('[data-reaction=yum]').click(); await page.waitForTimeout(1500);
+  ok(await cnt(post, 'yum') === '1' && await cnt(post3, 'love') === '1', 'another member\'s reaction shows up live for the first (and theirs for them)');
+  ok(/You/.test(await post.locator('[data-reaction-who]').innerText()) && (await post.locator('[data-reaction-who]').innerText()).includes(' and '), 'the line under the buttons says who reacted: ' + (await post.locator('[data-reaction-who]').innerText()));
   const ctxS = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const ps = await ctxS.newPage();
   await ps.route('**/fonts.g*/**', r => r.abort()); await ps.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
@@ -219,9 +226,14 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await ps.click('#nav_photos_desktop'); await ps.waitForSelector('#photos_screen'); await ps.waitForTimeout(2000);
   const postS = ps.locator('article[data-photo-id="shared_tiramisu_classic"]');
   ok(/What a beautiful tiramisu!/.test(await postS.innerText()) && /Agreed, Nonna/.test(await postS.innerText()), 'a signed-out visitor reads the whole conversation');
+  ok(await cnt(postS, 'love') === '1' && await cnt(postS, 'yum') === '1', 'a signed-out visitor sees the reaction counts');
   ok(await postS.locator('.comment-input').count() === 0 && await postS.locator('text=Sign in to comment').count() === 1, 'but is asked to sign in to comment');
   await ctxS.close();
 
+  await post3.locator('[data-reaction=like]').click(); await page.waitForTimeout(1500);   // Bob switches from yum to like
+  ok(await cnt(post, 'yum') === '0' && await cnt(post, 'like') === '1', 'switching a reaction moves it (one reaction per member)');
+  await post.locator('[data-reaction=love]').click(); await page.waitForTimeout(1500);       // Ann takes hers back
+  ok(await cnt(post3, 'love') === '0' && await post.locator('[data-reaction=love]').getAttribute('aria-pressed') === 'false', 'tapping the same reaction again takes it back');
   await post.locator('[data-comment]').first().locator('button:has-text("Delete")').click(); await page.waitForTimeout(1500);
   ok(!/What a beautiful tiramisu!/.test(await post.innerText()), 'a member can delete their own comment');
   await page.reload(); await page.waitForSelector('#account_btn', { timeout: 15000 });

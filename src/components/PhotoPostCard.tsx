@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, MessageCircle } from 'lucide-react';
 import { PhotoPost } from '../data/photoFeed';
 import { PhotoComments } from './PhotoComments';
+import { PhotoReactions } from './PhotoReactions';
 import { useAuth } from '../context/AuthContext';
 import { timeAgo } from '../utils/timeAgo';
 
@@ -72,8 +73,10 @@ export const PhotoPostCard: React.FC<PhotoPostCardProps> = ({ post, onOpenRecipe
         />
       </div>
 
+      <PhotoReactions photoId={post.id} />
+
       {cloudAvailable && (
-        <div className="px-4 py-2 border-b border-[#E4DBCF] text-xs text-[#7D6C5A] flex items-center gap-1.5">
+        <div className="px-4 py-2 border-y border-[#E4DBCF] text-xs text-[#7D6C5A] flex items-center gap-1.5">
           <MessageCircle className="w-3.5 h-3.5" />
           <span data-comment-count>{count === 0 ? 'No comments yet' : `${count} comment${count === 1 ? '' : 's'}`}</span>
         </div>
