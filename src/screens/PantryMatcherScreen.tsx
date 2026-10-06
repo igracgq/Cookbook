@@ -105,7 +105,7 @@ export const PantryMatcherScreen: React.FC = () => {
             value={inputVal}
             onChange={e => setInputVal(e.target.value)}
             placeholder="Add ingredient (e.g., eggs, garlic, ricotta, sausage)..."
-            className="flex-1 px-4 py-3 bg-white border border-[#D2C4B1] rounded-xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
+            className="flex-1 min-w-0 px-4 py-3 bg-white border border-[#D2C4B1] rounded-xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
           />
           <button
             id="add_ingredient_btn"

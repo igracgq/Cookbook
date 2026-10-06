@@ -13,7 +13,7 @@ export const AuthButton: React.FC = () => {
         type="button"
         disabled
         title="Sign-in is not set up for this copy of the cookbook yet"
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-[#857566] bg-[#EBE3D6]/60 border border-[#D2C4B1] rounded-lg cursor-not-allowed"
+        className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-medium whitespace-nowrap text-[#857566] bg-[#EBE3D6]/60 border border-[#D2C4B1] rounded-lg cursor-not-allowed"
       >
         <LogIn className="w-3.5 h-3.5" />
         <span className="hidden lg:inline">Sign in</span>
@@ -32,7 +32,7 @@ export const AuthButton: React.FC = () => {
           id="auth_btn"
           type="button"
           onClick={signIn}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-[#FAF7F2] bg-[#4A3B2C] rounded-lg hover:bg-[#382B1E] transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-[#FAF7F2] bg-[#4A3B2C] rounded-lg hover:bg-[#382B1E] transition-colors cursor-pointer"
         >
           <LogIn className="w-3.5 h-3.5" />
           <span>Sign in<span className="hidden md:inline"> with Google</span></span>
@@ -49,9 +49,9 @@ export const AuthButton: React.FC = () => {
   return (
     <div className="flex items-center gap-2">
       {user.photoURL ? (
-        <img src={user.photoURL} alt="" referrerPolicy="no-referrer" className="w-8 h-8 rounded-full border border-[#D2C4B1]" />
+        <img src={user.photoURL} alt="" referrerPolicy="no-referrer" className="hidden sm:block w-8 h-8 rounded-full border border-[#D2C4B1]" />
       ) : (
-        <div className="w-8 h-8 rounded-full bg-[#DECFC0] text-[#4A3B2C] text-xs font-bold flex items-center justify-center">
+        <div className="hidden sm:flex w-8 h-8 rounded-full bg-[#DECFC0] text-[#4A3B2C] text-xs font-bold items-center justify-center">
           {(user.displayName ?? '?').slice(0, 1).toUpperCase()}
         </div>
       )}
