@@ -1,4 +1,8 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { arrayRemove, arrayUnion, doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
+import { useAuth } from './AuthContext';
+import { useCommunity } from './CommunityContext';
 import {
   allRecipes,
   commonPantryIngredients,
@@ -43,6 +47,10 @@ interface CookbookContextType {
   // Favorites & Ratings
   favoriteRecipeIds: Set<string>;
   toggleFavorite: (recipeId: string) => void;
+  /** local = this device only; syncing/synced/error = saved to the signed-in account. */
+  favoritesSync: 'local' | 'syncing' | 'synced' | 'error';
+  /** Bumped when shared recipes or photos change. */
+  contentVersion: number;
   userRatings: Record<string, number>;
   rateRecipe: (recipeId: string, rating: number) => void;
   getEffectiveRating: (recipe: Recipe) => [number, number];
@@ -162,22 +170,86 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   });
 
+  const { user } = useAuth();
+  const { contentVersion } = useCommunity();
+  const [favoritesSync, setFavoritesSync] = useState<'local' | 'syncing' | 'synced' | 'error'>('local');
+  const DEFAULT_FAVORITES = ['pasta_fresca', 'tiramisu_classic', 'bruschetta_classica'];
+
+  const saveFavoritesLocally = (ids: Set<string>) => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(Array.from(ids)));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const toggleFavorite = (recipeId: string) => {
+    const adding = !favoriteRecipeIds.has(recipeId);
     setFavoriteRecipeIds(prev => {
       const next = new Set(prev);
-      if (next.has(recipeId)) {
-        next.delete(recipeId);
-      } else {
-        next.add(recipeId);
-      }
-      try {
-        localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(Array.from(next)));
-      } catch (e) {
-        console.error(e);
-      }
+      if (adding) next.add(recipeId);
+      else next.delete(recipeId);
+      saveFavoritesLocally(next);
       return next;
     });
+    if (user && db) {
+      setFavoritesSync('syncing');
+      setDoc(
+        doc(db, 'users', user.uid),
+        { favorites: adding ? arrayUnion(recipeId) : arrayRemove(recipeId) },
+        { merge: true }
+      )
+        .then(() => setFavoritesSync('synced'))
+        .catch(() => setFavoritesSync('error'));
+    }
   };
+
+  // Signed in: favorites follow the account (users/{uid}.favorites) and stay in step across devices.
+  // The first time, favorites already saved on this device are added to the account.
+  const lastUid = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user || !db) {
+      if (lastUid.current) {
+        // signed out: don't leave one person's favorites on a shared device
+        const reset = new Set(DEFAULT_FAVORITES);
+        setFavoriteRecipeIds(reset);
+        try { localStorage.removeItem(STORAGE_KEYS.FAVORITES); } catch { /* ignore */ }
+        lastUid.current = null;
+      }
+      setFavoritesSync('local');
+      return;
+    }
+    const firstTime = lastUid.current !== user.uid;
+    lastUid.current = user.uid;
+    setFavoritesSync('syncing');
+    const ref = doc(db, 'users', user.uid);
+    let merged = !firstTime;
+    return onSnapshot(
+      ref,
+      snap => {
+        const cloud: string[] = snap.data()?.favorites ?? [];
+        if (!merged) {
+          merged = true;
+          let local: string[] = [];
+          try {
+            const saved = localStorage.getItem(STORAGE_KEYS.FAVORITES);
+            if (saved) local = JSON.parse(saved);
+          } catch { /* ignore */ }
+          const extra = local.filter(id => !cloud.includes(id));
+          if (extra.length > 0) {
+            setDoc(ref, { favorites: arrayUnion(...extra) }, { merge: true }).catch(() => setFavoritesSync('error'));
+            return; // the next snapshot carries the merged list
+          }
+        }
+        const next = new Set(cloud);
+        setFavoriteRecipeIds(next);
+        saveFavoritesLocally(next);
+        if (!snap.metadata.hasPendingWrites) setFavoritesSync('synced');
+      },
+      () => setFavoritesSync('error')
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid]);
 
   // Ratings
   const [userRatings, setUserRatings] = useState<Record<string, number>>(() => {
@@ -403,7 +475,7 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       default:
         return all;
     }
-  }, [pantryItems, matcherFilter]);
+  }, [pantryItems, matcherFilter, contentVersion]);
 
   // Index Mode
   const [indexMode, setIndexMode] = useState<IndexViewMode>(IndexViewMode.ALPHABETICAL_A_TO_Z);
@@ -427,11 +499,17 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       case RecipeQuickFilter.FAVORITES:
         return list.filter(r => favoriteRecipeIds.has(r.id));
       case RecipeQuickFilter.GLUTEN_FREE:
-        return list.filter(r => generateAutoTags(r).includes('Gluten-Free'));
+        return list.filter(r => r.diet?.includes('gluten-free'));
       case RecipeQuickFilter.VEGAN:
-        return list.filter(r => generateAutoTags(r).includes('Vegan'));
+        return list.filter(r => r.diet?.includes('vegan'));
       case RecipeQuickFilter.SPICY:
-        return list.filter(r => calculateSpiceLevel(r) !== SpiceLevel.MILD);
+        return list.filter(r => r.diet?.includes('spicy'));
+      case RecipeQuickFilter.POULTRY:
+        return list.filter(r => r.diet?.includes('poultry'));
+      case RecipeQuickFilter.SEAFOOD:
+        return list.filter(r => r.diet?.includes('seafood'));
+      case RecipeQuickFilter.RED_MEAT:
+        return list.filter(r => r.diet?.includes('red-meat'));
       case RecipeQuickFilter.EASY:
         return list.filter(r => calculateDifficulty(r) === DifficultyLevel.EASY);
       case RecipeQuickFilter.FAMILY_HERITAGE:
@@ -440,7 +518,7 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           return c.includes('rosina') || c.includes('sandy') || c.includes('ornella') || c.includes('bruna') || c.includes('elvira') || c.includes('teresa');
         });
       case RecipeQuickFilter.VEGETARIAN:
-        return list.filter(r => r.tags.some(t => t.toLowerCase().includes('vegetarian')) || generateAutoTags(r).includes('Vegetarian'));
+        return list.filter(r => r.diet?.includes('vegetarian'));
       case RecipeQuickFilter.QUICK:
         return list.filter(r => {
           const ct = r.cookTime.toLowerCase();
@@ -453,7 +531,7 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       default:
         return list;
     }
-  }, [searchQuery, selectedCategory, selectedDifficulty, selectedAutoTag, selectedFilter, favoriteRecipeIds, userRatings]);
+  }, [searchQuery, selectedCategory, selectedDifficulty, selectedAutoTag, selectedFilter, favoriteRecipeIds, userRatings, contentVersion]);
 
   // Enhanced Kitchen Timer
   const [timerTotalSeconds, setTimerTotalSeconds] = useState(0);
@@ -615,6 +693,8 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         filteredRecipes,
         favoriteRecipeIds,
         toggleFavorite,
+        favoritesSync,
+        contentVersion,
         userRatings,
         rateRecipe,
         getEffectiveRating,

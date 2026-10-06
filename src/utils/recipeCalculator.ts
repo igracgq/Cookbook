@@ -40,6 +40,7 @@ export function calculateSpiceLevel(recipe: Recipe): SpiceLevel {
   if (recipe.baseSpiceLevel && recipe.baseSpiceLevel !== SpiceLevel.MILD) {
     return recipe.baseSpiceLevel;
   }
+  if (recipe.diet?.includes('spicy')) return SpiceLevel.SPICY;
   const hasChili = recipe.ingredients.some(i => {
     const t = i.rawText.toLowerCase();
     return t.includes('chili') || t.includes('pepper flakes') || t.includes('peperoncino') || t.includes('hot pepper');

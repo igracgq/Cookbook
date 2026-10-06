@@ -58,17 +58,16 @@ export const PrintExportModal: React.FC = () => {
             <h2 class="recipe-title">${r.title}</h2>
             ${r.italianTitle ? `<p class="recipe-subtitle">${r.italianTitle}</p>` : ''}
           </div>
-          <span class="recipe-contributor">By ${r.contributor}</span>
+          ${r.contributor && r.contributor !== 'Family Cookbook' ? `<span class="recipe-contributor">By ${r.contributor}</span>` : ''}
         </div>
 
         <div class="meta-row">
-          <span>Yield: ${r.servings}</span>
-          <span>•</span>
-          <span>Prep: ${r.prepTime}</span>
-          <span>•</span>
-          <span>Cook: ${r.cookTime}</span>
-          <span>•</span>
-          <span>Category: ${r.category.replace(/_/g, ' ')}</span>
+          ${[
+            r.servings ? `<span>Yield: ${r.servings}</span>` : '',
+            r.prepTime ? `<span>Prep: ${r.prepTime}</span>` : '',
+            r.cookTime ? `<span>Cook: ${r.cookTime}</span>` : '',
+            `<span>Category: ${r.category.replace(/_/g, ' ')}</span>`
+          ].filter(Boolean).join('<span>•</span>')}
         </div>
 
         <div class="columns">
@@ -408,7 +407,7 @@ export const PrintExportModal: React.FC = () => {
       .map(
         r => `
 📖 ${r.title}${r.italianTitle ? ` (${r.italianTitle})` : ''}
-Contributor: ${r.contributor} | Servings: ${r.servings} | Cook: ${r.cookTime}
+${[r.contributor && r.contributor !== 'Family Cookbook' ? `Contributor: ${r.contributor}` : '', r.servings ? `Servings: ${r.servings}` : '', r.cookTime ? `Cook: ${r.cookTime}` : ''].filter(Boolean).join(' | ')}
 
 INGREDIENTS:
 ${r.ingredients.map(i => `• ${i.rawText}`).join('\n')}
@@ -510,7 +509,7 @@ ${r.notes ? `\nHeirloom Note: ${r.notes}` : ''}
                 }`}
               >
                 <p className="font-bold">Entire Cookbook</p>
-                <p className="text-[11px] text-[#7D6C5A] mt-0.5">All 74 recipes</p>
+                <p className="text-[11px] text-[#7D6C5A] mt-0.5">All {allRecipes.length} recipes</p>
               </button>
             </div>
           </div>

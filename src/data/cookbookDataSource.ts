@@ -2,9 +2,25 @@ import { HelpfulHint, KitchenConversion, MatchResult, MeatRoastingGuide, Recipe,
 import { getSearchableKeywords } from '../utils/recipeCalculator';
 import rawRecipes from './recipes.json';
 
-export const allRecipes: Recipe[] = (rawRecipes as unknown as Recipe[]).sort((a, b) =>
-  a.title.localeCompare(b.title)
-);
+const cookbookRecipes: Recipe[] = (rawRecipes as unknown as Recipe[]).sort((a, b) => a.title.localeCompare(b.title));
+
+/**
+ * Every recipe the app shows: the family cookbook plus recipes and photos that signed-in family members
+ * have shared. The array is updated in place by setSharedContent(), so the lookup helpers below always see
+ * the current list; the app re-renders through CookbookContext's contentVersion.
+ */
+export const allRecipes: Recipe[] = [...cookbookRecipes];
+
+export function setSharedContent(shared: Recipe[], sharedPhotos: Record<string, { url: string; by: string }>) {
+  const merged = cookbookRecipes.map(r => {
+    const p = sharedPhotos[r.id];
+    return p ? { ...r, imageUrl: p.url, imageBy: p.by } : r;
+  });
+  merged.push(...shared);
+  merged.sort((a, b) => a.title.localeCompare(b.title));
+  allRecipes.length = 0;
+  allRecipes.push(...merged);
+}
 
 export const commonPantryIngredients: string[] = [
   "Garlic", "Olive Oil", "Eggs", "Tomatoes", "Onion",

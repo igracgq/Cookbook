@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer } from 'lucide-react';
+import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer, Plus } from 'lucide-react';
+import { AuthButton } from './AuthButton';
 
 export const Navigation: React.FC = () => {
   const { currentScreen, navigateTo, openPrintExport } = useCookbook();
@@ -24,10 +25,10 @@ export const Navigation: React.FC = () => {
               <BookOpen className="w-4 h-4" />
             </div>
             <div>
-              <h1 className="font-serif-heritage text-lg sm:text-xl font-bold tracking-tight text-[#261D16] group-hover:text-[#4A3B2C] leading-none">
+              <h1 className="font-serif-heritage text-lg sm:text-xl font-bold tracking-tight whitespace-nowrap text-[#261D16] group-hover:text-[#4A3B2C] leading-none">
                 Heritage Cookbook
               </h1>
-              <p className="text-[10px] text-[#7D6C5A] tracking-wider uppercase">
+              <p className="hidden lg:block text-[10px] text-[#7D6C5A] tracking-wider uppercase">
                 Ruffolo-Vitale Family Heirloom
               </p>
             </div>
@@ -37,67 +38,89 @@ export const Navigation: React.FC = () => {
           <nav className="hidden sm:flex items-center gap-1 bg-[#EBE3D6] p-1 rounded-xl border border-[#D2C4B1]">
             <button
               id="nav_explore_desktop"
+              title="Cookbook"
+              aria-label="Cookbook"
               onClick={() => navigateTo({ type: 'explore' })}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 isExplore
                   ? 'bg-[#4A3B2C] text-[#FAF7F2] shadow-sm'
                   : 'text-[#5C4E40] hover:text-[#261D16] hover:bg-[#E4DBCF]'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <span>Cookbook</span>
+              <span className="hidden lg:inline">Cookbook</span>
             </button>
 
             <button
               id="nav_pantry_desktop"
+              title="Pantry Matcher"
+              aria-label="Pantry Matcher"
               onClick={() => navigateTo({ type: 'pantry' })}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 isPantry
                   ? 'bg-[#4A3B2C] text-[#FAF7F2] shadow-sm'
                   : 'text-[#5C4E40] hover:text-[#261D16] hover:bg-[#E4DBCF]'
               }`}
             >
               <UtensilsCrossed className="w-3.5 h-3.5" />
-              <span>Pantry Matcher</span>
+              <span className="hidden lg:inline">Pantry Matcher</span>
             </button>
 
             <button
               id="nav_index_desktop"
+              title="A–Z Index"
+              aria-label="A–Z Index"
               onClick={() => navigateTo({ type: 'index' })}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 isIndex
                   ? 'bg-[#4A3B2C] text-[#FAF7F2] shadow-sm'
                   : 'text-[#5C4E40] hover:text-[#261D16] hover:bg-[#E4DBCF]'
               }`}
             >
               <ArrowDownAZ className="w-3.5 h-3.5" />
-              <span>A–Z Index</span>
+              <span className="hidden lg:inline">A–Z Index</span>
             </button>
 
             <button
               id="nav_heritage_desktop"
+              title="Heritage Notes"
+              aria-label="Heritage Notes"
               onClick={() => navigateTo({ type: 'heritage' })}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 isHeritage
                   ? 'bg-[#4A3B2C] text-[#FAF7F2] shadow-sm'
                   : 'text-[#5C4E40] hover:text-[#261D16] hover:bg-[#E4DBCF]'
               }`}
             >
               <BookHeart className="w-3.5 h-3.5" />
-              <span>Heritage Notes</span>
+              <span className="hidden lg:inline">Heritage Notes</span>
             </button>
           </nav>
 
           <div className="flex items-center gap-2">
             <button
+              id="nav_add_recipe"
+              onClick={() => navigateTo({ type: 'addRecipe' })}
+              title="Add a recipe to share with the family"
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap rounded-lg border transition-colors ${
+                currentScreen.type === 'addRecipe'
+                  ? 'bg-[#4A3B2C] text-[#FAF7F2] border-[#4A3B2C]'
+                  : 'text-[#4A3B2C] bg-[#EBE3D6] border-[#D2C4B1] hover:bg-[#E4DBCF]'
+              }`}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Add recipe</span>
+            </button>
+            <button
               id="global_print_btn"
               onClick={() => openPrintExport()}
               title="Print & Keepsake Book Export"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#4A3B2C] bg-[#EBE3D6] border border-[#D2C4B1] rounded-lg hover:bg-[#E4DBCF] transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-[#4A3B2C] bg-[#EBE3D6] border border-[#D2C4B1] rounded-lg hover:bg-[#E4DBCF] transition-colors"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Print Cookbook</span>
+              <span className="hidden xl:inline">Print Cookbook</span>
             </button>
+            <AuthButton />
           </div>
         </div>
       </header>

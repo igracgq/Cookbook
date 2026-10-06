@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { allRecipes } from './data/cookbookDataSource';
 import { CulinaryMonochromeBackground } from './components/CulinaryMonochromeBackground';
 import { GlobalTimerBar } from './components/GlobalTimerBar';
 import { Navigation } from './components/Navigation';
 import { PrintExportModal } from './components/PrintExportModal';
+import { AuthProvider } from './context/AuthContext';
+import { CommunityProvider } from './context/CommunityContext';
 import { CookbookProvider, useCookbook } from './context/CookbookContext';
+import { AddRecipeScreen } from './screens/AddRecipeScreen';
 import { AlphabeticalIndexScreen } from './screens/AlphabeticalIndexScreen';
 import { HeritageNotesScreen } from './screens/HeritageNotesScreen';
 import { PantryMatcherScreen } from './screens/PantryMatcherScreen';
@@ -88,6 +92,7 @@ const MainContent: React.FC = () => {
           {currentScreen.type === 'pantry' && <PantryMatcherScreen />}
           {currentScreen.type === 'index' && <AlphabeticalIndexScreen />}
           {currentScreen.type === 'heritage' && <HeritageNotesScreen />}
+          {currentScreen.type === 'addRecipe' && <AddRecipeScreen />}
         </motion.div>
       </AnimatePresence>
 
@@ -130,7 +135,7 @@ const OfflineStatusBar: React.FC = () => {
       <div className="flex items-center gap-2 max-w-4xl mx-auto w-full">
         <WifiOff className="w-4 h-4 text-amber-300 shrink-0" />
         <span>
-          <strong>Offline Mode Active:</strong> All 74 recipes, pantry data, and your kitchen notes are safely cached offline.
+          <strong>Offline Mode Active:</strong> All {allRecipes.length} recipes, pantry data, and your kitchen notes are safely cached offline.
         </span>
       </div>
       <button
@@ -147,14 +152,18 @@ const OfflineStatusBar: React.FC = () => {
 
 export function App() {
   return (
-    <CookbookProvider>
-      <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
-        <CulinaryMonochromeBackground />
-        <OfflineStatusBar />
-        <Navigation />
-        <MainContent />
-      </div>
-    </CookbookProvider>
+    <AuthProvider>
+      <CommunityProvider>
+        <CookbookProvider>
+          <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
+            <CulinaryMonochromeBackground />
+            <OfflineStatusBar />
+            <Navigation />
+            <MainContent />
+          </div>
+        </CookbookProvider>
+      </CommunityProvider>
+    </AuthProvider>
   );
 }
 

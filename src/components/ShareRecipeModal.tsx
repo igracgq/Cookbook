@@ -32,11 +32,10 @@ export const ShareRecipeModal: React.FC<ShareRecipeModalProps> = ({
   const shareTitle = `${recipe.title} - Ruffolo-Vitale Heritage Cookbook`;
   const shareSnippet = `Try this heirloom recipe for ${recipe.title}${
     recipe.italianTitle ? ` (${recipe.italianTitle})` : ''
-  } from the Ruffolo-Vitale Heritage Cookbook! Contributed by ${recipe.contributor}.`;
+  } from the Ruffolo-Vitale Heritage Cookbook!`;
 
   const fullRecipeText = `📖 ${recipe.title}${recipe.italianTitle ? ` (${recipe.italianTitle})` : ''}
-Contributed by: ${recipe.contributor}
-Yield: ${recipe.servings} | Prep: ${recipe.prepTime} | Cook: ${recipe.cookTime}
+${[recipe.servings && `Yield: ${recipe.servings}`, recipe.prepTime && `Prep: ${recipe.prepTime}`, recipe.cookTime && `Cook: ${recipe.cookTime}`].filter(Boolean).join(' | ')}
 
 INGREDIENTS:
 ${recipe.ingredients.map(i => `• ${i.rawText}`).join('\n')}
