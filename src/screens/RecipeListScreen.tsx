@@ -200,9 +200,13 @@ export const RecipeListScreen: React.FC = () => {
       {filteredRecipes.length === 0 && (
         <div className="text-center py-16 px-4 bg-[#FAF7F2] rounded-2xl border border-dashed border-[#D2C4B1] max-w-md mx-auto space-y-3">
           <BookOpen className="w-10 h-10 text-[#A69480] mx-auto" />
-          <h3 className="font-serif-heritage text-lg font-bold text-[#261D16]">No Recipes Found</h3>
+          <h3 className="font-serif-heritage text-lg font-bold text-[#261D16]">
+            {selectedFilter === RecipeQuickFilter.LATEST && !searchQuery && !selectedCategory ? 'No Additions Yet' : 'No Recipes Found'}
+          </h3>
           <p className="text-xs text-[#7D6C5A]">
-            Try adjusting your search query or reset your section and dietary filters.
+            {selectedFilter === RecipeQuickFilter.LATEST && !searchQuery && !selectedCategory
+              ? 'Recipes that family members add will appear here. Use Add recipe to share the first one.'
+              : 'Try adjusting your search query or reset your section and dietary filters.'}
           </p>
           <button
             type="button"

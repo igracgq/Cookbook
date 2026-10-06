@@ -39,11 +39,13 @@ import {
   ShoppingBag,
   Share2,
   Image as ImageIcon,
-  RotateCcw
+  RotateCcw,
+  Lock
 } from 'lucide-react';
 import { HandsFreeCookingModal } from '../components/HandsFreeCookingModal';
 import { ShareRecipeModal } from '../components/ShareRecipeModal';
 import { SharedPhotoPanel } from '../components/SharedPhotoPanel';
+import { RecipeTips } from '../components/RecipeTips';
 
 interface RecipeDetailScreenProps {
   recipeId: string;
@@ -81,6 +83,12 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
 
   const [noteText, setNoteText] = useState(() => (recipe ? userNotes[recipe.id] || '' : ''));
   const [isNoteSaved, setIsNoteSaved] = useState(false);
+  const [noteError, setNoteError] = useState(false);
+  const noteEdited = useRef(false); // true while the box holds changes that are not saved yet
+  const savedNote = recipe ? userNotes[recipe.id] || '' : '';
+  // Notes can arrive after the page opens (they load from the account), so refresh the box unless it is being edited.
+  useEffect(() => { noteEdited.current = false; }, [recipeId]);
+  useEffect(() => { if (!noteEdited.current) setNoteText(savedNote); }, [savedNote, recipeId]);
   const [pantryAddedToast, setPantryAddedToast] = useState(false);
   const [photoFeedbackToast, setPhotoFeedbackToast] = useState<string | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -142,10 +150,16 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
     setTimeout(() => setPhotoFeedbackToast(null), 3000);
   };
 
-  const handleSaveNote = () => {
-    saveRecipeNote(recipe.id, noteText);
-    setIsNoteSaved(true);
-    setTimeout(() => setIsNoteSaved(false), 2500);
+  const handleSaveNote = async () => {
+    setNoteError(false);
+    try {
+      await saveRecipeNote(recipe.id, noteText);
+      noteEdited.current = false;
+      setIsNoteSaved(true);
+      setTimeout(() => setIsNoteSaved(false), 2500);
+    } catch {
+      setNoteError(true);
+    }
   };
 
   const handleAddToPantry = () => {
@@ -699,15 +713,22 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
                 </span>
               )}
             </div>
+            <p className="flex items-center gap-1.5 text-[11px] text-[#7D6C5A] -mt-1.5">
+              <Lock className="w-3 h-3" /> Private: only you can see your notes.
+            </p>
 
             <textarea
               id="recipe_note_textarea"
-              rows={3}
+              rows={4}
               value={noteText}
-              onChange={e => setNoteText(e.target.value)}
-              placeholder="Record your kitchen notes, oven calibration, extra herbs, or wine pairing..."
+              onChange={e => { noteEdited.current = true; setNoteText(e.target.value); setNoteError(false); }}
+              placeholder={'Record your kitchen notes, oven calibration, extra herbs, or wine pairing...\n\nThese notes will be visible to you only.'}
               className="w-full p-3 bg-white border border-[#D2C4B1] rounded-xl text-xs sm:text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
             />
+
+            {noteError && (
+              <p role="alert" className="text-xs text-[#B8452D]">Your note could not be saved to your account. Please try again.</p>
+            )}
 
             <div className="flex justify-end">
               <button
@@ -720,6 +741,8 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
               </button>
             </div>
           </div>
+
+          <RecipeTips key={recipe.id} recipe={recipe} />
 
           {/* Dietary Tags */}
           <div className="flex flex-wrap items-center gap-1.5 pt-2">
