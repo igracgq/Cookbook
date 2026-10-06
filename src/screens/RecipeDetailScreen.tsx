@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
+import { useAuth } from '../context/AuthContext';
 import {
   CATEGORY_INFO,
   DIFFICULTY_INFO,
@@ -40,6 +41,7 @@ import {
   Share2,
   Image as ImageIcon,
   RotateCcw,
+  MessageCircle,
   Lock,
   ShoppingCart,
   UtensilsCrossed
@@ -48,6 +50,8 @@ import { HandsFreeCookingModal } from '../components/HandsFreeCookingModal';
 import { ShareRecipeModal } from '../components/ShareRecipeModal';
 import { SharedPhotoPanel } from '../components/SharedPhotoPanel';
 import { RecipeTips } from '../components/RecipeTips';
+import { RecipeRating } from '../components/RecipeRating';
+import { photoPostIdForUrl } from '../data/photoFeed';
 
 interface RecipeDetailScreenProps {
   recipeId: string;
@@ -85,6 +89,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
     removeShoppingItem
   } = useCookbook();
 
+  const { cloudAvailable } = useAuth();
   const recipe = getRecipeById(recipeId);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
@@ -135,6 +140,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
   const isCustomPhoto = !!customRecipePhotos[recipe.id];
   const photos = [...(isCustomPhoto ? [customRecipePhotos[recipe.id]] : []), ...getRecipePhotoUrls(recipe)];
   const activePhoto = photos[Math.min(photoIdx, Math.max(photos.length - 1, 0))];
+  const commentablePhotoId = cloudAvailable ? photoPostIdForUrl(recipe, activePhoto) : null;
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -289,6 +295,21 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
       <div className="space-y-3">
         <div className="rounded-3xl overflow-hidden shadow-lg border border-[#D2C4B1]">
           <RecipePhoto src={activePhoto} alt={recipe.title} aspect={activePhoto ? 'aspect-[4/3] sm:aspect-[16/10]' : 'aspect-[16/9] sm:aspect-[16/7]'}>
+            {/* Tapping the photo opens it, full size, in the Photos section where it can be commented on */}
+            {commentablePhotoId && (
+              <>
+                <button
+                  id="open_photo_btn"
+                  type="button"
+                  aria-label="Open this photo to see it full size and comment on it"
+                  onClick={() => navigateTo({ type: 'photos', focusId: commentablePhotoId, fromRecipeId: recipe.id })}
+                  className="absolute inset-0 cursor-pointer"
+                />
+                <span className="pointer-events-none absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 text-white text-[11px] font-semibold backdrop-blur-sm">
+                  <MessageCircle className="w-3.5 h-3.5" /> Photo & comments
+                </span>
+              </>
+            )}
             {photos.length > 1 && (
               <>
                 <button
@@ -329,6 +350,8 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
         {isStockPhotoUrl(activePhoto) && (
           <p className="text-[11px] text-[#7D6C5A] leading-snug">Illustrative photo, not from the family cookbook.</p>
         )}
+
+        <RecipeRating recipeId={recipe.id} />
 
         {photos.length > 1 && (
           <div className="flex gap-2 overflow-x-auto pb-1">

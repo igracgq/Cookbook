@@ -156,6 +156,23 @@ service cloud.firestore {
       allow delete: if signedIn() && request.auth.uid == uid;
     }
 
+    // Star ratings (1 to 5): one per member per recipe. The document id is "<recipeId>__<uid>", so a member can
+    // only ever have one rating per recipe and cannot rate under someone else's name. Everyone can read them
+    // (the app averages them); a member sets, changes or removes only their own.
+    match /recipeRatings/{ratingId} {
+      function validRating(d) {
+        return d.keys().hasOnly(['recipeId', 'uid', 'stars', 'updatedAt'])
+          && d.recipeId is string && d.recipeId.matches('^[A-Za-z0-9_-]{1,100}$')
+          && d.uid == request.auth.uid
+          && ratingId == d.recipeId + '__' + request.auth.uid
+          && d.stars is int && d.stars >= 1 && d.stars <= 5
+          && d.updatedAt == request.time;
+      }
+      allow read: if true;
+      allow create, update: if signedIn() && validRating(request.resource.data);
+      allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isAdmin());
+    }
+
     // Everything else is closed.
     match /{document=**} {
       allow read, write: if false;

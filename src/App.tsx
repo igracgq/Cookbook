@@ -18,6 +18,7 @@ import { ShoppingListScreen } from './screens/ShoppingListScreen';
 import { PhotosScreen } from './screens/PhotosScreen';
 import { InstallPrompt } from './components/InstallPrompt';
 import { AppUpdateProvider } from './context/AppUpdateContext';
+import { RatingsProvider } from './context/RatingsContext';
 import { UpdateBanner } from './components/UpdateBanner';
 import { WifiOff, CheckCircle2, X } from 'lucide-react';
 import { ScreenDestination } from './types';
@@ -163,6 +164,7 @@ export function App() {
     <AppUpdateProvider>
     <AuthProvider>
       <CommunityProvider>
+        <RatingsProvider>
         <CookbookProvider>
           <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
             <CulinaryMonochromeBackground />
@@ -173,6 +175,7 @@ export function App() {
             <MainContent />
           </div>
         </CookbookProvider>
+        </RatingsProvider>
       </CommunityProvider>
     </AuthProvider>
     </AppUpdateProvider>

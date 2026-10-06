@@ -68,3 +68,14 @@ export function buildPhotoFeed(): PhotoPost[] {
   }
   return [...shared, ...original];
 }
+
+/**
+ * The Photos-section id for a photo shown on a recipe page, or null when it has none (illustrative stock photos
+ * are not family photos, so they cannot be commented on).
+ */
+export function photoPostIdForUrl(recipe: Recipe, url?: string | null): string | null {
+  if (!url) return null;
+  if (recipe.imageUrl && url === recipe.imageUrl) return recipe.community ? `recipe_${recipe.id}` : `shared_${recipe.id}`;
+  const m = url.match(/\/images\/(cook_[A-Za-z0-9_]+)\.jpg(?:$|\?)/);
+  return m ? m[1] : null;
+}
