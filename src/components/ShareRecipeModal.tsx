@@ -11,6 +11,7 @@ import {
   ExternalLink,
   BookOpen
 } from 'lucide-react';
+import { ModalPortal } from './ModalPortal';
 
 interface ShareRecipeModalProps {
   recipe: Recipe | null;
@@ -119,6 +120,7 @@ From the Ruffolo-Vitale Heritage Cookbook.`;
   const hasNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   return (
+    <ModalPortal>
     <div
       id="share_recipe_modal"
       className="fixed inset-0 z-50 bg-[#261D16]/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
@@ -300,5 +302,6 @@ From the Ruffolo-Vitale Heritage Cookbook.`;
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 };
