@@ -14,7 +14,7 @@ import { getRecipePhotoUrls, getPhotoCredit, isStockPhotoUrl } from '../utils/ph
 import { RecipePhoto } from '../components/RecipePhoto';
 import { calculateDifficulty, calculateNutrition, scaleNutrition } from '../utils/recipeCalculator';
 import { optimizeImageFile } from '../utils/imageOptimizer';
-import { allRecipes } from '../data/cookbookDataSource';
+import { allRecipes, pantryItemsCovering } from '../data/cookbookDataSource';
 import {
   ArrowLeft,
   ArrowRight,
@@ -40,7 +40,9 @@ import {
   Share2,
   Image as ImageIcon,
   RotateCcw,
-  Lock
+  Lock,
+  ShoppingCart,
+  UtensilsCrossed
 } from 'lucide-react';
 import { HandsFreeCookingModal } from '../components/HandsFreeCookingModal';
 import { ShareRecipeModal } from '../components/ShareRecipeModal';
@@ -74,7 +76,13 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
     startRecipeTimer,
     openHandsFree,
     openPrintExport,
-    addRecipeIngredientsToPantry
+    addRecipeIngredientsToPantry,
+    pantryItems,
+    addPantryIngredient,
+    removePantryIngredient,
+    shoppingList,
+    addToShoppingList,
+    removeShoppingItem
   } = useCookbook();
 
   const recipe = getRecipeById(recipeId);
@@ -560,37 +568,127 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
               </div>
             </div>
 
-            {/* Checklist of Ingredients */}
-            <ul className="space-y-2.5">
-              {recipe.ingredients.map((ing, idx) => {
-                const isChecked = checkedIngredients.has(ing.rawText);
-                const display = scaleAndConvert(ing.rawText, servingMultiplier, unitSystem);
+            {/* Where each ingredient is: in the pantry, on the shopping list, or neither */}
+            {(() => {
+              const rows = recipe.ingredients.map(ing => {
+                const name = ing.normalizedName.toLowerCase();
+                return {
+                  ing,
+                  name,
+                  covering: pantryItemsCovering(name, pantryItems),
+                  onList: shoppingList.some(i => i.key === name)
+                };
+              });
+              const inPantryCount = rows.filter(r => r.covering.length > 0).length;
+              const toFind = rows.filter(r => r.covering.length === 0 && !r.onList);
+              return (
+                <>
+                  <p id="ingredient_status_summary" className="text-[11px] text-[#7D6C5A] mb-2">
+                    <strong className="text-[#5C7250]">{inPantryCount}</strong> in your pantry
+                    {' · '}
+                    <strong className="text-[#9A6B1F]">{rows.filter(r => r.covering.length === 0 && r.onList).length}</strong> on your shopping list
+                    {' · '}
+                    <strong className="text-[#B8452D]">{toFind.length}</strong> still to get
+                  </p>
 
-                return (
-                  <li
-                    key={idx}
-                    onClick={() => toggleIngredientChecked(ing.rawText)}
-                    className={`flex items-start gap-3 p-2.5 rounded-xl transition-all cursor-pointer select-none ${
-                      isChecked
-                        ? 'bg-[#E4EFE0]/60 text-[#7D6C5A] line-through'
-                        : 'hover:bg-[#EBE3D6]/50 text-[#261D16]'
-                    }`}
-                  >
+                  {/* Checklist of Ingredients */}
+                  <ul className="space-y-2.5">
+                    {rows.map(({ ing, name, covering, onList }, idx) => {
+                      const isChecked = checkedIngredients.has(ing.rawText);
+                      const display = scaleAndConvert(ing.rawText, servingMultiplier, unitSystem);
+                      const inPantryNow = covering.length > 0;
+
+                      return (
+                        <li
+                          key={idx}
+                          data-ingredient={name}
+                          onClick={() => toggleIngredientChecked(ing.rawText)}
+                          className={`flex items-start gap-3 p-2.5 rounded-xl transition-all cursor-pointer select-none ${
+                            isChecked
+                              ? 'bg-[#E4EFE0]/60 text-[#7D6C5A]'
+                              : 'hover:bg-[#EBE3D6]/50 text-[#261D16]'
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="mt-0.5 shrink-0 text-[#4A3B2C] hover:opacity-80 cursor-pointer"
+                          >
+                            {isChecked ? (
+                              <CheckCircle2 className="w-4 h-4 text-[#5C7250]" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-[#A69480]" />
+                            )}
+                          </button>
+                          <div className="flex-1 min-w-0">
+                            <span className={`text-xs sm:text-sm leading-relaxed block ${isChecked ? 'line-through' : ''}`}>{display.displayText}</span>
+                            <span className="ingredient-status text-[10px] font-semibold block">
+                              {inPantryNow ? (
+                                <span className="text-[#5C7250]">In your pantry</span>
+                              ) : onList ? (
+                                <span className="text-[#9A6B1F]">On your shopping list</span>
+                              ) : null}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              data-action="pantry"
+                              aria-pressed={inPantryNow}
+                              title={inPantryNow ? `In your pantry. Tap to take it out${covering[0] !== name ? ` (listed as "${covering[0]}")` : ''}` : 'I have this: add to my pantry'}
+                              onClick={() => {
+                                if (inPantryNow) covering.forEach(removePantryIngredient);
+                                else addPantryIngredient(name);
+                              }}
+                              className={`p-1.5 rounded-lg border cursor-pointer transition-colors ${
+                                inPantryNow
+                                  ? 'bg-[#5C7250] border-[#5C7250] text-white'
+                                  : 'bg-white border-[#D2C4B1] text-[#7D6C5A] hover:bg-[#FAF7F2]'
+                              }`}
+                            >
+                              <UtensilsCrossed className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              data-action="cart"
+                              aria-pressed={onList}
+                              title={onList ? 'On your shopping list. Tap to take it off' : 'I need this: add to my shopping list'}
+                              onClick={() => {
+                                if (onList) removeShoppingItem(name);
+                                else addToShoppingList(recipe.title, [{ name, text: display.displayText }]);
+                              }}
+                              className={`p-1.5 rounded-lg border cursor-pointer transition-colors ${
+                                onList
+                                  ? 'bg-[#B8782B] border-[#B8782B] text-white'
+                                  : 'bg-white border-[#D2C4B1] text-[#7D6C5A] hover:bg-[#FAF7F2]'
+                              }`}
+                            >
+                              <ShoppingCart className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  {toFind.length > 0 && (
                     <button
+                      id="add_all_missing_to_cart_btn"
                       type="button"
-                      className="mt-0.5 shrink-0 text-[#4A3B2C] hover:opacity-80 cursor-pointer"
+                      onClick={() =>
+                        addToShoppingList(
+                          recipe.title,
+                          toFind.map(r => ({ name: r.name, text: scaleAndConvert(r.ing.rawText, servingMultiplier, unitSystem).displayText }))
+                        )
+                      }
+                      className="mt-3 flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] hover:bg-[#E4DBCF] text-xs font-bold text-[#4A3B2C] cursor-pointer"
                     >
-                      {isChecked ? (
-                        <CheckCircle2 className="w-4 h-4 text-[#5C7250]" />
-                      ) : (
-                        <Circle className="w-4 h-4 text-[#A69480]" />
-                      )}
+                      <ShoppingCart className="w-3.5 h-3.5" /> Add the {toFind.length} I still need to my shopping list
                     </button>
-                    <span className="text-xs sm:text-sm leading-relaxed">{display.displayText}</span>
-                  </li>
-                );
-              })}
-            </ul>
+                  )}
+                </>
+              );
+            })()}
           </div>
 
           {/* Scaled Nutrition Facts Card */}

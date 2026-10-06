@@ -147,12 +147,20 @@ export function getRecipesByContributor(): Record<string, Recipe[]> {
   return map;
 }
 
-const inPantry = (ing: string, normalizedPantry: string[]) =>
-  normalizedPantry.some(p =>
-    ing.includes(p) || p.includes(ing) ||
-    (p.endsWith('s') && ing.includes(p.slice(0, -1))) ||
-    (ing.endsWith('s') && p.includes(ing.slice(0, -1)))
-  );
+/** The pantry entries that cover an ingredient (e.g. "garlic" covers "garlic cloves"). */
+export function pantryItemsCovering(ingredientName: string, pantryItems: string[]): string[] {
+  const ing = ingredientName.trim().toLowerCase();
+  if (!ing) return [];
+  return pantryItems
+    .map(i => i.trim().toLowerCase())
+    .filter(p => p && (
+      ing.includes(p) || p.includes(ing) ||
+      (p.endsWith('s') && ing.includes(p.slice(0, -1))) ||
+      (ing.endsWith('s') && p.includes(ing.slice(0, -1)))
+    ));
+}
+
+const inPantry = (ing: string, normalizedPantry: string[]) => pantryItemsCovering(ing, normalizedPantry).length > 0;
 
 /** What a recipe needs that the pantry does not cover: the ingredient name, and the line as written in the recipe. */
 export function missingIngredientsFor(recipe: Recipe, pantryItems: string[]): Array<{ name: string; text: string }> {
