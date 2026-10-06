@@ -119,6 +119,8 @@ export interface Recipe {
   community?: boolean;
   /** When a shared recipe was added (milliseconds), used by Latest Additions. */
   addedAt?: number;
+  /** When the shared photo on a cookbook recipe was shared (milliseconds). */
+  imageAt?: number;
   /** Firebase uid of the member who added a community recipe. */
   authorUid?: string;
 }
@@ -183,6 +185,7 @@ export type ScreenDestination =
   | { type: "detail"; recipeId: string }
   | { type: "addRecipe" }
   | { type: "shopping" }
+  | { type: "photos" }
   | { type: "print"; recipeId?: string };
 
 export interface MeatRoastingGuide {

@@ -2,7 +2,7 @@ import { HelpfulHint, KitchenConversion, MatchResult, MeatRoastingGuide, Recipe,
 import { getSearchableKeywords } from '../utils/recipeCalculator';
 import rawRecipes from './recipes.json';
 
-const cookbookRecipes: Recipe[] = (rawRecipes as unknown as Recipe[]).sort((a, b) => a.title.localeCompare(b.title));
+export const cookbookRecipes: Recipe[] = (rawRecipes as unknown as Recipe[]).sort((a, b) => a.title.localeCompare(b.title));
 
 /**
  * Every recipe the app shows: the family cookbook plus recipes and photos that signed-in family members
@@ -11,10 +11,10 @@ const cookbookRecipes: Recipe[] = (rawRecipes as unknown as Recipe[]).sort((a, b
  */
 export const allRecipes: Recipe[] = [...cookbookRecipes];
 
-export function setSharedContent(shared: Recipe[], sharedPhotos: Record<string, { url: string; by: string }>) {
+export function setSharedContent(shared: Recipe[], sharedPhotos: Record<string, { url: string; by: string; at?: number }>) {
   const merged = cookbookRecipes.map(r => {
     const p = sharedPhotos[r.id];
-    return p ? { ...r, imageUrl: p.url, imageBy: p.by } : r;
+    return p ? { ...r, imageUrl: p.url, imageBy: p.by, imageAt: p.at } : r;
   });
   merged.push(...shared);
   merged.sort((a, b) => a.title.localeCompare(b.title));

@@ -115,6 +115,22 @@ service cloud.firestore {
       allow delete: if signedIn() && request.auth.uid == uid;
     }
 
+    // Comments under the photos in the Photos section. The document path is photoComments/{photoId}/comments/{id}.
+    // Anyone can read them; signed-in members add their own; only the author can delete theirs. No editing.
+    match /photoComments/{photoId}/comments/{commentId} {
+      function validComment(d) {
+        return d.keys().hasOnly(['text', 'authorUid', 'authorName', 'authorPhoto', 'createdAt'])
+          && shortText(d.text, 1000) && d.text.size() >= 1
+          && d.authorUid == request.auth.uid
+          && shortText(d.authorName, 200)
+          && (!('authorPhoto' in d) || shortText(d.authorPhoto, 1000))
+          && d.createdAt == request.time;
+      }
+      allow read: if true;
+      allow create: if signedIn() && photoId.matches('^[A-Za-z0-9_-]{1,120}$') && validComment(request.resource.data);
+      allow delete: if signedIn() && resource.data.authorUid == request.auth.uid;
+    }
+
     // Everything else is closed.
     match /{document=**} {
       allow read, write: if false;

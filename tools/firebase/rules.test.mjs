@@ -162,3 +162,33 @@ test('the shopping list is validated', async () => {
   const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
   await assertFails(setDoc(doc(guest, 'users/g1/lists/shopping'), list()));
 });
+
+const comment = (uid, over = {}) => ({ text: 'Looks delicious!', authorUid: uid, authorName: 'Ann', authorPhoto: 'https://lh3.googleusercontent.com/a/x', createdAt: serverTimestamp(), ...over });
+
+test('everyone reads photo comments; signed-in members add their own', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoComments/cook_p195_1/comments/c1'), comment('u1')));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'photoComments/cook_p195_1/comments/c1')));
+  await assertSucceeds(getDoc(doc(as('u2'), 'photoComments/cook_p195_1/comments/c1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'photoComments/cook_p195_1/comments/c2'), comment('x')));
+  await assertFails(setDoc(doc(as('u2'), 'photoComments/cook_p195_1/comments/c3'), comment('u1')));   // not under someone else's name
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'photoComments/cook_p195_1/comments/c4'), comment('g1')));
+});
+
+test('only the author deletes a comment, and comments cannot be edited', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoComments/shared_r1/comments/c1'), comment('u1')));
+  await assertFails(deleteDoc(doc(as('u2'), 'photoComments/shared_r1/comments/c1')));
+  await assertFails(updateDoc(doc(as('u1'), 'photoComments/shared_r1/comments/c1'), { text: 'changed' }));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'photoComments/shared_r1/comments/c1')));
+});
+
+test('photo comments are validated', async () => {
+  const db = as('u1');
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/a'), comment('u1', { text: '' })));
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/b'), comment('u1', { text: 'x'.repeat(1001) })));
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/c'), comment('u1', { extra: 1 })));
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/d'), comment('u1', { createdAt: new Date('2001-01-01') })));
+  await assertFails(setDoc(doc(db, 'photoComments/bad id!/comments/e'), comment('u1')));
+  const noPhoto = comment('u1'); delete noPhoto.authorPhoto;                                    // the Google photo is optional
+  await assertSucceeds(setDoc(doc(db, 'photoComments/p/comments/f'), noPhoto));
+});

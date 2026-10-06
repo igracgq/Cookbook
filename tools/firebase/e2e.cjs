@@ -193,6 +193,41 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await p2.locator('h3').first().click(); await p2.waitForTimeout(2000);
   ok(await p2.inputValue('#recipe_note_textarea') === 'Ann private basil note', 'private note follows the account to another device');
 
+  // Photos section: shared photos appear at the top, comments are shared live and always shown
+  await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(1500);
+  const ids = await page.evaluate(() => [...document.querySelectorAll('article[data-photo-id]')].map(a => a.dataset.photoId));
+  ok(ids[0].startsWith('shared_') || ids[0].startsWith('recipe_'), 'a photo members shared is at the top of Photos: ' + ids.slice(0, 3).join(', '));
+  ok(ids.includes('shared_tiramisu_classic') && ids.includes('cook_family'), 'the shared Tiramisu photo and the original cookbook photos are all there');
+  const post = page.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  await post.locator('.comment-input').fill('What a beautiful tiramisu!'); await post.locator('.comment-input').press('Enter');
+  await post.locator('[data-comment]').first().waitFor({ timeout: 10000 });
+  ok(/What a beautiful tiramisu!/.test(await post.innerText()) && /1 comment/.test(await post.locator('[data-comment-count]').innerText()), 'a signed-in member can comment and the count updates');
+
+  await p3.click('#back_to_cookbook_btn'); await p3.click('#nav_photos_desktop'); await p3.waitForSelector('#photos_screen'); await p3.waitForTimeout(2000);
+  const post3 = p3.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  ok(/What a beautiful tiramisu!/.test(await post3.innerText()), 'another member sees that comment under the photo');
+  ok(await post3.locator('[data-comment] button:has-text("Delete")').count() === 0, 'and cannot delete someone else\'s comment');
+  await post3.locator('.comment-input').fill('Agreed, Nonna would love it'); await post3.locator('.comment-input').press('Enter');
+  await post3.locator('[data-comment]').nth(1).waitFor({ timeout: 10000 });
+  await page.waitForTimeout(1500);
+  ok(/Agreed, Nonna would love it/.test(await post.innerText()), 'the second comment shows up live for the first member');
+
+  const ctxS = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const ps = await ctxS.newPage();
+  await ps.route('**/fonts.g*/**', r => r.abort()); await ps.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await ps.goto('http://localhost:5173/Cookbook/'); await ps.waitForTimeout(2500);
+  await ps.click('#nav_photos_desktop'); await ps.waitForSelector('#photos_screen'); await ps.waitForTimeout(2000);
+  const postS = ps.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  ok(/What a beautiful tiramisu!/.test(await postS.innerText()) && /Agreed, Nonna/.test(await postS.innerText()), 'a signed-out visitor reads the whole conversation');
+  ok(await postS.locator('.comment-input').count() === 0 && await postS.locator('text=Sign in to comment').count() === 1, 'but is asked to sign in to comment');
+  await ctxS.close();
+
+  await post.locator('[data-comment]').first().locator('button:has-text("Delete")').click(); await page.waitForTimeout(1500);
+  ok(!/What a beautiful tiramisu!/.test(await post.innerText()), 'a member can delete their own comment');
+  await page.reload(); await page.waitForSelector('#account_btn', { timeout: 15000 });
+  await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(2000);
+  ok(/Agreed, Nonna would love it/.test(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').innerText()), 'the remaining comment is still there after a reload');
+
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const p4 = await ctx4.newPage();

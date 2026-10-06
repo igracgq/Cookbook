@@ -95,6 +95,7 @@ Either way the published site is public: anyone with the link can read the cookb
 - `users/{uid}/notes/{recipeId}`: a member's private cooking note (`text`, `updatedAt`). Only that member can read or write it. Signed out, notes stay in the browser on that device instead.
 - `users/{uid}/lists/shopping`: the member's shopping list (`items`, `updatedAt`). Only that member can read or write it. Signed out, the list stays in the browser on that device instead.
 - `recipeTips/{recipeId}/tips/{uid}`: the tip a member shares with everyone for a recipe (`text`, `authorName`, `updatedAt`). Anyone can read; only that member can write or remove theirs.
+- `photoComments/{photoId}/comments/{id}`: a comment under a photo in the Photos section (`text`, `authorUid`, `authorName`, `authorPhoto`, `createdAt`). Anyone can read; signed-in members add their own and can delete only their own; no editing. `photoId` is the photo's file name for original cookbook photos (e.g. `cook_p195_1`), `shared_<recipeId>` for a photo shared on a cookbook recipe, and `recipe_<id>` for the photo of a recipe a member added.
 - `recipePhotos/{recipeId}`: the one shared photo for a cookbook recipe: `imageUrl`, `uploadedBy`, `uploadedByName`, `updatedAt`.
 
 ## Limits worth knowing
@@ -123,5 +124,5 @@ Either way the published site is public: anyone with the link can read the cookb
 
 ## After updating the app
 
-Whenever `firestore.rules` changes (most recently for the shopping list), paste the whole file into
+Whenever `firestore.rules` changes (most recently for photo comments), paste the whole file into
 Firebase console > Firestore Database > Rules and click **Publish**. Until then the new features show "could not be saved".
