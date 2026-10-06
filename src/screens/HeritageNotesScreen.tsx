@@ -98,7 +98,7 @@ export const HeritageNotesScreen: React.FC = () => {
       {/* 1. Family Dedication Card */}
       {activeTab === 'family' && (
         <div className="bg-[#FAF7F2] rounded-3xl border border-[#D2C4B1] overflow-hidden shadow-sm space-y-6">
-          <RecipePhoto src={FAMILY_PHOTO_URL} alt="The Ruffolo-Vitale family gathered together" aspect="aspect-[20/9]" />
+          <RecipePhoto src={FAMILY_PHOTO_URL} alt="The Ruffolo-Vitale family gathered together" aspect="aspect-[20/9]" plain />
           <div className="px-6 sm:px-8 pt-6 space-y-1.5">
             <span className="inline-block px-3 py-1 rounded-full bg-[#EBE3D6] border border-[#D2C4B1] text-[#4A3B2C] text-xs font-bold uppercase tracking-wider">
               Preserved Forever
@@ -126,7 +126,7 @@ export const HeritageNotesScreen: React.FC = () => {
 
             {FAMILY_GALLERY_URLS.map(url => (
               <div key={url} className="rounded-2xl overflow-hidden border border-[#D2C4B1]">
-                <RecipePhoto src={url} alt="Family members in the kitchen" aspect="aspect-[16/9]" />
+                <RecipePhoto src={url} alt="Family members in the kitchen" aspect="aspect-[16/9]" plain />
               </div>
             ))}
 
