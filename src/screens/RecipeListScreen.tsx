@@ -7,7 +7,7 @@ import {
   RecipeQuickFilter,
   SPICE_INFO
 } from '../types';
-import { getRecipePhotoUrls, isStockPhotoUrl } from '../utils/photoResolver';
+import { getRecipePhotoUrls, isStockPhotoUrl, FAMILY_PHOTO_URL } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { allRecipes } from '../data/cookbookDataSource';
 import { calculateDifficulty } from '../utils/recipeCalculator';
@@ -17,7 +17,6 @@ import {
   Clock,
   Users,
   BookOpen,
-  Sparkles,
   X,
   Camera
 } from 'lucide-react';
@@ -46,18 +45,14 @@ export const RecipeListScreen: React.FC = () => {
 
   return (
     <div id="recipe_list_screen" className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-16 space-y-6">
-      {/* Heirloom Hero Title */}
-      <div className="text-center max-w-2xl mx-auto space-y-2">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBE3D6] text-[#7D6C5A] text-xs font-semibold tracking-wider uppercase border border-[#D2C4B1]">
-          <Sparkles className="w-3.5 h-3.5 text-[#4A3B2C]" />
-          Family Heirloom Collection
-        </span>
-        <h2 className="font-serif-heritage text-3xl sm:text-4xl lg:text-5xl font-bold text-[#261D16] tracking-tight">
-          Ruffolo-Vitale Cookbook
-        </h2>
-        <p className="text-xs sm:text-sm text-[#5C4E40] max-w-lg mx-auto leading-relaxed">
-          Authentic Calabrian recipes, artisan homemade pastas, holiday sweets, and time-honored kitchen wisdom.
-        </p>
+      {/* Family photo from page 1 of the cookbook */}
+      <div className="max-w-4xl mx-auto">
+        <img
+          src={FAMILY_PHOTO_URL}
+          alt="The Ruffolo-Vitale family gathered together"
+          className="w-full h-auto rounded-3xl border border-[#D2C4B1] shadow-sm"
+          loading="eager"
+        />
       </div>
 
       {/* Search Input Bar with Integrated Voice Search */}

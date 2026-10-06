@@ -427,11 +427,17 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       case RecipeQuickFilter.FAVORITES:
         return list.filter(r => favoriteRecipeIds.has(r.id));
       case RecipeQuickFilter.GLUTEN_FREE:
-        return list.filter(r => generateAutoTags(r).includes('Gluten-Free'));
+        return list.filter(r => r.diet?.includes('gluten-free'));
       case RecipeQuickFilter.VEGAN:
-        return list.filter(r => generateAutoTags(r).includes('Vegan'));
+        return list.filter(r => r.diet?.includes('vegan'));
       case RecipeQuickFilter.SPICY:
-        return list.filter(r => calculateSpiceLevel(r) !== SpiceLevel.MILD);
+        return list.filter(r => r.diet?.includes('spicy'));
+      case RecipeQuickFilter.POULTRY:
+        return list.filter(r => r.diet?.includes('poultry'));
+      case RecipeQuickFilter.SEAFOOD:
+        return list.filter(r => r.diet?.includes('seafood'));
+      case RecipeQuickFilter.RED_MEAT:
+        return list.filter(r => r.diet?.includes('red-meat'));
       case RecipeQuickFilter.EASY:
         return list.filter(r => calculateDifficulty(r) === DifficultyLevel.EASY);
       case RecipeQuickFilter.FAMILY_HERITAGE:
@@ -440,7 +446,7 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           return c.includes('rosina') || c.includes('sandy') || c.includes('ornella') || c.includes('bruna') || c.includes('elvira') || c.includes('teresa');
         });
       case RecipeQuickFilter.VEGETARIAN:
-        return list.filter(r => r.tags.some(t => t.toLowerCase().includes('vegetarian')) || generateAutoTags(r).includes('Vegetarian'));
+        return list.filter(r => r.diet?.includes('vegetarian'));
       case RecipeQuickFilter.QUICK:
         return list.filter(r => {
           const ct = r.cookTime.toLowerCase();

@@ -98,6 +98,8 @@ export interface Recipe {
   cookTime: string;
   difficulty?: DifficultyLevel;
   baseSpiceLevel?: SpiceLevel;
+  /** Dietary flags judged from the ingredients: gluten-free, vegan, vegetarian, spicy, poultry, seafood, red-meat. */
+  diet?: string[];
   nutrition?: NutritionInfo;
   ingredients: RecipeIngredient[];
   instructions: string[];
@@ -125,6 +127,9 @@ export enum RecipeQuickFilter {
   GLUTEN_FREE = "Gluten-Free 🌾",
   VEGAN = "Vegan 🌱",
   SPICY = "Spicy Kick 🌶️",
+  POULTRY = "Poultry 🍗",
+  SEAFOOD = "Seafood 🦐",
+  RED_MEAT = "Red Meat 🥩",
   EASY = "Easy Prep",
   FAMILY_HERITAGE = "Family Classics",
   VEGETARIAN = "Vegetarian",

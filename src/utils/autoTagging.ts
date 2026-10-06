@@ -6,58 +6,15 @@ export function generateAutoTags(recipe: Recipe): string[] {
   const titleLower = recipe.title.toLowerCase();
   const fullText = `${ingText} ${titleLower}`;
 
-  // 1. Dietary Tags
-  const hasGluten =
-    fullText.includes('flour') ||
-    fullText.includes('pasta') ||
-    fullText.includes('spaghetti') ||
-    fullText.includes('penne') ||
-    fullText.includes('bread') ||
-    fullText.includes('dough') ||
-    fullText.includes('crust') ||
-    fullText.includes('semolina') ||
-    fullText.includes('cookie') ||
-    fullText.includes('biscotti');
-
-  if (!hasGluten) {
-    tags.push('Gluten-Free');
-  }
-
-  const hasMeat =
-    fullText.includes('beef') ||
-    fullText.includes('pork') ||
-    fullText.includes('chicken') ||
-    fullText.includes('sausage') ||
-    fullText.includes('veal') ||
-    fullText.includes('meat') ||
-    fullText.includes('pancetta') ||
-    fullText.includes('prosciutto') ||
-    fullText.includes('bacon') ||
-    fullText.includes('shrimp') ||
-    fullText.includes('clam') ||
-    fullText.includes('fish') ||
-    fullText.includes('salmon') ||
-    fullText.includes('calamari') ||
-    fullText.includes('tuna');
-
-  if (!hasMeat) {
-    tags.push('Vegetarian');
-
-    const hasDairyOrEgg =
-      fullText.includes('egg') ||
-      fullText.includes('cheese') ||
-      fullText.includes('milk') ||
-      fullText.includes('butter') ||
-      fullText.includes('ricotta') ||
-      fullText.includes('parmesan') ||
-      fullText.includes('mozzarella') ||
-      fullText.includes('cream') ||
-      fullText.includes('pecorino');
-
-    if (!hasDairyOrEgg) {
-      tags.push('Vegan');
-    }
-  }
+  // 1. Dietary Tags (judged per recipe by tools/dietary/classify.py and stored in recipes.json)
+  const diet = recipe.diet ?? [];
+  if (diet.includes('gluten-free')) tags.push('Gluten-Free');
+  if (diet.includes('vegetarian')) tags.push('Vegetarian');
+  if (diet.includes('vegan')) tags.push('Vegan');
+  if (diet.includes('spicy')) tags.push('Spicy');
+  if (diet.includes('poultry')) tags.push('Poultry');
+  if (diet.includes('seafood')) tags.push('Seafood');
+  if (diet.includes('red-meat')) tags.push('Red Meat');
 
   const hasDairy =
     fullText.includes('cheese') ||
@@ -129,9 +86,6 @@ export function generateAutoTags(recipe: Recipe): string[] {
   }
   if (fullText.includes('pasta') || fullText.includes('gnocchi') || fullText.includes('spaghetti') || fullText.includes('penne')) {
     tags.push('Pasta Specialty');
-  }
-  if (fullText.includes('shrimp') || fullText.includes('clam') || fullText.includes('fish') || fullText.includes('calamari')) {
-    tags.push('Seafood');
   }
 
   return Array.from(new Set(tags));
