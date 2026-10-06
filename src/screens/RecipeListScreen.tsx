@@ -134,9 +134,6 @@ export const RecipeListScreen: React.FC = () => {
                 }`}
               >
                 <span>{info.displayName}</span>
-                <span className={`text-[10px] ${isSelected ? 'text-[#FAF7F2]/80' : 'text-[#7D6C5A]'}`}>
-                  {info.pageRange}
-                </span>
               </button>
             );
           })}
