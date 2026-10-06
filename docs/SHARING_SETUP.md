@@ -96,7 +96,7 @@ Either way the published site is public: anyone with the link can read the cookb
 - `users/{uid}/lists/shopping`: the member's shopping list (`items`, `updatedAt`). Only that member can read or write it. Signed out, the list stays in the browser on that device instead.
 - `recipeTips/{recipeId}/tips/{uid}`: the tip a member shares with everyone for a recipe (`text`, `authorName`, `updatedAt`). Anyone can read; only that member can write or remove theirs.
 - `photoComments/{photoId}/comments/{id}`: a comment under a photo in the Photos section (`text`, `authorUid`, `authorName`, `authorPhoto`, `createdAt`). Anyone can read; signed-in members add their own and can delete only their own; no editing. `photoId` is the photo's file name for original cookbook photos (e.g. `cook_p195_1`), `shared_<recipeId>` for a photo shared on a cookbook recipe, and `recipe_<id>` for the photo of a recipe a member added.
-- `photoReactions/{photoId}/reactions/{uid}`: a member's one reaction to a photo (`type`: like, love, yum or haha; `authorName`; `updatedAt`). Anyone can read; only that member sets, changes or removes theirs.
+- `photoReactions/{photoId}/reactions/{uid}`: a member's one reaction to a photo (`type`: like, love, yum, haha, celebrate (🙌) or clap (👏); `authorName`; `updatedAt`). Anyone can read; only that member sets, changes or removes theirs.
 - `recipeRatings/{recipeId}__{uid}`: a member's star rating of a recipe (`recipeId`, `uid`, `stars` 1-5, `updatedAt`). The document id fixes it to one rating per member per recipe. Anyone can read them (the app averages them); a member sets, changes or removes only their own.
 - `recipePhotos/{recipeId}`: the one shared photo for a cookbook recipe: `imageUrl`, `uploadedBy`, `uploadedByName`, `updatedAt`.
 

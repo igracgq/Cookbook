@@ -207,7 +207,7 @@ test('everyone sees reactions; members set, change and remove only their own', a
 
 test('reactions are validated', async () => {
   const db = as('u1');
-  for (const t of ['like', 'love', 'yum', 'haha']) await assertSucceeds(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: t })));
+  for (const t of ['like', 'love', 'yum', 'haha', 'celebrate', 'clap']) await assertSucceeds(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: t })));
   await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: 'angry' })));
   await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ extra: 1 })));
   await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ updatedAt: new Date('2001-01-01') })));
@@ -274,4 +274,8 @@ test('ratings are validated: 1 to 5 whole stars, one per member per recipe', asy
   await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', 5, { updatedAt: new Date('2001-01-01') })));
   const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
   await assertFails(setDoc(doc(guest, 'recipeRatings/r__g1'), rating('g1', 'r', 5)));
+});
+
+test('emoji are fine in comments', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoComments/p/comments/emoji'), comment('u1', { text: 'So good 😋❤️👏🙌👍 Nonna would be proud 😂' })));
 });
