@@ -82,8 +82,11 @@ interface CookbookContextType {
   // Shopping list (what to buy at the store)
   shoppingList: ShoppingItem[];
   /** Adds items for a recipe. Returns how many were new to the list. */
-  addToShoppingList: (recipeTitle: string, items: Array<{ name: string; text: string }>) => number;
-  addCustomShoppingItem: (name: string) => void;
+  addToShoppingList: (recipeTitle: string, items: Array<{ name: string; text: string; kind?: 'ingredient' | 'other' }>) => number;
+  /** Something the person wants that no recipe lists, such as a utensil or an extra ingredient. */
+  addCustomShoppingItem: (name: string, kind?: 'ingredient' | 'other') => void;
+  /** 'local': on this device only; 'synced': saved to the signed-in account; 'error': the account could not be updated. */
+  shoppingSync: 'local' | 'synced' | 'error';
   toggleShoppingItemBought: (key: string) => void;
   removeShoppingItem: (key: string) => void;
   clearShoppingList: () => void;
@@ -523,8 +526,9 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
-  // Shopping list: kept on this device.
-  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(() => {
+  // Shopping list. Signed in: saved to the member's own account (users/{uid}/lists/shopping) so it follows them
+  // to other devices. Signed out: kept on this device only.
+  const readLocalShopping = (): ShoppingItem[] => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.SHOPPING);
       const parsed = saved ? JSON.parse(saved) : [];
@@ -532,22 +536,85 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {
       return [];
     }
-  });
-  const updateShopping = (fn: (prev: ShoppingItem[]) => ShoppingItem[]) => {
-    setShoppingList(prev => {
-      const next = fn(prev);
+  };
+  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(readLocalShopping);
+  const shoppingRef = useRef<ShoppingItem[]>(shoppingList);
+  const [shoppingSync, setShoppingSync] = useState<'local' | 'synced' | 'error'>('local');
+
+  const commitShopping = (next: ShoppingItem[]) => {
+    shoppingRef.current = next;
+    setShoppingList(next);
+    if (user && db) {
+      setDoc(doc(db, 'users', user.uid, 'lists', 'shopping'), { items: next, updatedAt: serverTimestamp() })
+        .then(() => setShoppingSync('synced'))
+        .catch(() => setShoppingSync('error'));
+    } else {
       try {
         localStorage.setItem(STORAGE_KEYS.SHOPPING, JSON.stringify(next));
       } catch (e) {
         console.error(e);
       }
-      return next;
-    });
+    }
+  };
+  const updateShopping = (fn: (prev: ShoppingItem[]) => ShoppingItem[]) => commitShopping(fn(shoppingRef.current));
+
+  // Merge two lists by item name, keeping what both know about each item.
+  const mergeShopping = (cloud: ShoppingItem[], local: ShoppingItem[]): ShoppingItem[] => {
+    const out = cloud.map(i => ({ ...i, needs: [...i.needs] }));
+    for (const l of local) {
+      const e = out.find(i => i.key === l.key);
+      if (!e) out.push({ ...l, needs: [...l.needs] });
+      else for (const n of l.needs) if (!e.needs.some(x => x.recipe === n.recipe)) e.needs.push(n);
+    }
+    return out;
   };
 
-  const addToShoppingList = (recipeTitle: string, items: Array<{ name: string; text: string }>) => {
-    const have = new Set(shoppingList.map(i => i.key));
-    const fresh = new Set(items.map(i => i.name.toLowerCase()).filter(k => !have.has(k)));
+  // On sign-in, show the account's list. Items written on this device while signed out are added to it once,
+  // then removed from the device so the next person to use it does not inherit them.
+  useEffect(() => {
+    if (!user || !db) {
+      const local = readLocalShopping();
+      shoppingRef.current = local;
+      setShoppingList(local);
+      setShoppingSync('local');
+      return;
+    }
+    const firestore = db;
+    const uid = user.uid;
+    const ref = doc(firestore, 'users', uid, 'lists', 'shopping');
+    let first = true;
+    return onSnapshot(
+      ref,
+      snap => {
+        let cloud: ShoppingItem[] = Array.isArray(snap.data()?.items) ? snap.data()!.items : [];
+        if (first) {
+          first = false;
+          const local = readLocalShopping();
+          if (local.length > 0) {
+            const merged = mergeShopping(cloud, local);
+            cloud = merged;
+            setDoc(ref, { items: merged, updatedAt: serverTimestamp() })
+              .then(() => { try { localStorage.removeItem(STORAGE_KEYS.SHOPPING); } catch { /* ignore */ } })
+              .catch(() => setShoppingSync('error'));
+          }
+        }
+        shoppingRef.current = cloud;
+        setShoppingList(cloud);
+        if (!snap.metadata.hasPendingWrites) setShoppingSync('synced');
+      },
+      () => {
+        const local = readLocalShopping();
+        shoppingRef.current = local;
+        setShoppingList(local);
+        setShoppingSync('error');
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid]);
+
+  const addToShoppingList = (recipeTitle: string, items: Array<{ name: string; text: string; kind?: 'ingredient' | 'other' }>) => {
+    const have = new Set(shoppingRef.current.map(i => i.key));
+    const fresh = new Set(items.map(i => i.name.trim().toLowerCase()).filter(k => k && !have.has(k)));
     updateShopping(prev => {
       const next = prev.map(i => ({ ...i, needs: [...i.needs] }));
       for (const it of items) {
@@ -558,7 +625,7 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           if (!existing.needs.some(n => n.recipe === recipeTitle)) existing.needs.push({ recipe: recipeTitle, text: it.text });
           existing.bought = false;
         } else {
-          next.push({ key, name: key, needs: [{ recipe: recipeTitle, text: it.text }], bought: false });
+          next.push({ key, name: key, needs: [{ recipe: recipeTitle, text: it.text }], bought: false, kind: it.kind ?? 'ingredient' });
         }
       }
       return next;
@@ -566,10 +633,10 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return fresh.size;
   };
 
-  const addCustomShoppingItem = (name: string) => {
+  const addCustomShoppingItem = (name: string, kind: 'ingredient' | 'other' = 'ingredient') => {
     const key = name.trim().toLowerCase();
     if (!key) return;
-    updateShopping(prev => (prev.some(i => i.key === key) ? prev : [...prev, { key, name: key, needs: [], bought: false }]));
+    updateShopping(prev => (prev.some(i => i.key === key) ? prev : [...prev, { key, name: key, needs: [], bought: false, kind }]));
   };
 
   const toggleShoppingItemBought = (key: string) =>
@@ -578,8 +645,9 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const clearShoppingList = () => updateShopping(() => []);
 
   const moveBoughtToPantry = () => {
-    const bought = shoppingList.filter(i => i.bought).map(i => i.name);
-    if (bought.length === 0) return;
+    const boughtItems = shoppingRef.current.filter(i => i.bought);
+    if (boughtItems.length === 0) return;
+    const bought = boughtItems.filter(i => i.kind !== 'other').map(i => i.name); // utensils are not pantry food
     setPantryItems(prev => {
       const next = Array.from(new Set([...prev, ...bought]));
       try {
@@ -848,6 +916,7 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         shoppingList,
         addToShoppingList,
         addCustomShoppingItem,
+        shoppingSync,
         toggleShoppingItemBought,
         removeShoppingItem,
         clearShoppingList,

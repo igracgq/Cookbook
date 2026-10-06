@@ -3,6 +3,7 @@ import { useCookbook } from '../context/CookbookContext';
 import { commonPantryIngredients, findRecipeById, missingIngredientsFor } from '../data/cookbookDataSource';
 import { ShareListButtons } from '../components/ShareListButtons';
 import { listMessage } from '../utils/shareList';
+import { KindToggle } from '../components/KindToggle';
 import { MatcherFilter } from '../types';
 import { getRecipePhotoUrls } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
@@ -42,17 +43,30 @@ export const PantryMatcherScreen: React.FC = () => {
   // The recipe the person has chosen to cook, and what they would still need to buy for it.
   const [chosenId, setChosenId] = useState<string | null>(null);
   const [addedNote, setAddedNote] = useState<string | null>(null);
+  // Things the person wants for this recipe that it does not list (a utensil, an extra ingredient to try).
+  const [extras, setExtras] = useState<Array<{ name: string; text: string; kind: 'ingredient' | 'other' }>>([]);
+  const [extraVal, setExtraVal] = useState('');
+  const [extraKind, setExtraKind] = useState<'ingredient' | 'other'>('ingredient');
   const planRef = useRef<HTMLDivElement | null>(null);
   const chosen = chosenId ? findRecipeById(chosenId) : undefined;
   const missing = useMemo(() => (chosen ? missingIngredientsFor(chosen, pantryItems) : []), [chosen, pantryItems]);
-  useEffect(() => setAddedNote(null), [chosenId]);
+  useEffect(() => { setAddedNote(null); setExtras([]); setExtraVal(''); }, [chosenId]);
   useEffect(() => {
     if (chosenId) planRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [chosenId]);
 
+  const addExtra = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = extraVal.trim();
+    if (!text) return;
+    setExtras(prev => (prev.some(x => x.name === text.toLowerCase()) ? prev : [...prev, { name: text.toLowerCase(), text, kind: extraKind }]));
+    setExtraVal('');
+    setAddedNote(null);
+  };
+
   const addMissingToList = () => {
     if (!chosen) return;
-    const fresh = addToShoppingList(chosen.title, missing);
+    const fresh = addToShoppingList(chosen.title, [...missing.map(m => ({ ...m, kind: 'ingredient' as const })), ...extras]);
     setAddedNote(
       fresh === 0 ? 'Those items are already on your shopping list.' : `${fresh} item${fresh === 1 ? '' : 's'} added to your shopping list.`
     );
@@ -197,23 +211,58 @@ export const PantryMatcherScreen: React.FC = () => {
           </div>
 
           {missing.length === 0 ? (
-            <p className="text-sm text-[#5C7250] font-semibold">You have everything you need. Ready to cook!</p>
+            <p className="text-sm text-[#5C7250] font-semibold">You have everything this recipe lists. Ready to cook!</p>
           ) : (
-            <>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#B8452D] mb-2">
-                  Ingredients you don't have ({missing.length})
-                </h4>
-                <ul id="missing_list" className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-[#261D16]">
-                  {missing.map(m => (
-                    <li key={m.name} className="flex items-start gap-2">
-                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#B8452D] shrink-0" />
-                      <span className="break-words">{m.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#B8452D] mb-2">
+                Ingredients you don't have ({missing.length})
+              </h4>
+              <ul id="missing_list" className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-[#261D16]">
+                {missing.map(m => (
+                  <li key={m.name} className="flex items-start gap-2">
+                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#B8452D] shrink-0" />
+                    <span className="break-words">{m.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
+          {/* Anything else the person wants for this recipe */}
+          <div className="space-y-2 pt-3 border-t border-[#E4DBCF]">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A3B2C]">Need something else for this recipe?</h4>
+            <form onSubmit={addExtra} className="flex gap-2">
+              <input
+                id="extra_item_input"
+                type="text"
+                value={extraVal}
+                onChange={e => setExtraVal(e.target.value)}
+                placeholder="A utensil, or an extra ingredient you want to try..."
+                maxLength={100}
+                className="flex-1 min-w-0 px-3 py-2 bg-white border border-[#D2C4B1] rounded-xl text-xs sm:text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
+              />
+              <button type="submit" id="extra_item_add_btn" className="flex items-center gap-1 px-3 py-2 bg-[#EBE3D6] border border-[#D2C4B1] hover:bg-[#E4DBCF] rounded-xl text-xs font-bold text-[#4A3B2C] cursor-pointer">
+                <Plus className="w-3.5 h-3.5" /> Add
+              </button>
+            </form>
+            <KindToggle kind={extraKind} onChange={setExtraKind} />
+            {extras.length > 0 && (
+              <ul id="extras_list" className="flex flex-wrap gap-1.5 pt-1">
+                {extras.map(x => (
+                  <li key={x.name} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-full bg-[#EBE3D6] border border-[#D2C4B1] text-xs text-[#261D16]">
+                    {x.text}
+                    {x.kind === 'other' && <span className="text-[10px] text-[#7D6C5A]">(utensil/other)</span>}
+                    <button type="button" aria-label={`Remove ${x.text}`} onClick={() => setExtras(prev => prev.filter(y => y.name !== x.name))} className="p-0.5 text-[#7D6C5A] hover:text-[#B8452D] cursor-pointer">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {(missing.length > 0 || extras.length > 0) && (
+            <>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   id="add_missing_to_list_btn"
@@ -232,11 +281,15 @@ export const PantryMatcherScreen: React.FC = () => {
               </div>
 
               <div className="pt-3 border-t border-[#E4DBCF] space-y-2">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#7D6C5A]">Send what's missing</p>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#7D6C5A]">Send this list</p>
                 <ShareListButtons
                   idPrefix="missing_share"
-                  subject={`Ingredients I need for ${chosen.title} (Heritage Cookbook)`}
-                  message={listMessage(`Ingredients I need for ${chosen.title}:`, missing.map(m => m.text))}
+                  subject={`Shopping for ${chosen.title} (Heritage Cookbook)`}
+                  message={listMessage(
+                    `Shopping for ${chosen.title}:`,
+                    [...missing.map(m => m.text), ...extras.filter(x => x.kind === 'ingredient').map(x => x.text)],
+                    extras.filter(x => x.kind === 'other').map(x => x.text)
+                  )}
                 />
               </div>
             </>

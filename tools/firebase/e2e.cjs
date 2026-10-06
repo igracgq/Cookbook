@@ -149,13 +149,51 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   const d = r.documents[0].fields;
   ok(/^https:\/\/res\.cloudinary\.com\//.test(d.imageUrl.stringValue) && JSON.stringify(r).length < 5000, 'Firestore recipe holds the Cloudinary URL, no image data');
 
+  // Shopping list: saved to the account, follows it live to the other device, utensils are kept apart
+  await page.click('#nav_pantry_desktop'); await page.waitForTimeout(800);
+  const choose = page.locator('[id^=choose_recipe_]');
+  for (let i = 0; i < 30; i++) { const c = choose.nth(i).locator('xpath=ancestor::div[starts-with(@id,"match_card_")]'); if ((await c.innerText()).includes('Missing:')) { await choose.nth(i).click(); break; } }
+  await page.waitForSelector('#missing_panel');
+  await page.fill('#extra_item_input', 'wooden spoon'); await page.click('text=Utensil or other'); await page.click('#extra_item_add_btn');
+  ok(await page.locator('#extras_list').innerText().then(t => t.includes('wooden spoon') && t.includes('utensil/other')), 'an extra utensil can be added next to the recipe\'s own missing items');
+  await page.click('#add_missing_to_list_btn'); await page.waitForTimeout(1500);
+  const badge = await page.locator('#shopping_badge').innerText();
+  await p2.waitForTimeout(2500);
+  ok((await p2.locator('#shopping_badge').innerText()) === badge, 'shopping list follows the account to the other device live (badge ' + badge + ')');
+  await page.click('#nav_shopping_list'); await page.waitForSelector('#shopping_list_screen');
+  ok(/Saved to your account/.test(await page.locator('#shopping_sync_status').innerText()), 'shopping list says it is saved to the account');
+  ok(/Utensils & other/i.test(await page.locator('#shopping_list_screen').innerText()) && /wooden spoon/.test(await page.locator('#shopping_list_screen').innerText()), 'utensils are listed under their own heading');
+  const listDocs = (await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents:runQuery', {
+    method: 'POST', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' },
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'lists', allDescendants: true }] } }) })).json()).filter(x => x.document);
+  ok(listDocs.length === 1 && JSON.stringify(listDocs).includes('wooden spoon'), 'the list is stored under the member\'s own account');
+
   // Ann's note follows her account to the second device
   await p2.click('[id^=quick_filter_all_dishes]'); await p2.fill('#recipe_search_input', 'Tiramisu'); await p2.waitForTimeout(700);
   await p2.locator('h3').first().click(); await p2.waitForTimeout(2000);
   ok(await p2.inputValue('#recipe_note_textarea') === 'Ann private basil note', 'private note follows the account to another device');
 
-  // Sign out clears favorites back to defaults
-  await page.click('#sign_out_btn'); await page.waitForTimeout(800);
+  // A list made while signed out moves into the account on sign-in, and is not left on the device
+  const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const p4 = await ctx4.newPage();
+  await p4.route('**/fonts.g*/**', r => r.abort());
+  await p4.goto('http://localhost:5173/Cookbook/'); await p4.waitForTimeout(2500);
+  await p4.click('#nav_shopping_list'); await p4.waitForSelector('#shopping_list_screen');
+  ok(/Sign in to keep your list/.test(await p4.locator('#shopping_sync_status').innerText()), 'signed-out list says it is only on this device');
+  await p4.fill('#shopping_add_input', 'cheese grater'); await p4.click('text=Utensil or other'); await p4.press('#shopping_add_input', 'Enter');
+  await p4.evaluate(() => window.__cookbookTestSignIn('cara-uid', 'cara@example.com'));
+  await p4.waitForSelector('#sign_out_btn', { timeout: 15000 }); await p4.waitForTimeout(2000);
+  ok((await p4.locator('#shopping_list_screen').innerText()).includes('cheese grater'), 'item written while signed out is still there after signing in');
+  ok(await p4.evaluate(() => localStorage.getItem('heritage_cookbook_shopping')) === null, 'and it is no longer kept on the device');
+  const caraLists = JSON.stringify((await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents:runQuery', {
+    method: 'POST', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' },
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'lists', allDescendants: true }] } }) })).json()));
+  ok(caraLists.includes('cheese grater') && caraLists.includes('wooden spoon'), 'both members\' lists are saved, each in their own account');
+
+  // After signing out the shared device no longer shows Ann's list
+  await page.click('#sign_out_btn'); await page.waitForTimeout(1200);
+  ok(await page.locator('#shopping_badge').count() === 0, 'signed-out device does not show the account\'s shopping list');
+
   ok(await page.locator('#auth_btn').count() === 1, 'signed out');
   console.log('page errors:', errs.slice(0, 3));
   await b.close(); srv.close();

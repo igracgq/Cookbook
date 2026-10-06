@@ -44,6 +44,16 @@ service cloud.firestore {
         && recipeId.matches('^[A-Za-z0-9_-]{1,100}$') && validNote(request.resource.data);
     }
 
+    // The member's shopping list: one document (users/{uid}/lists/shopping) holding the whole list.
+    match /users/{uid}/lists/{listId} {
+      allow read, delete: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && listId == 'shopping'
+        && request.resource.data.keys().hasOnly(['items', 'updatedAt'])
+        && request.resource.data.items is list && request.resource.data.items.size() <= 300
+        && request.resource.data.updatedAt == request.time;
+    }
+
     // Recipes added by family members. The photo is a Cloudinary URL, never image data.
     match /recipes/{recipeId} {
       function validRecipe(d) {

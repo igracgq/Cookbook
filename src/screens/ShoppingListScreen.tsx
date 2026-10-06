@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Check, Plus, ShoppingCart, UtensilsCrossed, X } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import { useCookbook } from '../context/CookbookContext';
 import { ShareListButtons } from '../components/ShareListButtons';
+import { KindToggle } from '../components/KindToggle';
 import { itemLabel, listMessage } from '../utils/shareList';
 
 export const ShoppingListScreen: React.FC = () => {
@@ -12,19 +14,24 @@ export const ShoppingListScreen: React.FC = () => {
     removeShoppingItem,
     clearShoppingList,
     moveBoughtToPantry,
+    shoppingSync,
     navigateTo
   } = useCookbook();
+  const { cloudAvailable, user } = useAuth();
 
   const [inputVal, setInputVal] = useState('');
+  const [kind, setKind] = useState<'ingredient' | 'other'>('ingredient');
   const [confirmClear, setConfirmClear] = useState(false);
 
   const toBuy = shoppingList.filter(i => !i.bought);
+  const toBuyFood = toBuy.filter(i => i.kind !== 'other');
+  const toBuyOther = toBuy.filter(i => i.kind === 'other');
   const bought = shoppingList.filter(i => i.bought);
 
   const add = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputVal.trim()) return;
-    addCustomShoppingItem(inputVal);
+    addCustomShoppingItem(inputVal, kind);
     setInputVal('');
   };
 
@@ -40,25 +47,33 @@ export const ShoppingListScreen: React.FC = () => {
           The ingredients you are missing for the recipes you picked, plus anything you add yourself. Tick items off as
           you put them in the basket.
         </p>
+        <p id="shopping_sync_status" className="text-[11px] text-[#7D6C5A]">
+          {user && shoppingSync === 'synced' && 'Saved to your account, so it is here on all your devices.'}
+          {user && shoppingSync === 'error' && 'Could not save to your account just now. Your list is still on screen; try your last change again.'}
+          {!user && cloudAvailable && 'Saved on this device. Sign in to keep your list on all your devices.'}
+        </p>
       </div>
 
-      <form onSubmit={add} className="flex gap-2">
-        <input
-          id="shopping_add_input"
-          type="text"
-          value={inputVal}
-          onChange={e => setInputVal(e.target.value)}
-          placeholder="Add an item (e.g., parchment paper, fresh basil)..."
-          maxLength={100}
-          className="flex-1 min-w-0 px-4 py-3 bg-white border border-[#D2C4B1] rounded-xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
-        />
-        <button
-          type="submit"
-          className="flex items-center gap-1.5 px-4 py-3 bg-[#4A3B2C] text-[#FAF7F2] rounded-xl text-sm font-semibold hover:bg-[#382B1E] transition-colors cursor-pointer"
-        >
-          <Plus className="w-4 h-4" /> Add
-        </button>
-      </form>
+      <div className="space-y-2">
+        <form onSubmit={add} className="flex gap-2">
+          <input
+            id="shopping_add_input"
+            type="text"
+            value={inputVal}
+            onChange={e => setInputVal(e.target.value)}
+            placeholder="Add anything else you need: a utensil, an extra ingredient..."
+            maxLength={100}
+            className="flex-1 min-w-0 px-4 py-3 bg-white border border-[#D2C4B1] rounded-xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
+          />
+          <button
+            type="submit"
+            className="flex items-center gap-1.5 px-4 py-3 bg-[#4A3B2C] text-[#FAF7F2] rounded-xl text-sm font-semibold hover:bg-[#382B1E] transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" /> Add
+          </button>
+        </form>
+        <KindToggle kind={kind} onChange={setKind} />
+      </div>
 
       {shoppingList.length === 0 ? (
         <div className="text-center py-14 px-4 bg-[#FAF7F2] rounded-2xl border border-dashed border-[#D2C4B1] space-y-3">
@@ -98,12 +113,24 @@ export const ShoppingListScreen: React.FC = () => {
             {toBuy.length === 0 ? (
               <p className="text-sm text-[#5C7250] font-semibold">Everything is in the basket.</p>
             ) : (
-              <ul className="divide-y divide-[#E4DBCF]">
-                {toBuy.map(item => (
-                  <ShoppingRow key={item.key} label={itemLabel(item)} recipes={item.needs.map(n => n.recipe)} bought={false}
-                    onToggle={() => toggleShoppingItemBought(item.key)} onRemove={() => removeShoppingItem(item.key)} />
+              <div className="space-y-3">
+                {[
+                  { heading: 'Ingredients', items: toBuyFood },
+                  { heading: 'Utensils & other', items: toBuyOther }
+                ].filter(g => g.items.length > 0).map(g => (
+                  <div key={g.heading}>
+                    {toBuyOther.length > 0 && (
+                      <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#7D6C5A] mb-0.5">{g.heading}</h4>
+                    )}
+                    <ul className="divide-y divide-[#E4DBCF]">
+                      {g.items.map(item => (
+                        <ShoppingRow key={item.key} label={itemLabel(item)} recipes={item.needs.map(n => n.recipe)} bought={false}
+                          onToggle={() => toggleShoppingItemBought(item.key)} onRemove={() => removeShoppingItem(item.key)} />
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             )}
 
             {toBuy.length > 0 && (
@@ -112,7 +139,7 @@ export const ShoppingListScreen: React.FC = () => {
                 <ShareListButtons
                   idPrefix="shopping_share"
                   subject="Shopping list (Heritage Cookbook)"
-                  message={listMessage('Shopping list', toBuy.map(itemLabel))}
+                  message={listMessage('Shopping list', toBuyFood.map(itemLabel), toBuyOther.map(itemLabel))}
                 />
               </div>
             )}

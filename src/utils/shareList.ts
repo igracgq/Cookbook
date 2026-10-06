@@ -7,9 +7,17 @@ export function itemLabel(item: ShoppingItem): string {
   return `${item.name} (${item.needs.map(n => n.text).join(' + ')})`;
 }
 
-/** Plain text for a message: a title, an optional "for recipe" line, then one bullet per item. */
-export function listMessage(title: string, lines: string[]): string {
-  return `${title}\n\n${lines.map(l => `• ${l}`).join('\n')}\n\nFrom the Ruffolo-Vitale Heritage Cookbook`;
+/**
+ * Plain text for a message: a title, then one bullet per item. When there are utensils or other things as well
+ * as ingredients, the two get their own headings.
+ */
+export function listMessage(title: string, lines: string[], otherLines: string[] = []): string {
+  const bullets = (l: string[]) => l.map(x => `• ${x}`).join('\n');
+  const body =
+    otherLines.length === 0
+      ? bullets(lines)
+      : [lines.length ? `Ingredients:\n${bullets(lines)}` : '', `Utensils & other:\n${bullets(otherLines)}`].filter(Boolean).join('\n\n');
+  return `${title}\n\n${body}\n\nFrom the Ruffolo-Vitale Heritage Cookbook`;
 }
 
 export const sendByEmail = (subject: string, body: string) => {

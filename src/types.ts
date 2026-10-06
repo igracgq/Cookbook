@@ -130,6 +130,8 @@ export interface ShoppingItem {
   /** Which recipes need it and how each recipe words it. */
   needs: Array<{ recipe: string; text: string }>;
   bought: boolean;
+  /** Missing recipe ingredients and added ingredients are 'ingredient'; utensils and other things are 'other'. */
+  kind?: 'ingredient' | 'other';
 }
 
 export interface MatchResult {
