@@ -263,10 +263,10 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
         </div>
       </div>
 
-      {/* Photos: whole picture visible, no text on top of it */}
+      {/* Photos, with the category and title on the picture */}
       <div className="space-y-3">
         <div className="rounded-3xl overflow-hidden shadow-lg border border-[#D2C4B1]">
-          <RecipePhoto src={activePhoto} alt={recipe.title} aspect={activePhoto ? 'aspect-[4/3] sm:aspect-[16/10]' : 'aspect-[16/6]'}>
+          <RecipePhoto src={activePhoto} alt={recipe.title} aspect={activePhoto ? 'aspect-[4/3] sm:aspect-[16/10]' : 'aspect-[16/9] sm:aspect-[16/7]'}>
             {photos.length > 1 && (
               <>
                 <button
@@ -287,6 +287,20 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
                 </button>
               </>
             )}
+            {/* Category and title sit on the photo, bottom left */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 px-4 pb-4 pt-20 sm:px-6 sm:pb-5 bg-gradient-to-t from-black/75 via-black/40 to-transparent space-y-1.5">
+              <span className="inline-block px-3 py-1 rounded-full bg-[#FAF7F2]/90 text-[#4A3B2C] text-[11px] font-bold uppercase tracking-wider">
+                {CATEGORY_INFO[recipe.category]?.displayName}
+              </span>
+              <h1 className="font-serif-heritage text-3xl sm:text-4xl font-bold tracking-tight text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.55)]">
+                {recipe.title}
+              </h1>
+              {recipe.italianTitle && (
+                <p className="font-serif-heritage italic text-lg sm:text-xl text-white/85 [text-shadow:0_1px_6px_rgba(0,0,0,0.55)]">
+                  {recipe.italianTitle}
+                </p>
+              )}
+            </div>
           </RecipePhoto>
         </div>
 
@@ -312,28 +326,12 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           </div>
         )}
 
-        {/* Title block sits below the photo */}
-        <div className="pt-1 space-y-1.5">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-[#EBE3D6] border border-[#D2C4B1] text-[#4A3B2C] text-[11px] font-bold uppercase tracking-wider">
-              {CATEGORY_INFO[recipe.category]?.displayName}
-            </span>
-            {isCustomPhoto && (
-              <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[11px] font-bold flex items-center gap-1">
-                <ImageIcon className="w-3 h-3" />
-                <span>Your photo is first</span>
-              </span>
-            )}
-          </div>
-          <h1 className="font-serif-heritage text-3xl sm:text-4xl font-bold tracking-tight text-[#261D16]">
-            {recipe.title}
-          </h1>
-          {recipe.italianTitle && (
-            <p className="font-serif-heritage italic text-lg sm:text-xl text-[#7D6C5A]">
-              {recipe.italianTitle}
-            </p>
-          )}
-        </div>
+        {isCustomPhoto && (
+          <span className="inline-flex px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[11px] font-bold items-center gap-1">
+            <ImageIcon className="w-3 h-3" />
+            <span>Your photo is first</span>
+          </span>
+        )}
       </div>
 
       <SharedPhotoPanel recipe={recipe} />

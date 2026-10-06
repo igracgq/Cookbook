@@ -25,6 +25,7 @@ export const ShareRecipeModal: React.FC<ShareRecipeModalProps> = ({
 }) => {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedText, setCopiedText] = useState(false);
+  const [instagramNote, setInstagramNote] = useState(false);
 
   if (!isOpen || !recipe) return null;
 
@@ -103,6 +104,16 @@ From the Ruffolo-Vitale Heritage Cookbook.`;
   const shareViaFacebook = () => {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  // Instagram has no web address for sharing a link, so copy the link and caption and open Instagram.
+  const shareViaInstagram = () => {
+    const caption = `${shareSnippet}\n\n${currentUrl}`;
+    navigator.clipboard.writeText(caption).catch(() => {}).finally(() => {
+      setInstagramNote(true);
+      setTimeout(() => setInstagramNote(false), 6000);
+      window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer');
+    });
   };
 
   const hasNativeShare = typeof navigator !== 'undefined' && !!navigator.share;
@@ -215,14 +226,35 @@ From the Ruffolo-Vitale Heritage Cookbook.`;
                 id="share_facebook_btn"
                 type="button"
                 onClick={shareViaFacebook}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-[#EBE3D6]/70 border border-[#D2C4B1] hover:bg-[#E4DBCF] text-xs font-semibold text-[#261D16] transition-colors text-left col-span-2"
+                className="flex items-center gap-2.5 p-3 rounded-xl bg-[#EBE3D6]/70 border border-[#D2C4B1] hover:bg-[#E4DBCF] text-xs font-semibold text-[#261D16] transition-colors text-left"
               >
                 <div className="p-1.5 rounded-lg bg-blue-700 text-white">
                   <ExternalLink className="w-4 h-4" />
                 </div>
                 <span>Facebook</span>
               </button>
+
+              <button
+                id="share_instagram_btn"
+                type="button"
+                onClick={shareViaInstagram}
+                className="flex items-center gap-2.5 p-3 rounded-xl bg-[#EBE3D6]/70 border border-[#D2C4B1] hover:bg-[#E4DBCF] text-xs font-semibold text-[#261D16] transition-colors text-left"
+              >
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white">
+                  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" />
+                  </svg>
+                </div>
+                <span>Instagram</span>
+              </button>
             </div>
+            {instagramNote && (
+              <p role="status" className="mt-2.5 text-[11px] leading-snug text-emerald-800">
+                Link and caption copied. Paste them into a story, post or message in Instagram.
+              </p>
+            )}
           </div>
 
           {/* Quick Copy Link & Full Recipe */}
