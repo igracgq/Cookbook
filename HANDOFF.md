@@ -54,4 +54,32 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
 
 - Remove page ranges from the A-Z Index screen if wanted.
 - Some stock photos are loose matches (for example dialect-name pastries); swap individual ones on request.
-- The user has not asked for a pull request.
+- Changes reach the live site through a pull request into `main`, which GitHub Pages deploys (the owner asks for it).
+
+## Photo storage: what was decided, and what to do later
+
+**Decision (for now): keep member photos on Cloudinary.** Firebase holds the data (people, comments, reactions,
+recipes, links to photos); GitHub Pages holds the app and the original cookbook photos. The owner expects no more
+than about 1,000 uploaded photos. At roughly 0.5 MB each that is about 0.5 GB, well inside Cloudinary's free plan
+(no credit card). The thing to watch is the monthly download allowance, not storage: check usage in the Cloudinary
+dashboard now and then. A free Cloudinary account that goes over its allowance is not billed, it is eventually
+disabled, so member photos would stop showing.
+
+Why not Firebase Storage for now: since February 2026 it needs the pay-as-you-go (Blaze) plan with a credit card on
+file, even when usage stays inside the free quota, and it has no built-in image resizing. It is stronger on security
+and tidiness, which is why it is the next step if the family grows.
+
+Do later, in this order of effort:
+
+1. **Tighten the Cloudinary upload preset.** Limit it to image types and a smaller maximum file size, and keep
+   `c_limit,w_1600,h_1600,q_auto` as its incoming transformation (never `c_fill`, which crops people out). The preset
+   is "unsigned", and its name and the cloud name are visible in the site's code, so anyone who finds them could upload
+   to the account.
+2. **Serve lighter photos.** Have the app ask Cloudinary for smaller, auto-format versions of each photo (add
+   transformations such as `f_auto,q_auto,w_900` to the delivery address). This stretches the free download allowance.
+3. **Clean up leftovers.** Deleting a recipe or photo in the app (or in Firebase) does not delete the file in
+   Cloudinary; remove those in the Cloudinary Media Library by hand.
+4. **Move to Firebase Storage** if the family grows or uploads should be limited to signed-in members. It means putting
+   a card on file (set a budget alert), writing a `storage.rules` file, and changing `src/services/cloudinary.ts` to
+   upload there and `CommunityContext.tsx` to save the returned address. The Firestore rules already accept only
+   Cloudinary addresses for photos (`isCloudinaryUrl`), so they would need updating too.
