@@ -15,6 +15,7 @@ import { PantryMatcherScreen } from './screens/PantryMatcherScreen';
 import { RecipeDetailScreen } from './screens/RecipeDetailScreen';
 import { RecipeListScreen } from './screens/RecipeListScreen';
 import { ShoppingListScreen } from './screens/ShoppingListScreen';
+import { InstallPrompt } from './components/InstallPrompt';
 import { WifiOff, CheckCircle2, X } from 'lucide-react';
 import { ScreenDestination } from './types';
 
@@ -161,6 +162,7 @@ export function App() {
             <CulinaryMonochromeBackground />
             <OfflineStatusBar />
             <Navigation />
+            <InstallPrompt />
             <MainContent />
           </div>
         </CookbookProvider>
