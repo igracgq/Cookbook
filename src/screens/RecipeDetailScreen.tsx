@@ -301,7 +301,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
                   rel="noopener noreferrer"
                   className="underline hover:text-[#261D16]"
                 >
-                  Photo: {getPhotoCredit(activePhoto)!.artist || 'Wikimedia Commons'} ({getPhotoCredit(activePhoto)!.license})
+                  Photo: {getPhotoCredit(activePhoto)!.artist || 'Pixabay'} ({getPhotoCredit(activePhoto)!.license})
                 </a>
               </>
             )}

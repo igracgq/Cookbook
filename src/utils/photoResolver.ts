@@ -14,8 +14,8 @@ export function getRecipePhotoUrls(recipe: Recipe): string[] {
 export const FAMILY_PHOTO_URL = photoUrl('cook_family');
 export const FAMILY_GALLERY_URLS = [photoUrl('cook_p2_1')];
 
-// Stock photos (file names start with "stock_") are free-licensed pictures from
-// Wikimedia Commons used to illustrate recipes that have no photo in the book.
+// Stock photos (file names start with "stock_") are free-to-use pictures from
+// Pixabay (or Wikimedia Commons) used to illustrate recipes that have no photo in the book.
 import credits from '../data/photoCredits.json';
 
 export interface PhotoCredit {

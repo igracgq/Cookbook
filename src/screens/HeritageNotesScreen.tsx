@@ -251,7 +251,7 @@ export const HeritageNotesScreen: React.FC = () => {
           <h3 className="font-serif-heritage text-2xl font-bold text-[#261D16]">Photo Credits</h3>
           <p className="text-sm text-[#5C4E40] leading-relaxed">
             Photos from the original family cookbook are not listed here. Recipes marked "Illustrative photo" use
-            free-licensed pictures from Wikimedia Commons, shown only to give an idea of the dish. Thank you to the
+            free-to-use pictures from Pixabay, shown only to give an idea of the dish. Thank you to the
             photographers below.
           </p>
           {allPhotoCredits().length === 0 ? (
@@ -264,7 +264,7 @@ export const HeritageNotesScreen: React.FC = () => {
                     {c.title}
                   </a>
                   <span className="text-xs text-[#7D6C5A]">
-                    {c.artist || 'Wikimedia Commons contributor'} · {c.license}
+                    {c.artist || 'Pixabay contributor'} · {c.license}
                   </span>
                 </li>
               ))}
