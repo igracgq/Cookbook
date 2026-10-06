@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { commonPantryIngredients } from '../data/cookbookDataSource';
+import { commonPantryIngredients, findRecipeById, missingIngredientsFor } from '../data/cookbookDataSource';
+import { ShareListButtons } from '../components/ShareListButtons';
+import { listMessage } from '../utils/shareList';
 import { MatcherFilter } from '../types';
 import { getRecipePhotoUrls } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
@@ -14,7 +16,9 @@ import {
   CheckCircle2,
   AlertCircle,
   Clock,
-  ChefHat
+  ChefHat,
+  ShoppingCart,
+  ListChecks
 } from 'lucide-react';
 
 export const PantryMatcherScreen: React.FC = () => {
@@ -28,10 +32,31 @@ export const PantryMatcherScreen: React.FC = () => {
     setMatcherFilter,
     pantryMatches,
     customRecipePhotos,
+    addToShoppingList,
+    shoppingList,
     navigateTo
   } = useCookbook();
 
   const [inputVal, setInputVal] = useState('');
+
+  // The recipe the person has chosen to cook, and what they would still need to buy for it.
+  const [chosenId, setChosenId] = useState<string | null>(null);
+  const [addedNote, setAddedNote] = useState<string | null>(null);
+  const planRef = useRef<HTMLDivElement | null>(null);
+  const chosen = chosenId ? findRecipeById(chosenId) : undefined;
+  const missing = useMemo(() => (chosen ? missingIngredientsFor(chosen, pantryItems) : []), [chosen, pantryItems]);
+  useEffect(() => setAddedNote(null), [chosenId]);
+  useEffect(() => {
+    if (chosenId) planRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [chosenId]);
+
+  const addMissingToList = () => {
+    if (!chosen) return;
+    const fresh = addToShoppingList(chosen.title, missing);
+    setAddedNote(
+      fresh === 0 ? 'Those items are already on your shopping list.' : `${fresh} item${fresh === 1 ? '' : 's'} added to your shopping list.`
+    );
+  };
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,6 +183,75 @@ export const PantryMatcherScreen: React.FC = () => {
         </div>
       </div>
 
+      {/* What is missing for the recipe the person chose */}
+      {chosen && (
+        <div ref={planRef} id="missing_panel" className="scroll-mt-24 bg-[#FAF7F2] rounded-2xl border-2 border-[#4A3B2C] p-5 sm:p-6 space-y-4 shadow-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-[#7D6C5A]">You chose to cook</p>
+              <h3 className="font-serif-heritage text-xl sm:text-2xl font-bold text-[#261D16] leading-tight">{chosen.title}</h3>
+            </div>
+            <button type="button" onClick={() => setChosenId(null)} aria-label="Close" className="p-1.5 rounded-full text-[#7D6C5A] hover:bg-[#EBE3D6] cursor-pointer">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {missing.length === 0 ? (
+            <p className="text-sm text-[#5C7250] font-semibold">You have everything you need. Ready to cook!</p>
+          ) : (
+            <>
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#B8452D] mb-2">
+                  Ingredients you don't have ({missing.length})
+                </h4>
+                <ul id="missing_list" className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-[#261D16]">
+                  {missing.map(m => (
+                    <li key={m.name} className="flex items-start gap-2">
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#B8452D] shrink-0" />
+                      <span className="break-words">{m.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  id="add_missing_to_list_btn"
+                  type="button"
+                  onClick={addMissingToList}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#4A3B2C] text-[#FAF7F2] rounded-xl text-xs font-bold hover:bg-[#382B1E] transition-colors cursor-pointer"
+                >
+                  <ShoppingCart className="w-3.5 h-3.5" /> Add to shopping list
+                </button>
+                {addedNote && (
+                  <span role="status" className="flex items-center gap-2 text-xs text-[#2A441E]">
+                    {addedNote}
+                    <button type="button" onClick={() => navigateTo({ type: 'shopping' })} className="underline font-semibold cursor-pointer">View list</button>
+                  </span>
+                )}
+              </div>
+
+              <div className="pt-3 border-t border-[#E4DBCF] space-y-2">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#7D6C5A]">Send what's missing</p>
+                <ShareListButtons
+                  idPrefix="missing_share"
+                  subject={`Ingredients I need for ${chosen.title} (Heritage Cookbook)`}
+                  message={listMessage(`Ingredients I need for ${chosen.title}:`, missing.map(m => m.text))}
+                />
+              </div>
+            </>
+          )}
+
+          <button
+            type="button"
+            onClick={() => navigateTo({ type: 'detail', recipeId: chosen.id })}
+            className="text-xs font-semibold text-[#4A3B2C] underline cursor-pointer"
+          >
+            Open the recipe
+          </button>
+        </div>
+      )}
+
       {/* Match Filter Tabs */}
       <div className="flex items-center gap-2 border-b border-[#D2C4B1] pb-3">
         {Object.values(MatcherFilter).map(filter => {
@@ -213,7 +307,9 @@ export const PantryMatcherScreen: React.FC = () => {
                 key={recipe.id}
                 id={`match_card_${recipe.id}`}
                 onClick={() => navigateTo({ type: 'detail', recipeId: recipe.id })}
-                className="bg-[#FAF7F2] rounded-2xl border border-[#D2C4B1] p-4 flex gap-4 hover:shadow-md transition-all cursor-pointer group"
+                className={`bg-[#FAF7F2] rounded-2xl border p-4 flex gap-4 hover:shadow-md transition-all cursor-pointer group ${
+                  chosenId === recipe.id ? 'border-[#4A3B2C] ring-2 ring-[#4A3B2C]' : 'border-[#D2C4B1]'
+                }`}
               >
                 {/* Photo Thumbnail (whole picture visible) */}
                 <div className="w-28 sm:w-32 shrink-0 self-start rounded-xl overflow-hidden">
@@ -263,7 +359,7 @@ export const PantryMatcherScreen: React.FC = () => {
                   </div>
 
                   {/* Missing ingredients tag */}
-                  <div className="mt-2 pt-2 border-t border-[#E4DBCF]/80 text-xs">
+                  <div className="mt-2 pt-2 border-t border-[#E4DBCF]/80 text-xs space-y-2">
                     {missingIngredients.length === 0 ? (
                       <span className="text-[#5C7250] font-bold text-xs flex items-center gap-1">
                         ✓ Ready to cook right now!
@@ -274,6 +370,14 @@ export const PantryMatcherScreen: React.FC = () => {
                         {missingIngredients.join(', ')}
                       </p>
                     )}
+                    <button
+                      id={`choose_recipe_${recipe.id}`}
+                      type="button"
+                      onClick={e => { e.stopPropagation(); setChosenId(recipe.id); }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBE3D6] border border-[#D2C4B1] hover:bg-[#E4DBCF] text-[11px] font-bold text-[#4A3B2C] cursor-pointer"
+                    >
+                      <ListChecks className="w-3.5 h-3.5" /> I want to cook this
+                    </button>
                   </div>
                 </div>
               </div>

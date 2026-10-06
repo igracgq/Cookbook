@@ -147,6 +147,27 @@ export function getRecipesByContributor(): Record<string, Recipe[]> {
   return map;
 }
 
+const inPantry = (ing: string, normalizedPantry: string[]) =>
+  normalizedPantry.some(p =>
+    ing.includes(p) || p.includes(ing) ||
+    (p.endsWith('s') && ing.includes(p.slice(0, -1))) ||
+    (ing.endsWith('s') && p.includes(ing.slice(0, -1)))
+  );
+
+/** What a recipe needs that the pantry does not cover: the ingredient name, and the line as written in the recipe. */
+export function missingIngredientsFor(recipe: Recipe, pantryItems: string[]): Array<{ name: string; text: string }> {
+  const normalizedPantry = pantryItems.map(i => i.trim().toLowerCase()).filter(Boolean);
+  const seen = new Set<string>();
+  const out: Array<{ name: string; text: string }> = [];
+  for (const ing of recipe.ingredients) {
+    const name = ing.normalizedName.toLowerCase();
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    if (!inPantry(name, normalizedPantry)) out.push({ name, text: ing.rawText.trim() || name });
+  }
+  return out;
+}
+
 export function matchByIngredients(pantryItems: Set<string>): MatchResult[] {
   if (pantryItems.size === 0) return [];
 
@@ -162,13 +183,7 @@ export function matchByIngredients(pantryItems: Set<string>): MatchResult[] {
     const missing: string[] = [];
 
     for (const ing of keyIngredients) {
-      const hasMatch = normalizedPantry.some(p =>
-        ing.includes(p) || p.includes(ing) ||
-        (p.endsWith('s') && ing.includes(p.slice(0, -1))) ||
-        (ing.endsWith('s') && p.includes(ing.slice(0, -1)))
-      );
-
-      if (hasMatch) {
+      if (inPantry(ing, normalizedPantry)) {
         matched.push(ing);
       } else {
         missing.push(ing);

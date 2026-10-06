@@ -123,6 +123,15 @@ export interface Recipe {
   authorUid?: string;
 }
 
+export interface ShoppingItem {
+  /** Lower-case ingredient name; one entry per ingredient however many recipes need it. */
+  key: string;
+  name: string;
+  /** Which recipes need it and how each recipe words it. */
+  needs: Array<{ recipe: string; text: string }>;
+  bought: boolean;
+}
+
 export interface MatchResult {
   recipe: Recipe;
   matchedCount: number;
@@ -171,6 +180,7 @@ export type ScreenDestination =
   | { type: "heritage" }
   | { type: "detail"; recipeId: string }
   | { type: "addRecipe" }
+  | { type: "shopping" }
   | { type: "print"; recipeId?: string };
 
 export interface MeatRoastingGuide {

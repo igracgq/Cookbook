@@ -1,10 +1,11 @@
 import React from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer, Plus } from 'lucide-react';
+import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer, Plus, ShoppingCart } from 'lucide-react';
 import { AuthButton } from './AuthButton';
 
 export const Navigation: React.FC = () => {
-  const { currentScreen, navigateTo, openPrintExport } = useCookbook();
+  const { currentScreen, navigateTo, openPrintExport, shoppingList } = useCookbook();
+  const toBuyCount = shoppingList.filter(i => !i.bought).length;
 
   const isExplore = currentScreen.type === 'explore';
   const isPantry = currentScreen.type === 'pantry';
@@ -110,6 +111,24 @@ export const Navigation: React.FC = () => {
             >
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Add recipe</span>
+            </button>
+            <button
+              id="nav_shopping_list"
+              onClick={() => navigateTo({ type: 'shopping' })}
+              title="Shopping list: what you still need to buy"
+              aria-label={`Shopping list${toBuyCount ? `, ${toBuyCount} to buy` : ''}`}
+              className={`relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap rounded-lg border transition-colors ${
+                currentScreen.type === 'shopping'
+                  ? 'bg-[#4A3B2C] text-[#FAF7F2] border-[#4A3B2C]'
+                  : 'text-[#4A3B2C] bg-[#EBE3D6] border-[#D2C4B1] hover:bg-[#E4DBCF]'
+              }`}
+            >
+              <ShoppingCart className="w-3.5 h-3.5" />
+              {toBuyCount > 0 && (
+                <span id="shopping_badge" className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-[#B8452D] text-white text-[10px] font-bold flex items-center justify-center leading-none">
+                  {toBuyCount > 99 ? '99+' : toBuyCount}
+                </span>
+              )}
             </button>
             <button
               id="global_print_btn"

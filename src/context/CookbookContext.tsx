@@ -19,6 +19,7 @@ import {
   RecipeCategory,
   RecipeQuickFilter,
   ScreenDestination,
+  ShoppingItem,
   SpiceLevel,
   UnitSystem
 } from '../types';
@@ -77,6 +78,17 @@ interface CookbookContextType {
   clearAllPantry: () => void;
   seedCommonPantry: () => void;
   addRecipeIngredientsToPantry: (recipe: Recipe) => void;
+
+  // Shopping list (what to buy at the store)
+  shoppingList: ShoppingItem[];
+  /** Adds items for a recipe. Returns how many were new to the list. */
+  addToShoppingList: (recipeTitle: string, items: Array<{ name: string; text: string }>) => number;
+  addCustomShoppingItem: (name: string) => void;
+  toggleShoppingItemBought: (key: string) => void;
+  removeShoppingItem: (key: string) => void;
+  clearShoppingList: () => void;
+  /** Bought items move into the pantry and off the list. */
+  moveBoughtToPantry: () => void;
   matcherFilter: MatcherFilter;
   setMatcherFilter: (filter: MatcherFilter) => void;
   pantryMatches: MatchResult[];
@@ -134,6 +146,7 @@ const STORAGE_KEYS = {
   PHOTOS: 'heritage_cookbook_photos',
   NOTES: 'heritage_cookbook_notes',
   PANTRY: 'heritage_cookbook_pantry',
+  SHOPPING: 'heritage_cookbook_shopping',
   SPICE: 'heritage_cookbook_spice',
   UNIT_SYSTEM: 'heritage_cookbook_unit_system'
 };
@@ -510,6 +523,75 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
+  // Shopping list: kept on this device.
+  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.SHOPPING);
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const updateShopping = (fn: (prev: ShoppingItem[]) => ShoppingItem[]) => {
+    setShoppingList(prev => {
+      const next = fn(prev);
+      try {
+        localStorage.setItem(STORAGE_KEYS.SHOPPING, JSON.stringify(next));
+      } catch (e) {
+        console.error(e);
+      }
+      return next;
+    });
+  };
+
+  const addToShoppingList = (recipeTitle: string, items: Array<{ name: string; text: string }>) => {
+    const have = new Set(shoppingList.map(i => i.key));
+    const fresh = new Set(items.map(i => i.name.toLowerCase()).filter(k => !have.has(k)));
+    updateShopping(prev => {
+      const next = prev.map(i => ({ ...i, needs: [...i.needs] }));
+      for (const it of items) {
+        const key = it.name.trim().toLowerCase();
+        if (!key) continue;
+        const existing = next.find(i => i.key === key);
+        if (existing) {
+          if (!existing.needs.some(n => n.recipe === recipeTitle)) existing.needs.push({ recipe: recipeTitle, text: it.text });
+          existing.bought = false;
+        } else {
+          next.push({ key, name: key, needs: [{ recipe: recipeTitle, text: it.text }], bought: false });
+        }
+      }
+      return next;
+    });
+    return fresh.size;
+  };
+
+  const addCustomShoppingItem = (name: string) => {
+    const key = name.trim().toLowerCase();
+    if (!key) return;
+    updateShopping(prev => (prev.some(i => i.key === key) ? prev : [...prev, { key, name: key, needs: [], bought: false }]));
+  };
+
+  const toggleShoppingItemBought = (key: string) =>
+    updateShopping(prev => prev.map(i => (i.key === key ? { ...i, bought: !i.bought } : i)));
+  const removeShoppingItem = (key: string) => updateShopping(prev => prev.filter(i => i.key !== key));
+  const clearShoppingList = () => updateShopping(() => []);
+
+  const moveBoughtToPantry = () => {
+    const bought = shoppingList.filter(i => i.bought).map(i => i.name);
+    if (bought.length === 0) return;
+    setPantryItems(prev => {
+      const next = Array.from(new Set([...prev, ...bought]));
+      try {
+        localStorage.setItem(STORAGE_KEYS.PANTRY, JSON.stringify(next));
+      } catch (e) {
+        console.error(e);
+      }
+      return next;
+    });
+    updateShopping(prev => prev.filter(i => !i.bought));
+  };
+
   const pantryMatches = useMemo(() => {
     const all = matchByIngredients(new Set(pantryItems));
     switch (matcherFilter) {
@@ -763,6 +845,13 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         clearAllPantry,
         seedCommonPantry,
         addRecipeIngredientsToPantry,
+        shoppingList,
+        addToShoppingList,
+        addCustomShoppingItem,
+        toggleShoppingItemBought,
+        removeShoppingItem,
+        clearShoppingList,
+        moveBoughtToPantry,
         matcherFilter,
         setMatcherFilter,
         pantryMatches,
