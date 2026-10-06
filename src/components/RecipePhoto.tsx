@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageOff } from 'lucide-react';
-import { isStockPhotoUrl } from '../utils/photoResolver';
+import { isStockPhotoUrl, isSharedPhotoUrl } from '../utils/photoResolver';
 
 interface RecipePhotoProps {
   src?: string | null;
@@ -12,7 +12,7 @@ interface RecipePhotoProps {
 }
 
 /**
- * Illustrative (stock) photos fill the frame edge to edge (object-cover).
+ * Illustrative (stock) photos and photos shared by family members fill the frame edge to edge (object-cover).
  *
  * Original cookbook photos show whole whatever their shape. The picture is fitted inside a
  * fixed-ratio frame (object-contain) and a blurred, enlarged copy of the same
@@ -21,7 +21,7 @@ interface RecipePhotoProps {
  */
 export const RecipePhoto: React.FC<RecipePhotoProps> = ({ src, alt, aspect = 'aspect-[4/3]', className = '', children }) => (
   <div className={`relative w-full overflow-hidden bg-[#EBE3D6] ${aspect} ${className}`}>
-    {src && isStockPhotoUrl(src) ? (
+    {src && (isStockPhotoUrl(src) || isSharedPhotoUrl(src)) ? (
       <img
         src={src}
         alt={alt}

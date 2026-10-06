@@ -43,6 +43,7 @@ import {
 } from 'lucide-react';
 import { HandsFreeCookingModal } from '../components/HandsFreeCookingModal';
 import { ShareRecipeModal } from '../components/ShareRecipeModal';
+import { SharedPhotoPanel } from '../components/SharedPhotoPanel';
 
 interface RecipeDetailScreenProps {
   recipeId: string;
@@ -334,6 +335,8 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           )}
         </div>
       </div>
+
+      <SharedPhotoPanel recipe={recipe} />
 
       {/* Photo Feedback Toast */}
       {photoFeedbackToast && (

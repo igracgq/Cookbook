@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { useCookbook } from '../context/CookbookContext';
 import {
   CATEGORY_INFO,
@@ -35,8 +36,11 @@ export const RecipeListScreen: React.FC = () => {
     toggleFavorite,
     getEffectiveSpiceLevel,
     customRecipePhotos,
+    favoritesSync,
     navigateTo
   } = useCookbook();
+
+  const { cloudAvailable } = useAuth();
 
   // Long lists render in pages so the 1,000+ recipe cookbook stays fast on phones.
   const PAGE_SIZE = 48;
@@ -169,7 +173,17 @@ export const RecipeListScreen: React.FC = () => {
           {filteredRecipes.length === 1 ? '' : 's'}
         </span>
         {selectedFilter !== RecipeQuickFilter.ALL && (
-          <span className="italic">Filtered by {selectedFilter}</span>
+          <span className="italic">
+            Filtered by {selectedFilter}
+            {selectedFilter === RecipeQuickFilter.FAVORITES && (
+              <span id="favorites_sync_status" className="not-italic ml-2 font-semibold">
+                {favoritesSync === 'local' && cloudAvailable && '· saved on this device (sign in to keep them across devices)'}
+                {favoritesSync === 'syncing' && '· saving to your account…'}
+                {favoritesSync === 'synced' && '· saved to your account'}
+                {favoritesSync === 'error' && '· could not save to your account, will retry on your next tap'}
+              </span>
+            )}
+          </span>
         )}
       </div>
 
@@ -270,6 +284,9 @@ export const RecipeListScreen: React.FC = () => {
                     </span>
                     {!hasCustomPhoto && isStockPhotoUrl(photoUrl) && (
                       <span className="italic text-[#7D6C5A]">Illustrative photo</span>
+                    )}
+                    {recipe.community && (
+                      <span className="font-semibold text-[#5C7250]">Shared by {recipe.contributor}</span>
                     )}
                     {hasCustomPhoto && (
                       <span className="flex items-center gap-1 text-emerald-800 font-semibold">

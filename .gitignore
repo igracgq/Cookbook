@@ -19,3 +19,5 @@ debug.keystore
 __pycache__/
 node_modules/
 dist/
+.env.local
+.env.*.local

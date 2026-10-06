@@ -1,0 +1,85 @@
+rules_version = '2';
+
+// Heritage Cookbook: anyone may read; only people signed in with Google may contribute.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+    function isCloudinaryUrl(u) {
+      return u is string && u.size() <= 500 && u.matches('^https://res\\.cloudinary\\.com/.+');
+    }
+    function shortText(v, max) {
+      return v is string && v.size() <= max;
+    }
+    function validCategory(c) {
+      return c in ['APPETIZERS', 'BEVERAGES', 'SOUPS', 'SALADS', 'VEGETABLES', 'PICKLING', 'RICE_AND_RISOTTO',
+                   'PASTA_AND_SAUCES', 'BAKED_PASTA', 'MEATS', 'SEAFOOD', 'EGGS', 'BREADS_AND_PIZZA',
+                   'COOKIES_AND_BISCOTTI', 'CAKES_AND_DESSERTS', 'HOLIDAY_TRADITIONS', 'TARTS_AND_PIES', 'DIETS'];
+    }
+
+    // One document per member: profile and favorites. Only that member can read or change it.
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['displayName', 'photoURL', 'lastSignIn', 'favorites'])
+        && (!('displayName' in request.resource.data) || shortText(request.resource.data.displayName, 200))
+        && (!('photoURL' in request.resource.data) || shortText(request.resource.data.photoURL, 1000))
+        && (!('favorites' in request.resource.data)
+            || (request.resource.data.favorites is list && request.resource.data.favorites.size() <= 2000));
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Recipes added by family members. The photo is a Cloudinary URL, never image data.
+    match /recipes/{recipeId} {
+      function validRecipe(d) {
+        return d.keys().hasOnly(['title', 'category', 'servings', 'prepTime', 'cookTime', 'ingredients',
+                                 'instructions', 'notes', 'imageUrl', 'authorUid', 'authorName', 'createdAt'])
+          && shortText(d.title, 120) && d.title.size() >= 1
+          && validCategory(d.category)
+          && shortText(d.servings, 60) && shortText(d.prepTime, 60) && shortText(d.cookTime, 60)
+          && d.ingredients is list && d.ingredients.size() >= 1 && d.ingredients.size() <= 60
+          && d.instructions is list && d.instructions.size() >= 1 && d.instructions.size() <= 60
+          && shortText(d.notes, 2000)
+          && (d.imageUrl == '' || isCloudinaryUrl(d.imageUrl))
+          && shortText(d.authorName, 200);
+      }
+
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.authorUid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && validRecipe(request.resource.data);
+      // Only the author can edit, and never the owner or creation time.
+      allow update: if signedIn()
+        && resource.data.authorUid == request.auth.uid
+        && request.resource.data.authorUid == resource.data.authorUid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validRecipe(request.resource.data);
+      allow delete: if signedIn() && resource.data.authorUid == request.auth.uid;
+    }
+
+    // One shared photo per cookbook recipe (the document id is the recipe id). Only the person who
+    // shared it can replace or remove it.
+    match /recipePhotos/{recipeId} {
+      function validPhoto(d) {
+        return d.keys().hasOnly(['imageUrl', 'uploadedBy', 'uploadedByName', 'updatedAt'])
+          && isCloudinaryUrl(d.imageUrl)
+          && d.uploadedBy == request.auth.uid
+          && shortText(d.uploadedByName, 200)
+          && d.updatedAt == request.time;
+      }
+
+      allow read: if true;
+      allow create: if signedIn() && recipeId.matches('^[A-Za-z0-9_-]{1,100}$') && validPhoto(request.resource.data);
+      allow update: if signedIn() && resource.data.uploadedBy == request.auth.uid && validPhoto(request.resource.data);
+      allow delete: if signedIn() && resource.data.uploadedBy == request.auth.uid;
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

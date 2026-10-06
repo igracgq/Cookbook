@@ -18,6 +18,14 @@ Branch: `claude/keen-dirac-6pii53` (all work is pushed). React + Vite app in `sr
 - **Preview artifact:** https://claude.ai/artifact/WFAUZ8LWeKrLpoaExDp31p. It is a snapshot and only changes
   when republished. See `tools/artifact/README.md`.
 
+## Sharing (added last)
+
+Sign-in with Google (Firebase Auth), shared recipes, one shared photo per recipe (Cloudinary, URL saved in
+Firestore), and favorites synced to the account. Switched on by the `VITE_FIREBASE_*` and `VITE_CLOUDINARY_*`
+values in `.env.local`; the app works without them. Setup, data model and limits: `docs/SHARING_SETUP.md`.
+Rules: `firestore.rules`. Tests against the emulators: `tools/firebase/`. The claude.ai artifact preview cannot
+use any of it (no network, no sign-in popup), so the artifact shows the buttons switched off.
+
 ## Tools
 
 | Path | What it does |
@@ -29,6 +37,7 @@ Branch: `claude/keen-dirac-6pii53` (all work is pushed). React + Vite app in `sr
 | `tools/stock-photos/fetch_thumbs.py` | Re-downloads candidate thumbnails |
 | `tools/dietary/classify.py` | Dietary flags |
 | `tools/artifact/build_artifact.py` | Builds the artifact page and photo bundles |
+| `tools/firebase/` | Security-rules tests and an end-to-end test against the Firebase emulators |
 
 ## Gotchas
 

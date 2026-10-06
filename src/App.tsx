@@ -5,7 +5,10 @@ import { CulinaryMonochromeBackground } from './components/CulinaryMonochromeBac
 import { GlobalTimerBar } from './components/GlobalTimerBar';
 import { Navigation } from './components/Navigation';
 import { PrintExportModal } from './components/PrintExportModal';
+import { AuthProvider } from './context/AuthContext';
+import { CommunityProvider } from './context/CommunityContext';
 import { CookbookProvider, useCookbook } from './context/CookbookContext';
+import { AddRecipeScreen } from './screens/AddRecipeScreen';
 import { AlphabeticalIndexScreen } from './screens/AlphabeticalIndexScreen';
 import { HeritageNotesScreen } from './screens/HeritageNotesScreen';
 import { PantryMatcherScreen } from './screens/PantryMatcherScreen';
@@ -89,6 +92,7 @@ const MainContent: React.FC = () => {
           {currentScreen.type === 'pantry' && <PantryMatcherScreen />}
           {currentScreen.type === 'index' && <AlphabeticalIndexScreen />}
           {currentScreen.type === 'heritage' && <HeritageNotesScreen />}
+          {currentScreen.type === 'addRecipe' && <AddRecipeScreen />}
         </motion.div>
       </AnimatePresence>
 
@@ -148,14 +152,18 @@ const OfflineStatusBar: React.FC = () => {
 
 export function App() {
   return (
-    <CookbookProvider>
-      <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
-        <CulinaryMonochromeBackground />
-        <OfflineStatusBar />
-        <Navigation />
-        <MainContent />
-      </div>
-    </CookbookProvider>
+    <AuthProvider>
+      <CommunityProvider>
+        <CookbookProvider>
+          <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
+            <CulinaryMonochromeBackground />
+            <OfflineStatusBar />
+            <Navigation />
+            <MainContent />
+          </div>
+        </CookbookProvider>
+      </CommunityProvider>
+    </AuthProvider>
   );
 }
 

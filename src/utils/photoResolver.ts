@@ -7,8 +7,14 @@ export const photoUrl = (name: string) => `${import.meta.env.BASE_URL}images/${n
 
 /** All cookbook photos for a recipe, in display order (may be empty). */
 export function getRecipePhotoUrls(recipe: Recipe): string[] {
-  return (recipe.photos ?? []).map(photoUrl);
+  const own = (recipe.photos ?? []).map(photoUrl);
+  if (!recipe.imageUrl) return own;
+  // A real shared photo replaces the illustrative stock photo but sits in front of the cookbook's own photos.
+  return [recipe.imageUrl, ...own.filter(u => !isStockPhotoUrl(u))];
 }
+
+/** A photo hosted online (a family member's upload) rather than one of the bundled files. */
+export const isSharedPhotoUrl = (url?: string | null) => !!url && /^https:\/\//.test(url);
 
 /** Family photos used on the Heritage Notes screen. */
 export const FAMILY_PHOTO_URL = photoUrl('cook_family');

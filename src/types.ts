@@ -111,6 +111,14 @@ export interface Recipe {
   originalPhotoPage?: number | null;
   /** Photo file names (without extension) from the original cookbook, in display order. */
   photos?: string[];
+  /** A shared photo (https URL, hosted on Cloudinary). At most one per recipe. */
+  imageUrl?: string;
+  /** Display name of the person who shared the photo. */
+  imageBy?: string;
+  /** True for recipes added by signed-in family members (not in the printed cookbook). */
+  community?: boolean;
+  /** Firebase uid of the member who added a community recipe. */
+  authorUid?: string;
 }
 
 export interface MatchResult {
@@ -159,6 +167,7 @@ export type ScreenDestination =
   | { type: "index" }
   | { type: "heritage" }
   | { type: "detail"; recipeId: string }
+  | { type: "addRecipe" }
   | { type: "print"; recipeId?: string };
 
 export interface MeatRoastingGuide {

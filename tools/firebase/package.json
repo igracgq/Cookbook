@@ -1,0 +1,14 @@
+{
+  "name": "cookbook-firestore-rules-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "firebase emulators:exec --only firestore --project demo-cookbook --config ../../firebase.json \"node --test rules.test.mjs\"",
+    "e2e": "firebase emulators:exec --only auth,firestore --project demo-cookbook --config ../../firebase.json \"node e2e.cjs\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "firebase": "^12.19.0",
+    "firebase-tools": "^14.0.0"
+  }
+}
