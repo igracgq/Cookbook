@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -46,27 +46,76 @@ export const AuthButton: React.FC = () => {
     );
   }
 
+  return <AccountMenu />;
+};
+
+/** Signed in: the member's Google photo. Tapping it opens a small menu with the name and Sign out. */
+const AccountMenu: React.FC = () => {
+  const { user, signOut } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent | TouchEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('touchstart', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('touchstart', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  if (!user) return null;
+  const name = user.displayName ?? 'Signed in';
+
   return (
-    <div className="flex items-center gap-2">
-      {user.photoURL ? (
-        <img src={user.photoURL} alt="" referrerPolicy="no-referrer" className="hidden sm:block w-8 h-8 rounded-full border border-[#D2C4B1]" />
-      ) : (
-        <div className="hidden sm:flex w-8 h-8 rounded-full bg-[#DECFC0] text-[#4A3B2C] text-xs font-bold items-center justify-center">
-          {(user.displayName ?? '?').slice(0, 1).toUpperCase()}
+    <div ref={ref} className="relative">
+      <button
+        id="account_btn"
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        title={`${name}: tap for sign out`}
+        className="block w-8 h-8 rounded-full overflow-hidden border border-[#D2C4B1] bg-[#DECFC0] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
+      >
+        {user.photoURL && !photoFailed ? (
+          <img
+            src={user.photoURL}
+            alt={name}
+            referrerPolicy="no-referrer"
+            onError={() => setPhotoFailed(true)}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <span className="w-full h-full flex items-center justify-center text-xs font-bold text-[#4A3B2C]">
+            {name.slice(0, 1).toUpperCase()}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div role="menu" className="absolute right-0 top-full mt-2 w-56 bg-[#FAF7F2] border border-[#D2C4B1] rounded-xl shadow-lg p-3 z-50 space-y-2">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-[#261D16] truncate">{name}</p>
+            {user.email && <p className="text-[11px] text-[#7D6C5A] truncate">{user.email}</p>}
+          </div>
+          <button
+            id="sign_out_btn"
+            type="button"
+            role="menuitem"
+            onClick={() => { setOpen(false); signOut(); }}
+            className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer"
+          >
+            <LogOut className="w-3.5 h-3.5" /> Sign out
+          </button>
         </div>
       )}
-      <span className="hidden lg:inline text-xs text-[#5C4E40] max-w-[9rem] truncate" title={user.email ?? ''}>
-        {user.displayName ?? 'Signed in'}
-      </span>
-      <button
-        id="sign_out_btn"
-        type="button"
-        onClick={signOut}
-        title="Sign out"
-        className="p-1.5 rounded-lg text-[#5C4E40] bg-[#EBE3D6] border border-[#D2C4B1] hover:bg-[#E4DBCF] cursor-pointer"
-      >
-        <LogOut className="w-3.5 h-3.5" />
-      </button>
     </div>
   );
 };
