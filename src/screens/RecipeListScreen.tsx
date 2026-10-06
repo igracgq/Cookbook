@@ -8,7 +8,7 @@ import {
   RecipeQuickFilter,
   SPICE_INFO
 } from '../types';
-import { getRecipePhotoUrls, isStockPhotoUrl, FAMILY_PHOTO_URL } from '../utils/photoResolver';
+import { getRecipePhotoUrls, isStockPhotoUrl, COOKBOOK_COVER_URL } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { allRecipes } from '../data/cookbookDataSource';
 import { calculateDifficulty } from '../utils/recipeCalculator';
@@ -49,13 +49,14 @@ export const RecipeListScreen: React.FC = () => {
 
   return (
     <div id="recipe_list_screen" className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-16 space-y-6">
-      {/* Family photo from page 1 of the cookbook */}
-      <div className="max-w-4xl mx-auto">
+      {/* Cookbook cover sketch. The family photo lives in the Heritage section. */}
+      <div className="flex justify-center">
         <img
-          src={FAMILY_PHOTO_URL}
-          alt="The Ruffolo-Vitale family gathered together"
-          className="w-full h-auto rounded-3xl border border-[#D2C4B1] shadow-sm"
+          src={COOKBOOK_COVER_URL}
+          alt="Cookbook"
+          className="h-[280px] w-auto select-none [mask-image:linear-gradient(to_bottom,#000_82%,transparent)]"
           loading="eager"
+          draggable={false}
         />
       </div>
 
