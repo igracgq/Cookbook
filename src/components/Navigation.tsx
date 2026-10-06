@@ -15,7 +15,7 @@ export const Navigation: React.FC = () => {
   return (
     <>
       {/* Desktop & Mobile Header */}
-      <header className="sticky top-0 z-30 bg-[#F4EEE5]/95 backdrop-blur-md border-b border-[#D2C4B1] px-4 sm:px-6 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+      <header className="sticky top-0 z-40 bg-[#F4EEE5] border-b border-[#D2C4B1] px-4 sm:px-6 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           <div
             onClick={() => navigateTo({ type: 'explore' })}

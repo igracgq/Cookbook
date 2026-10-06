@@ -8,7 +8,7 @@ import {
   RecipeQuickFilter,
   SPICE_INFO
 } from '../types';
-import { getRecipePhotoUrls, isStockPhotoUrl, COOKBOOK_COVER_URL } from '../utils/photoResolver';
+import { getRecipePhotoUrls, isStockPhotoUrl, COOKBOOK_COVER_TOP_URL, COOKBOOK_COVER_BOTTOM_URL } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { allRecipes } from '../data/cookbookDataSource';
 import { calculateDifficulty } from '../utils/recipeCalculator';
@@ -49,48 +49,56 @@ export const RecipeListScreen: React.FC = () => {
 
   return (
     <div id="recipe_list_screen" className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-16 space-y-6">
-      {/* Cookbook cover sketch. The family photo lives in the Heritage section. */}
-      <div className="flex justify-center">
+      {/* Cookbook sketch with the search bar set between the shelf and the hanging utensils. */}
+      <div className="flex flex-col items-center">
         <img
-          src={COOKBOOK_COVER_URL}
-          alt="Cookbook"
-          className="h-[280px] w-auto select-none [mask-image:linear-gradient(to_bottom,#000_82%,transparent)]"
+          src={COOKBOOK_COVER_TOP_URL}
+          alt=""
+          className="w-[238px] max-w-full h-auto select-none"
           loading="eager"
           draggable={false}
         />
-      </div>
 
-      {/* Search Input Bar with Integrated Voice Search */}
-      <div className="max-w-xl mx-auto relative">
-        <div className="relative flex items-center">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7D6C5A] pointer-events-none" />
-          <input
-            id="recipe_search_input"
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder={`Search ${allRecipes.length} recipes, ingredients, Nonna Rosina...`}
-            className="w-full pl-10 pr-20 py-3 bg-[#FAF7F2] border border-[#D2C4B1] rounded-2xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C] shadow-sm transition-all"
-          />
-
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                title="Clear search text"
-                className="p-1.5 text-[#7D6C5A] hover:text-[#261D16] rounded-lg transition-colors cursor-pointer"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-
-            <VoiceSearchButton
-              onTranscript={text => setSearchQuery(text)}
-              buttonId="voice_search_list_btn"
+        {/* Search Input Bar with Integrated Voice Search */}
+        <div className="max-w-xl w-full mt-5 mb-3 relative">
+          <div className="relative flex items-center">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7D6C5A] pointer-events-none" />
+            <input
+              id="recipe_search_input"
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder={`Search ${allRecipes.length} recipes, ingredients, Nonna Rosina...`}
+              className="w-full pl-10 pr-20 py-3 bg-[#FAF7F2] border border-[#D2C4B1] rounded-2xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C] shadow-sm transition-all"
             />
+
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  title="Clear search text"
+                  className="p-1.5 text-[#7D6C5A] hover:text-[#261D16] rounded-lg transition-colors cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+
+              <VoiceSearchButton
+                onTranscript={text => setSearchQuery(text)}
+                buttonId="voice_search_list_btn"
+              />
+            </div>
           </div>
         </div>
+
+        <img
+          src={COOKBOOK_COVER_BOTTOM_URL}
+          alt=""
+          className="w-[238px] max-w-full h-auto select-none [mask-image:linear-gradient(to_bottom,#000_82%,transparent)]"
+          loading="eager"
+          draggable={false}
+        />
       </div>
 
       {/* Categories Horizontal Scroll / Pills */}
