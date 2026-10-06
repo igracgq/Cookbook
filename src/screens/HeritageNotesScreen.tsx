@@ -39,7 +39,7 @@ export const HeritageNotesScreen: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center justify-center gap-2 border-b border-[#D2C4B1] pb-3 overflow-x-auto">
+      <div className="flex flex-wrap items-center justify-center gap-2 border-b border-[#D2C4B1] pb-3">
         <button
           id="tab_family_story"
           onClick={() => setActiveTab('family')}

@@ -26,7 +26,7 @@ export const Navigation: React.FC = () => {
               <BookOpen className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <h1 className="font-serif-heritage text-lg sm:text-xl font-bold tracking-tight whitespace-nowrap truncate text-[#261D16] group-hover:text-[#4A3B2C] leading-none">
+              <h1 className="font-serif-heritage text-[15px] min-[400px]:text-lg sm:text-xl font-bold tracking-tight whitespace-nowrap truncate text-[#261D16] group-hover:text-[#4A3B2C] leading-none">
                 Heritage Cookbook
               </h1>
               <p className="hidden lg:block text-[10px] text-[#7D6C5A] tracking-wider uppercase">

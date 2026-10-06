@@ -21,6 +21,9 @@
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #F4EEE5;
     color: #261D16;
+    /* The page only scrolls up and down. (Set on body alone so it applies to the whole viewport and the
+       sticky header keeps working.) */
+    overflow-x: hidden;
   }
 
   .font-serif-heritage {
