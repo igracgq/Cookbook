@@ -10,7 +10,7 @@ import {
 } from '../types';
 import { generateAutoTags } from '../utils/autoTagging';
 import { scaleAndConvert } from '../utils/ingredientScaler';
-import { getRecipePhotoUrls } from '../utils/photoResolver';
+import { getRecipePhotoUrls, getPhotoCredit, isStockPhotoUrl } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { calculateDifficulty, calculateNutrition, scaleNutrition } from '../utils/recipeCalculator';
 import { optimizeImageFile } from '../utils/imageOptimizer';
@@ -288,6 +288,25 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
             )}
           </RecipePhoto>
         </div>
+
+        {isStockPhotoUrl(activePhoto) && (
+          <p className="text-[11px] text-[#7D6C5A] leading-snug">
+            Illustrative photo, not from the family cookbook.
+            {getPhotoCredit(activePhoto) && (
+              <>
+                {' '}
+                <a
+                  href={getPhotoCredit(activePhoto)!.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-[#261D16]"
+                >
+                  Photo: {getPhotoCredit(activePhoto)!.artist || 'Wikimedia Commons'} ({getPhotoCredit(activePhoto)!.license})
+                </a>
+              </>
+            )}
+          </p>
+        )}
 
         {photos.length > 1 && (
           <div className="flex gap-2 overflow-x-auto pb-1">

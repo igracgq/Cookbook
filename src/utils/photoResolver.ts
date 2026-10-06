@@ -13,3 +13,23 @@ export function getRecipePhotoUrls(recipe: Recipe): string[] {
 /** Family photos used on the Heritage Notes screen. */
 export const FAMILY_PHOTO_URL = photoUrl('cook_family');
 export const FAMILY_GALLERY_URLS = [photoUrl('cook_p2_1')];
+
+// Stock photos (file names start with "stock_") are free-licensed pictures from
+// Wikimedia Commons used to illustrate recipes that have no photo in the book.
+import credits from '../data/photoCredits.json';
+
+export interface PhotoCredit {
+  title: string;
+  artist: string;
+  license: string;
+  url: string;
+}
+
+const fileName = (url: string) => url.split('/').pop()?.replace(/\.jpg$/, '') ?? '';
+export const isStockPhotoUrl = (url?: string | null) => !!url && fileName(url).startsWith('stock_');
+export const getPhotoCredit = (url?: string | null): PhotoCredit | null =>
+  url ? (credits as Record<string, PhotoCredit>)[fileName(url)] ?? null : null;
+export const allPhotoCredits = (): Array<PhotoCredit & { file: string }> =>
+  Object.entries(credits as Record<string, PhotoCredit>)
+    .map(([file, c]) => ({ file, ...c }))
+    .sort((a, b) => a.title.localeCompare(b.title));

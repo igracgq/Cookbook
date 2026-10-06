@@ -7,7 +7,7 @@ import {
   RecipeQuickFilter,
   SPICE_INFO
 } from '../types';
-import { getRecipePhotoUrls } from '../utils/photoResolver';
+import { getRecipePhotoUrls, isStockPhotoUrl } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { allRecipes } from '../data/cookbookDataSource';
 import { calculateDifficulty } from '../utils/recipeCalculator';
@@ -276,6 +276,9 @@ export const RecipeListScreen: React.FC = () => {
                       <span>•</span>
                       <span>{spiceInfo.icon}</span>
                     </span>
+                    {!hasCustomPhoto && isStockPhotoUrl(photoUrl) && (
+                      <span className="italic text-[#7D6C5A]">Illustrative photo</span>
+                    )}
                     {hasCustomPhoto && (
                       <span className="flex items-center gap-1 text-emerald-800 font-semibold">
                         <Camera className="w-3 h-3" />
