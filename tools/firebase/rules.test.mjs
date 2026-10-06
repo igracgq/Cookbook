@@ -162,3 +162,88 @@ test('the shopping list is validated', async () => {
   const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
   await assertFails(setDoc(doc(guest, 'users/g1/lists/shopping'), list()));
 });
+
+const comment = (uid, over = {}) => ({ text: 'Looks delicious!', authorUid: uid, authorName: 'Ann', authorPhoto: 'https://lh3.googleusercontent.com/a/x', createdAt: serverTimestamp(), ...over });
+
+test('everyone reads photo comments; signed-in members add their own', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoComments/cook_p195_1/comments/c1'), comment('u1')));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'photoComments/cook_p195_1/comments/c1')));
+  await assertSucceeds(getDoc(doc(as('u2'), 'photoComments/cook_p195_1/comments/c1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'photoComments/cook_p195_1/comments/c2'), comment('x')));
+  await assertFails(setDoc(doc(as('u2'), 'photoComments/cook_p195_1/comments/c3'), comment('u1')));   // not under someone else's name
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'photoComments/cook_p195_1/comments/c4'), comment('g1')));
+});
+
+test('only the author deletes a comment, and comments cannot be edited', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoComments/shared_r1/comments/c1'), comment('u1')));
+  await assertFails(deleteDoc(doc(as('u2'), 'photoComments/shared_r1/comments/c1')));
+  await assertFails(updateDoc(doc(as('u1'), 'photoComments/shared_r1/comments/c1'), { text: 'changed' }));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'photoComments/shared_r1/comments/c1')));
+});
+
+test('photo comments are validated', async () => {
+  const db = as('u1');
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/a'), comment('u1', { text: '' })));
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/b'), comment('u1', { text: 'x'.repeat(1001) })));
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/c'), comment('u1', { extra: 1 })));
+  await assertFails(setDoc(doc(db, 'photoComments/p/comments/d'), comment('u1', { createdAt: new Date('2001-01-01') })));
+  await assertFails(setDoc(doc(db, 'photoComments/bad id!/comments/e'), comment('u1')));
+  const noPhoto = comment('u1'); delete noPhoto.authorPhoto;                                    // the Google photo is optional
+  await assertSucceeds(setDoc(doc(db, 'photoComments/p/comments/f'), noPhoto));
+});
+
+const reaction = (over = {}) => ({ type: 'love', authorName: 'Ann', updatedAt: serverTimestamp(), ...over });
+
+test('everyone sees reactions; members set, change and remove only their own', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoReactions/cook_p195_1/reactions/u1'), reaction()));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'photoReactions/cook_p195_1/reactions/u1')));
+  await assertSucceeds(setDoc(doc(as('u1'), 'photoReactions/cook_p195_1/reactions/u1'), reaction({ type: 'yum' })));   // change it
+  await assertFails(setDoc(doc(as('u2'), 'photoReactions/cook_p195_1/reactions/u1'), reaction()));                     // not someone else's
+  await assertFails(deleteDoc(doc(as('u2'), 'photoReactions/cook_p195_1/reactions/u1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'photoReactions/cook_p195_1/reactions/x'), reaction()));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'photoReactions/cook_p195_1/reactions/u1')));
+});
+
+test('reactions are validated', async () => {
+  const db = as('u1');
+  for (const t of ['like', 'love', 'yum', 'haha']) await assertSucceeds(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: t })));
+  await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ type: 'angry' })));
+  await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ extra: 1 })));
+  await assertFails(setDoc(doc(db, 'photoReactions/p/reactions/u1'), reaction({ updatedAt: new Date('2001-01-01') })));
+  await assertFails(setDoc(doc(db, 'photoReactions/bad id!/reactions/u1'), reaction()));
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'photoReactions/p/reactions/g1'), reaction()));
+});
+
+const makeAdmin = uid => env.withSecurityRulesDisabled(async c => { await setDoc(doc(c.firestore(), `admins/${uid}`), { note: 'owner' }); });
+
+test('an admin can delete anything members posted, an ordinary member cannot', async () => {
+  await makeAdmin('boss');
+  await env.withSecurityRulesDisabled(async c => {
+    const f = c.firestore();
+    await setDoc(doc(f, 'photoComments/p/comments/c1'), { text: 'hi', authorUid: 'u1', authorName: 'Ann', createdAt: new Date() });
+    await setDoc(doc(f, 'recipeTips/r/tips/u1'), { text: 'tip', authorName: 'Ann', updatedAt: new Date() });
+    await setDoc(doc(f, 'recipes/r1'), { title: 'x', authorUid: 'u1' });
+    await setDoc(doc(f, 'recipePhotos/r2'), { imageUrl: IMG, uploadedBy: 'u1' });
+  });
+  const paths = ['photoComments/p/comments/c1', 'recipeTips/r/tips/u1', 'recipes/r1', 'recipePhotos/r2'];
+  for (const p of paths) await assertFails(deleteDoc(doc(as('u2'), p)));          // another member: no
+  for (const p of paths) await assertSucceeds(deleteDoc(doc(as('boss'), p)));     // the owner: yes
+});
+
+test('admin rights cannot be granted from the app', async () => {
+  await assertFails(setDoc(doc(as('u1'), 'admins/u1'), { note: 'me' }));           // nobody can make themselves admin
+  await makeAdmin('boss');
+  await assertSucceeds(getDoc(doc(as('boss'), 'admins/boss')));                    // you can check your own status
+  await assertFails(getDoc(doc(as('u1'), 'admins/boss')));                         // but not anyone else's
+  await assertFails(setDoc(doc(as('boss'), 'admins/boss'), { note: 'x' }));        // and not even an admin writes it
+  await assertFails(deleteDoc(doc(as('boss'), 'admins/boss')));
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'admins/boss')));
+});
+
+test('an admin still cannot post as someone else or edit', async () => {
+  await makeAdmin('boss');
+  await assertFails(setDoc(doc(as('boss'), 'photoComments/p/comments/z'), { text: 'hi', authorUid: 'u1', authorName: 'Ann', createdAt: serverTimestamp() }));
+  await assertFails(setDoc(doc(as('boss'), 'recipeTips/r/tips/u1'), { text: 'tip', authorName: 'Ann', updatedAt: serverTimestamp() }));
+});

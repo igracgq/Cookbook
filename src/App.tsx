@@ -15,14 +15,16 @@ import { PantryMatcherScreen } from './screens/PantryMatcherScreen';
 import { RecipeDetailScreen } from './screens/RecipeDetailScreen';
 import { RecipeListScreen } from './screens/RecipeListScreen';
 import { ShoppingListScreen } from './screens/ShoppingListScreen';
+import { PhotosScreen } from './screens/PhotosScreen';
 import { InstallPrompt } from './components/InstallPrompt';
 import { AppUpdateProvider } from './context/AppUpdateContext';
 import { UpdateBanner } from './components/UpdateBanner';
 import { WifiOff, CheckCircle2, X } from 'lucide-react';
 import { ScreenDestination } from './types';
 
-const TAB_ORDER: Array<'explore' | 'pantry' | 'index' | 'heritage'> = [
+const TAB_ORDER: Array<'explore' | 'photos' | 'pantry' | 'index' | 'heritage'> = [
   'explore',
+  'photos',
   'pantry',
   'index',
   'heritage'
@@ -56,7 +58,7 @@ const MainContent: React.FC = () => {
 
     // Must be predominantly horizontal swipe with at least 75px distance
     if (Math.abs(deltaX) > 75 && Math.abs(deltaY) < 55) {
-      const currentTab = currentScreen.type as 'explore' | 'pantry' | 'index' | 'heritage';
+      const currentTab = currentScreen.type as 'explore' | 'photos' | 'pantry' | 'index' | 'heritage';
       const currentIndex = TAB_ORDER.indexOf(currentTab);
 
       if (currentIndex !== -1) {
@@ -98,6 +100,7 @@ const MainContent: React.FC = () => {
           {currentScreen.type === 'heritage' && <HeritageNotesScreen />}
           {currentScreen.type === 'addRecipe' && <AddRecipeScreen />}
           {currentScreen.type === 'shopping' && <ShoppingListScreen />}
+          {currentScreen.type === 'photos' && <PhotosScreen />}
         </motion.div>
       </AnimatePresence>
 

@@ -69,7 +69,7 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const { user } = useAuth();
   const [version, setVersion] = useState(0);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [photos, setPhotos] = useState<Record<string, { url: string; by: string; uid: string }>>({});
+  const [photos, setPhotos] = useState<Record<string, { url: string; by: string; uid: string; at: number }>>({});
 
   useEffect(() => {
     if (!db) return;
@@ -81,10 +81,16 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const offPhotos = onSnapshot(
       collection(db, 'recipePhotos'),
       snap => {
-        const next: Record<string, { url: string; by: string; uid: string }> = {};
+        const next: Record<string, { url: string; by: string; uid: string; at: number }> = {};
         snap.forEach(d => {
           const x = d.data();
-          if (x.imageUrl) next[d.id] = { url: x.imageUrl, by: x.uploadedByName ?? '', uid: x.uploadedBy ?? '' };
+          if (x.imageUrl) next[d.id] = {
+            url: x.imageUrl,
+            by: x.uploadedByName ?? '',
+            uid: x.uploadedBy ?? '',
+            // a photo just shared has no server time yet, so treat it as now
+            at: typeof x.updatedAt?.toMillis === 'function' ? x.updatedAt.toMillis() : Date.now()
+          };
         });
         setPhotos(next);
       },
@@ -95,7 +101,7 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // Push the shared content into the recipe list the whole app reads from.
   useEffect(() => {
-    setSharedContent(recipes, Object.fromEntries(Object.entries(photos).map(([k, v]) => [k, { url: v.url, by: v.by }])));
+    setSharedContent(recipes, Object.fromEntries(Object.entries(photos).map(([k, v]) => [k, { url: v.url, by: v.by, at: v.at }])));
     setVersion(v => v + 1);
   }, [recipes, photos]);
 

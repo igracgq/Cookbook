@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Share2, Plus, ShoppingCart, RefreshCw } from 'lucide-react';
+import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Images, Share2, Plus, ShoppingCart, RefreshCw } from 'lucide-react';
 import { AuthButton } from './AuthButton';
 import { ShareCookbookModal } from './ShareCookbookModal';
 import { useAppUpdate } from '../context/AppUpdateContext';
@@ -12,6 +12,7 @@ export const Navigation: React.FC = () => {
   const toBuyCount = shoppingList.filter(i => !i.bought).length;
 
   const isExplore = currentScreen.type === 'explore';
+  const isPhotos = currentScreen.type === 'photos';
   const isPantry = currentScreen.type === 'pantry';
   const isIndex = currentScreen.type === 'index';
   const isHeritage = currentScreen.type === 'heritage';
@@ -54,6 +55,21 @@ export const Navigation: React.FC = () => {
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span className="hidden lg:inline">Cookbook</span>
+            </button>
+
+            <button
+              id="nav_photos_desktop"
+              title="Photos"
+              aria-label="Photos"
+              onClick={() => navigateTo({ type: 'photos' })}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                isPhotos
+                  ? 'bg-[#4A3B2C] text-[#FAF7F2] shadow-sm'
+                  : 'text-[#5C4E40] hover:text-[#261D16] hover:bg-[#E4DBCF]'
+              }`}
+            >
+              <Images className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Photos</span>
             </button>
 
             <button
@@ -175,7 +191,7 @@ export const Navigation: React.FC = () => {
           <button
             id="nav_explore"
             onClick={() => navigateTo({ type: 'explore' })}
-            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
               isExplore ? 'text-[#4A3B2C]' : 'text-[#857566] hover:text-[#261D16]'
             }`}
           >
@@ -188,9 +204,24 @@ export const Navigation: React.FC = () => {
           </button>
 
           <button
+            id="nav_photos"
+            onClick={() => navigateTo({ type: 'photos' })}
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
+              isPhotos ? 'text-[#4A3B2C]' : 'text-[#857566] hover:text-[#261D16]'
+            }`}
+          >
+            <div className={`p-1.5 rounded-full ${isPhotos ? 'bg-[#DECFC0]' : ''}`}>
+              <Images className="w-4 h-4" />
+            </div>
+            <span className={`text-[10px] tracking-tight ${isPhotos ? 'font-bold text-[#4A3B2C]' : 'font-normal'}`}>
+              Photos
+            </span>
+          </button>
+
+          <button
             id="nav_pantry"
             onClick={() => navigateTo({ type: 'pantry' })}
-            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
               isPantry ? 'text-[#4A3B2C]' : 'text-[#857566] hover:text-[#261D16]'
             }`}
           >
@@ -205,7 +236,7 @@ export const Navigation: React.FC = () => {
           <button
             id="nav_index"
             onClick={() => navigateTo({ type: 'index' })}
-            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
               isIndex ? 'text-[#4A3B2C]' : 'text-[#857566] hover:text-[#261D16]'
             }`}
           >
@@ -220,7 +251,7 @@ export const Navigation: React.FC = () => {
           <button
             id="nav_heritage"
             onClick={() => navigateTo({ type: 'heritage' })}
-            className={`flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
+            className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] py-1 rounded-xl transition-colors active:scale-95 touch-manipulation ${
               isHeritage ? 'text-[#4A3B2C]' : 'text-[#857566] hover:text-[#261D16]'
             }`}
           >
