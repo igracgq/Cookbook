@@ -1,0 +1,9 @@
+# Netlify build settings (an alternative to GitHub Pages that works with a private repository).
+# Add the six VITE_* values under Site configuration > Environment variables; see docs/SHARING_SETUP.md.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  BASE_PATH = "/"
