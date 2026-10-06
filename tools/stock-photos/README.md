@@ -30,8 +30,10 @@ title says nothing, the main ingredients (e.g. "Prostitute Pie" -> chocolate pud
 balls). `pixabay_extra.py` searches them and `apply_extra.py` applies the reviewed picks. Every recipe now has a
 photo; the ones from this pass are looser matches than the first pass, so treat them as mood images.
 
-### Trimming for the artifact
+### One photo per recipe
 
-Artifacts hold at most 511 files per version, so `merge_photos.py` collapses photos that are the same Pixabay
-image and maps near-identical dishes (e.g. all the amaretti variants) onto one file: 494 -> 392 stock photos.
-Every recipe still has a photo. Run it after `apply.py` / `apply_extra.py` if you add more.
+`apply_unique.py` replaces the earlier shared photos: every recipe now has its own distinct Pixabay photo
+(1,135 recipes, 1,135 different images). Recipes that share a dish (all the lasagnas, say) get different
+pictures of that dish. Stock photos are shown edge to edge (`object-cover`); the cookbook's own photos still
+show whole. The credit sits in small type at the bottom of the recipe page, not under the photo.
+`merge_photos.py` is gone because nothing is shared any more.

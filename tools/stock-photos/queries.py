@@ -1,5 +1,5 @@
 import json, re, collections
-R = json.load(open('/home/user/Cookbook/src/data/recipes.json'))
+R = json.load(open(__import__('os').environ.get('RECIPES_JSON', '/home/user/Cookbook/src/data/recipes.json')))
 no = [x for x in R if not x['photos']]
 
 NAMES = set('nordica rita rosina delfina concetta assunta julie emma lina teresa mary mikes michael chiarello franca filice natasa dimitra margaret gina ida aunt lena uncle jimmy lundy adrienne antoniette bruna gabriella consiglio sally zia maria nonna vito lulu monica mara georgina sandy puntillo kraft lipton cheez whiz becel crisco camouflage hunter tony tiger toll house tootoo imma raffalini gianna sasamielle kielbasa'.split()) - {'kielbasa'}

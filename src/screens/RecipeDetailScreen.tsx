@@ -290,22 +290,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
         </div>
 
         {isStockPhotoUrl(activePhoto) && (
-          <p className="text-[11px] text-[#7D6C5A] leading-snug">
-            Illustrative photo, not from the family cookbook.
-            {getPhotoCredit(activePhoto) && (
-              <>
-                {' '}
-                <a
-                  href={getPhotoCredit(activePhoto)!.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-[#261D16]"
-                >
-                  Photo: {getPhotoCredit(activePhoto)!.artist || 'Pixabay'} ({getPhotoCredit(activePhoto)!.license})
-                </a>
-              </>
-            )}
-          </p>
+          <p className="text-[11px] text-[#7D6C5A] leading-snug">Illustrative photo, not from the family cookbook.</p>
         )}
 
         {photos.length > 1 && (
@@ -783,6 +768,21 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           <div />
         )}
       </div>
+
+      {/* Photo credit for illustrative photos, kept out of the way at the bottom */}
+      {photos.some(url => isStockPhotoUrl(url)) && (
+        <p className="text-[10px] text-[#A69480] text-center leading-snug">
+          Illustrative photo
+          {photos.filter(url => isStockPhotoUrl(url) && getPhotoCredit(url)).map(url => (
+            <React.Fragment key={url}>
+              {' · '}
+              <a href={getPhotoCredit(url)!.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-[#7D6C5A]">
+                {getPhotoCredit(url)!.artist || 'Photographer'} on Pixabay
+              </a>
+            </React.Fragment>
+          ))}
+        </p>
+      )}
 
       {/* Modals */}
       <HandsFreeCookingModal recipe={recipe} />
