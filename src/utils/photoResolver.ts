@@ -18,8 +18,9 @@ export const isSharedPhotoUrl = (url?: string | null) => !!url && /^https:\/\//.
 
 /** Family photos used on the Heritage Notes screen. */
 export const FAMILY_PHOTO_URL = photoUrl('cook_family');
-/** Pen-and-ink cookbook sketch (transparent background) shown at the top of the recipe list. */
-export const COOKBOOK_COVER_URL = photoUrl('cook_cover', 'png');
+/** Pen-and-ink cookbook sketch (transparent background), cut in two so the search bar sits between the halves. */
+export const COOKBOOK_COVER_TOP_URL = photoUrl('cook_cover_top', 'png');
+export const COOKBOOK_COVER_BOTTOM_URL = photoUrl('cook_cover_bottom', 'png');
 export const FAMILY_GALLERY_URLS = [photoUrl('cook_p2_1')];
 
 // Stock photos (file names start with "stock_") are free-to-use pictures from

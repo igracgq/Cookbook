@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { arrayRemove, arrayUnion, doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from './AuthContext';
 import { useCommunity } from './CommunityContext';
@@ -60,7 +60,8 @@ interface CookbookContextType {
   setCustomRecipePhoto: (recipeId: string, photoUri: string) => void;
   removeCustomRecipePhoto: (recipeId: string) => void;
   userNotes: Record<string, string>;
-  saveRecipeNote: (recipeId: string, note: string) => void;
+  /** Resolves once saved; rejects if the note could not be saved to the signed-in account. */
+  saveRecipeNote: (recipeId: string, note: string) => Promise<void>;
 
   // Custom Spice & Units
   recipeSpiceCustomization: Record<string, SpiceLevel>;
@@ -318,17 +319,27 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
-  // Notes
-  const [userNotes, setUserNotes] = useState<Record<string, string>>(() => {
+  // Notes: private to the person who wrote them.
+  // Signed in: they live in the member's own account (users/{uid}/notes) and follow them to other devices.
+  // Signed out: they stay on this device only.
+  const readLocalNotes = (): Record<string, string> => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.NOTES);
       return saved ? JSON.parse(saved) : {};
     } catch {
       return {};
     }
-  });
+  };
+  const [userNotes, setUserNotes] = useState<Record<string, string>>(readLocalNotes);
 
-  const saveRecipeNote = (recipeId: string, note: string) => {
+  const saveRecipeNote = async (recipeId: string, note: string) => {
+    if (user && db) {
+      const ref = doc(db, 'users', user.uid, 'notes', recipeId);
+      if (note.trim()) await setDoc(ref, { text: note, updatedAt: serverTimestamp() });
+      else await deleteDoc(ref);
+      setUserNotes(prev => ({ ...prev, [recipeId]: note }));
+      return;
+    }
     setUserNotes(prev => {
       const next = { ...prev, [recipeId]: note };
       try {
@@ -339,6 +350,41 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return next;
     });
   };
+
+  // When someone signs in, show their account's notes. Notes written on this device while signed out are
+  // moved into the account once (and removed from the device after they are safely saved).
+  useEffect(() => {
+    if (!user || !db) {
+      setUserNotes(readLocalNotes());
+      return;
+    }
+    const firestore = db;
+    const uid = user.uid;
+    let moved = false;
+    return onSnapshot(
+      collection(firestore, 'users', uid, 'notes'),
+      snap => {
+        const cloud: Record<string, string> = {};
+        snap.forEach(d => { cloud[d.id] = String(d.data().text ?? ''); });
+        if (!moved) {
+          moved = true;
+          const local = readLocalNotes();
+          const extra = Object.keys(local).filter(id => local[id].trim() && !(id in cloud));
+          if (extra.length > 0) {
+            Promise.all(
+              extra.map(id => setDoc(doc(firestore, 'users', uid, 'notes', id), { text: local[id], updatedAt: serverTimestamp() }))
+            ).then(() => { try { localStorage.removeItem(STORAGE_KEYS.NOTES); } catch { /* ignore */ } })
+              .catch(() => { /* keep them on the device; they are tried again next sign-in */ });
+          } else if (Object.keys(local).length > 0 && Object.keys(local).every(id => id in cloud || !local[id].trim())) {
+            try { localStorage.removeItem(STORAGE_KEYS.NOTES); } catch { /* ignore */ }
+          }
+        }
+        setUserNotes(cloud);
+      },
+      () => setUserNotes(readLocalNotes())
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid]);
 
   // Spice Customization
   const [recipeSpiceCustomization, setRecipeSpiceCustomization] = useState<Record<string, SpiceLevel>>(() => {
@@ -496,6 +542,9 @@ export const CookbookProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     switch (selectedFilter) {
       case RecipeQuickFilter.ALL:
         return list;
+      case RecipeQuickFilter.LATEST:
+        // recipes family members have added, newest first
+        return list.filter(r => r.community).sort((a, b) => (b.addedAt ?? 0) - (a.addedAt ?? 0));
       case RecipeQuickFilter.FAVORITES:
         return list.filter(r => favoriteRecipeIds.has(r.id));
       case RecipeQuickFilter.GLUTEN_FREE:

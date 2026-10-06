@@ -92,6 +92,8 @@ Either way the published site is public: anyone with the link can read the cookb
 
 - `users/{uid}`: `displayName`, `photoURL`, `lastSignIn`, `favorites` (list of recipe ids). Only that member can read or write it.
 - `recipes/{id}`: a shared recipe, with `imageUrl` (a `https://res.cloudinary.com/...` URL, or empty), `authorUid`, `authorName`, `createdAt` and the recipe text.
+- `users/{uid}/notes/{recipeId}`: a member's private cooking note (`text`, `updatedAt`). Only that member can read or write it. Signed out, notes stay in the browser on that device instead.
+- `recipeTips/{recipeId}/tips/{uid}`: the tip a member shares with everyone for a recipe (`text`, `authorName`, `updatedAt`). Anyone can read; only that member can write or remove theirs.
 - `recipePhotos/{recipeId}`: the one shared photo for a cookbook recipe: `imageUrl`, `uploadedBy`, `uploadedByName`, `updatedAt`.
 
 ## Limits worth knowing
@@ -117,3 +119,8 @@ Either way the published site is public: anyone with the link can read the cookb
 - `npm run e2e` drives the real app in a browser against the Auth and Firestore emulators: sign in, favorites sync,
   adding a recipe with a photo, sharing a photo, and signed-out behaviour. Cloudinary is replaced by a stand-in.
   See `tools/firebase/README.md` for how to build the app for it.
+
+## After updating the app
+
+Whenever `firestore.rules` changes (most recently for private notes and shared tips), paste the whole file into
+Firebase console > Firestore Database > Rules and click **Publish**. Until then the new features show "could not be saved".

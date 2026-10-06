@@ -59,7 +59,9 @@ function toRecipe(id: string, d: DocumentData): Recipe {
     imageUrl: d.imageUrl || undefined,
     imageBy: d.authorName || undefined,
     community: true,
-    authorUid: d.authorUid
+    authorUid: d.authorUid,
+    // a just-added recipe has no server time yet, so treat it as now
+    addedAt: typeof d.createdAt?.toMillis === 'function' ? d.createdAt.toMillis() : Date.now()
   };
 }
 

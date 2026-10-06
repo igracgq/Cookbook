@@ -1,6 +1,13 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithCredential, type Auth } from 'firebase/auth';
-import { connectFirestoreEmulator, getFirestore, type Firestore } from 'firebase/firestore';
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  type Firestore
+} from 'firebase/firestore';
 
 /**
  * Firebase is optional: the cookbook works without it. Sign-in, shared recipes, shared photos and
@@ -23,7 +30,12 @@ export let db: Firestore | null = null;
 if (isCloudConfigured) {
   app = initializeApp(cfg);
   auth = getAuth(app);
-  db = getFirestore(app);
+  try {
+    // Keep shared recipes, shared photo links and favorites on the device so they still load offline.
+    db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+  } catch {
+    db = getFirestore(app); // browsers without IndexedDB support fall back to online-only
+  }
   // Local testing only: `VITE_FIREBASE_EMULATOR=true` points the app at the Firebase emulators.
   if (import.meta.env.VITE_FIREBASE_EMULATOR === 'true') {
     connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });

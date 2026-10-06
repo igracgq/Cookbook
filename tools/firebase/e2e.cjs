@@ -70,8 +70,16 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(await page.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'recipe page shows the image');
   ok(await page.locator('text=Delete my recipe').count() === 1, 'author can delete their recipe');
 
+  // Latest Additions: sits between All Dishes and Favorites, lists added recipes
+  await page.click('#back_to_cookbook_btn'); await page.fill('#recipe_search_input', ''); await page.waitForTimeout(500);
+  const chips = await page.locator('[id^=quick_filter_]').allInnerTexts();
+  ok(chips[0] === 'All Dishes' && chips[1] === 'Latest Additions' && chips[2] === 'Favorites', 'Latest Additions chip sits between All Dishes and Favorites: ' + chips.slice(0, 3).join(' | '));
+  await page.click('[id^=quick_filter_latest_additions]'); await page.waitForTimeout(600);
+  ok((await page.locator('text=/Showing/').first().innerText()).includes('Showing 1 ') && await page.locator('h3:has-text("Zia Ann Test Lasagna")').count() >= 1, 'Latest Additions lists the recipe that was added');
+  await page.click('[id^=quick_filter_all_dishes]');
+
   // Share a photo on a cookbook recipe
-  await page.click('#back_to_cookbook_btn'); await page.fill('#recipe_search_input', 'Tiramisu'); await page.waitForTimeout(700);
+  await page.fill('#recipe_search_input', 'Tiramisu'); await page.waitForTimeout(700);
   await page.locator('h3').first().click(); await page.waitForTimeout(800);
   await page.locator('#shared_photo_panel input[type=file]').setInputFiles(FILES + '/big.jpg');
   await page.waitForSelector('text=Photo shared', { timeout: 20000 });
@@ -79,9 +87,22 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(await page.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'shared photo shows on a cookbook recipe');
   ok(await page.locator('text=Replace shared photo').count() === 1, 'owner can replace their photo');
 
+  // Private cooking note and shared tip
+  ok(/visible to you only/.test(await page.getAttribute('#recipe_note_textarea', 'placeholder')), 'notes box says the notes are visible to you only');
+  ok(/Help others by including your own tips on this recipe preparation/.test(await page.getAttribute('#recipe_tip_textarea', 'placeholder')), 'tips box has its hint text');
+  await page.fill('#recipe_note_textarea', 'Ann private basil note'); await page.click('#save_recipe_note_btn');
+  await page.waitForSelector('text=Saved to your cookbook', { timeout: 10000 });
+  await page.fill('#recipe_tip_textarea', 'Rest the dough an extra hour'); await page.click('#share_tip_btn');
+  await page.waitForSelector('text=Your tip is shared', { timeout: 10000 });
+  ok(true, 'note saved and tip shared');
+
   // Reload: still there, still signed in
   await page.reload(); await page.waitForSelector('#sign_out_btn', { timeout: 15000 });
   ok(true, 'still signed in after reload');
+  await page.fill('#recipe_search_input', 'Tiramisu'); await page.waitForTimeout(700);
+  await page.locator('h3').first().click(); await page.waitForTimeout(1500);
+  ok(await page.inputValue('#recipe_note_textarea') === 'Ann private basil note', 'private note is still there after reload');
+  ok(await page.inputValue('#recipe_tip_textarea') === 'Rest the dough an extra hour', 'own tip is still in the tips box after reload');
 
   // Second person cannot overwrite that photo
   const ctx2 = await b.newContext({ viewport: { width: 1100, height: 900 } });
@@ -94,6 +115,30 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(await p2.locator('text=Sign in to share a photo').count() === 1, 'signed-out visitor is asked to sign in to share');
   ok(await p2.locator('text=Delete my recipe').count() === 0, 'signed-out visitor cannot see delete');
 
+  // A signed-out visitor reads the tip but not the note; another member sees the tip and has no note
+  await p2.click('#back_to_cookbook_btn'); await p2.fill('#recipe_search_input', 'Tiramisu'); await p2.waitForTimeout(700);
+  await p2.locator('h3').first().click(); await p2.waitForTimeout(1500);
+  ok((await p2.locator('#recipe_tips_box').innerText()).includes('Rest the dough an extra hour'), 'a signed-out visitor can read the shared tip');
+  ok(await p2.inputValue('#recipe_note_textarea') === '', 'a signed-out visitor does not see the private note');
+  ok(await p2.locator('#share_tip_btn').count() === 0 && await p2.locator('text=Sign in to share a tip').count() === 1, 'signed-out visitor is asked to sign in to share a tip');
+  const ctx3 = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const p3 = await ctx3.newPage();
+  await p3.route('**/fonts.g*/**', r => r.abort()); await p3.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await p3.goto('http://localhost:5173/Cookbook/'); await p3.waitForTimeout(2500);
+  await p3.evaluate(() => window.__cookbookTestSignIn('bob-uid', 'bob@example.com'));
+  await p3.waitForSelector('#sign_out_btn', { timeout: 15000 });
+  await p3.fill('#recipe_search_input', 'Tiramisu'); await p3.waitForTimeout(700);
+  await p3.locator('h3').first().click(); await p3.waitForTimeout(1500);
+  ok(await p3.inputValue('#recipe_note_textarea') === '', 'another member does not see Ann\'s private note');
+  ok(/tips from others/i.test(await p3.locator('#recipe_tips_box').innerText()) && (await p3.locator('#recipe_tips_box').innerText()).includes('Rest the dough an extra hour'), 'another member sees Ann\'s tip under Tips from others');
+  ok(await p3.inputValue('#recipe_tip_textarea') === '', 'another member\'s own tip box starts empty');
+  await p3.fill('#recipe_note_textarea', 'Bob note'); await p3.click('#save_recipe_note_btn'); await p3.waitForSelector('text=Saved to your cookbook');
+  const allNotes = (await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents:runQuery', {
+    method: 'POST', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' },
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'notes', allDescendants: true }] } }) })).json()).filter(x => x.document).map(x => x.document);
+  const ownerOf = text => { const d = allNotes.find(n => n.fields.text.stringValue === text); return d && d.name.split('/users/')[1].split('/')[0]; };
+  ok(allNotes.length === 2 && ownerOf('Ann private basil note') && ownerOf('Bob note') && ownerOf('Ann private basil note') !== ownerOf('Bob note'), 'each member\'s note is stored under their own account only');
+
   // Same account on a second device: favorites follow it; the recipe document holds a URL, not image data
   await p2.evaluate(() => window.__cookbookTestSignIn('ann-uid', 'ann@example.com'));
   await p2.waitForSelector('#sign_out_btn', { timeout: 15000 });
@@ -103,6 +148,11 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   const r = await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents/recipes', { headers: { Authorization: 'Bearer owner' } })).json();
   const d = r.documents[0].fields;
   ok(/^https:\/\/res\.cloudinary\.com\//.test(d.imageUrl.stringValue) && JSON.stringify(r).length < 5000, 'Firestore recipe holds the Cloudinary URL, no image data');
+
+  // Ann's note follows her account to the second device
+  await p2.click('[id^=quick_filter_all_dishes]'); await p2.fill('#recipe_search_input', 'Tiramisu'); await p2.waitForTimeout(700);
+  await p2.locator('h3').first().click(); await p2.waitForTimeout(2000);
+  ok(await p2.inputValue('#recipe_note_textarea') === 'Ann private basil note', 'private note follows the account to another device');
 
   // Sign out clears favorites back to defaults
   await page.click('#sign_out_btn'); await page.waitForTimeout(800);

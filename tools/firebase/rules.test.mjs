@@ -97,3 +97,45 @@ test('unknown collections are closed', async () => {
   await assertFails(setDoc(doc(as('u1'), 'whatever/x'), { a: 1 }));
   await assertFails(getDoc(doc(as('u1'), 'whatever/x')));
 });
+
+const note = (over = {}) => ({ text: 'Added extra basil', updatedAt: serverTimestamp(), ...over });
+const tip = (over = {}) => ({ text: 'Rest the dough an extra hour', authorName: 'Ann', updatedAt: serverTimestamp(), ...over });
+
+test('cooking notes are private to their owner', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'users/u1/notes/pasta_fresca'), note()));
+  await assertSucceeds(getDoc(doc(as('u1'), 'users/u1/notes/pasta_fresca')));
+  await assertFails(getDoc(doc(as('u2'), 'users/u1/notes/pasta_fresca')));                 // another member
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'users/u1/notes/pasta_fresca')));
+  await assertFails(setDoc(doc(as('u2'), 'users/u1/notes/pasta_fresca'), note()));         // cannot write to someone else
+  await assertFails(deleteDoc(doc(as('u2'), 'users/u1/notes/pasta_fresca')));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'users/u1/notes/pasta_fresca')));
+});
+
+test('cooking notes are validated', async () => {
+  const db = as('u1');
+  await assertFails(setDoc(doc(db, 'users/u1/notes/a'), note({ text: 'x'.repeat(5001) })));
+  await assertFails(setDoc(doc(db, 'users/u1/notes/b'), note({ extra: 1 })));
+  await assertFails(setDoc(doc(db, 'users/u1/notes/c'), note({ updatedAt: new Date('2001-01-01') })));
+  await assertFails(setDoc(doc(db, 'users/u1/notes/bad id!'), note()));
+});
+
+test('everyone can read tips, only the author writes theirs', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'recipeTips/pasta_fresca/tips/u1'), tip()));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'recipeTips/pasta_fresca/tips/u1'))); // signed out reads
+  await assertSucceeds(getDoc(doc(as('u2'), 'recipeTips/pasta_fresca/tips/u1')));
+  await assertFails(setDoc(doc(as('u2'), 'recipeTips/pasta_fresca/tips/u1'), tip()));      // not your tip
+  await assertFails(deleteDoc(doc(as('u2'), 'recipeTips/pasta_fresca/tips/u1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'recipeTips/pasta_fresca/tips/u3'), tip()));
+  await assertSucceeds(setDoc(doc(as('u1'), 'recipeTips/pasta_fresca/tips/u1'), tip({ text: 'Updated' })));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'recipeTips/pasta_fresca/tips/u1')));
+});
+
+test('tips are validated', async () => {
+  const db = as('u1');
+  await assertFails(setDoc(doc(db, 'recipeTips/r/tips/u1'), tip({ text: '' })));
+  await assertFails(setDoc(doc(db, 'recipeTips/r/tips/u1'), tip({ text: 'x'.repeat(1001) })));
+  await assertFails(setDoc(doc(db, 'recipeTips/r/tips/u1'), tip({ extra: 'field' })));
+  await assertFails(setDoc(doc(db, 'recipeTips/r/tips/u1'), tip({ updatedAt: new Date('2001-01-01') })));
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'recipeTips/r/tips/g1'), tip()));                     // Google sign-in only
+});

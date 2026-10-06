@@ -117,6 +117,8 @@ export interface Recipe {
   imageBy?: string;
   /** True for recipes added by signed-in family members (not in the printed cookbook). */
   community?: boolean;
+  /** When a shared recipe was added (milliseconds), used by Latest Additions. */
+  addedAt?: number;
   /** Firebase uid of the member who added a community recipe. */
   authorUid?: string;
 }
@@ -131,6 +133,7 @@ export interface MatchResult {
 
 export enum RecipeQuickFilter {
   ALL = "All Dishes",
+  LATEST = "Latest Additions",
   FAVORITES = "Favorites",
   GLUTEN_FREE = "Gluten-Free 🌾",
   VEGAN = "Vegan 🌱",
