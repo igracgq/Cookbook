@@ -63,6 +63,21 @@ security rules are what protect the data.
    `https://<your-user>.github.io/Cookbook/` after a minute or two.
 4. In Firebase, make sure `<your-user>.github.io` is under **Authentication > Settings > Authorised domains**.
 
+### If the repository is private: Netlify instead of GitHub Pages
+
+GitHub Pages needs a public repository on the free plan. Netlify's free plan can publish from a private one.
+`netlify.toml` already holds the build settings.
+
+1. Sign up at https://netlify.com with your GitHub account.
+2. **Add new site > Import an existing project > GitHub**, allow it to see the repository, and pick `Cookbook`.
+3. Choose the branch to publish (`main`, or the working branch to try it before merging). Netlify reads the
+   build settings from `netlify.toml`.
+4. Before deploying, open **Environment variables** and add the six `VITE_*` values (same names as above).
+5. Deploy. Add the address Netlify gives you (for example `something.netlify.app`) to Firebase **Authentication >
+   Settings > Authorised domains**.
+
+Either way the published site is public: anyone with the link can read the cookbook.
+
 ## What members can do
 
 - **Anyone** (signed in or not) can read all recipes and photos.

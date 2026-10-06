@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { FAMILY_PHOTO_URL, FAMILY_GALLERY_URLS, allPhotoCredits } from '../utils/photoResolver';
+import { FAMILY_PHOTO_URL, FAMILY_GALLERY_URLS } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import {
   helpfulHints,
@@ -15,13 +15,12 @@ import {
   Scale,
   Lightbulb,
   Printer,
-  Heart,
-  Camera
+  Heart
 } from 'lucide-react';
 
 export const HeritageNotesScreen: React.FC = () => {
   const { openPrintExport } = useCookbook();
-  const [activeTab, setActiveTab] = useState<'family' | 'roasting' | 'conversions' | 'hints' | 'credits'>('family');
+  const [activeTab, setActiveTab] = useState<'family' | 'roasting' | 'conversions' | 'hints'>('family');
 
   return (
     <div id="heritage_notes_screen" className="max-w-5xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-16 space-y-8">
@@ -91,19 +90,6 @@ export const HeritageNotesScreen: React.FC = () => {
         >
           <Lightbulb className="w-4 h-4 text-amber-500" />
           <span>Nonna's Secrets</span>
-        </button>
-
-        <button
-          id="tab_photo_credits"
-          onClick={() => setActiveTab('credits')}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold shrink-0 transition-all ${
-            activeTab === 'credits'
-              ? 'bg-[#4A3B2C] text-[#FAF7F2] shadow-sm'
-              : 'bg-[#EBE3D6] text-[#5C4E40] hover:bg-[#E4DBCF]'
-          }`}
-        >
-          <Camera className="w-4 h-4 text-emerald-600" />
-          <span>Photo Credits</span>
         </button>
       </div>
 
@@ -246,33 +232,6 @@ export const HeritageNotesScreen: React.FC = () => {
       )}
 
       {/* 4. Helpful Hints */}
-      {activeTab === 'credits' && (
-        <div className="bg-[#FAF7F2] rounded-3xl border border-[#D2C4B1] p-6 sm:p-8 space-y-4">
-          <h3 className="font-serif-heritage text-2xl font-bold text-[#261D16]">Photo Credits</h3>
-          <p className="text-sm text-[#5C4E40] leading-relaxed">
-            Photos from the original family cookbook are not listed here. Recipes marked "Illustrative photo" use
-            free-to-use pictures from Pixabay, shown only to give an idea of the dish. Thank you to the
-            photographers below.
-          </p>
-          {allPhotoCredits().length === 0 ? (
-            <p className="text-sm italic text-[#7D6C5A]">No illustrative photos have been added yet.</p>
-          ) : (
-            <ul className="divide-y divide-[#E4DBCF] text-sm">
-              {allPhotoCredits().map(c => (
-                <li key={c.file} className="py-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
-                  <a href={c.url} target="_blank" rel="noopener noreferrer" className="text-[#261D16] hover:underline min-w-0 break-words">
-                    {c.title}
-                  </a>
-                  <span className="text-xs text-[#7D6C5A]">
-                    {c.artist || 'Pixabay contributor'} · {c.license}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
       {activeTab === 'hints' && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
