@@ -139,3 +139,26 @@ test('tips are validated', async () => {
   const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
   await assertFails(setDoc(doc(guest, 'recipeTips/r/tips/g1'), tip()));                     // Google sign-in only
 });
+
+const list = (over = {}) => ({ items: [{ key: 'basil', name: 'basil', needs: [], bought: false }], updatedAt: serverTimestamp(), ...over });
+
+test('the shopping list is private to its owner', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'users/u1/lists/shopping'), list()));
+  await assertSucceeds(getDoc(doc(as('u1'), 'users/u1/lists/shopping')));
+  await assertFails(getDoc(doc(as('u2'), 'users/u1/lists/shopping')));
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'users/u1/lists/shopping')));
+  await assertFails(setDoc(doc(as('u2'), 'users/u1/lists/shopping'), list()));
+  await assertFails(deleteDoc(doc(as('u2'), 'users/u1/lists/shopping')));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'users/u1/lists/shopping')));
+});
+
+test('the shopping list is validated', async () => {
+  const db = as('u1');
+  await assertFails(setDoc(doc(db, 'users/u1/lists/other'), list()));                         // only the "shopping" list
+  await assertFails(setDoc(doc(db, 'users/u1/lists/shopping'), list({ items: 'basil' })));
+  await assertFails(setDoc(doc(db, 'users/u1/lists/shopping'), list({ items: Array(301).fill({ key: 'a' }) })));
+  await assertFails(setDoc(doc(db, 'users/u1/lists/shopping'), list({ extra: 1 })));
+  await assertFails(setDoc(doc(db, 'users/u1/lists/shopping'), list({ updatedAt: new Date('2001-01-01') })));
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'users/g1/lists/shopping'), list()));
+});

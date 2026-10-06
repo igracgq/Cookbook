@@ -14,6 +14,7 @@ import { HeritageNotesScreen } from './screens/HeritageNotesScreen';
 import { PantryMatcherScreen } from './screens/PantryMatcherScreen';
 import { RecipeDetailScreen } from './screens/RecipeDetailScreen';
 import { RecipeListScreen } from './screens/RecipeListScreen';
+import { ShoppingListScreen } from './screens/ShoppingListScreen';
 import { WifiOff, CheckCircle2, X } from 'lucide-react';
 import { ScreenDestination } from './types';
 
@@ -93,6 +94,7 @@ const MainContent: React.FC = () => {
           {currentScreen.type === 'index' && <AlphabeticalIndexScreen />}
           {currentScreen.type === 'heritage' && <HeritageNotesScreen />}
           {currentScreen.type === 'addRecipe' && <AddRecipeScreen />}
+          {currentScreen.type === 'shopping' && <ShoppingListScreen />}
         </motion.div>
       </AnimatePresence>
 
