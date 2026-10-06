@@ -50,6 +50,19 @@ Then `npm install`, `npm run dev` to try it, or `npm run build` for the real sit
 the built files when you build, so build with them present. Firebase web config values are not secrets; the
 security rules are what protect the data.
 
+### Putting the site online without a computer (GitHub Pages)
+
+`.github/workflows/deploy.yml` builds and publishes the site from the `main` branch. One-time setup on GitHub:
+
+1. **Settings > Pages > Build and deployment > Source:** choose **GitHub Actions**.
+2. **Settings > Secrets and variables > Actions > New repository secret.** Add six secrets with exactly these
+   names, each with the value from the matching `.env.local` line: `VITE_FIREBASE_API_KEY`,
+   `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_APP_ID`,
+   `VITE_CLOUDINARY_CLOUD_NAME`, `VITE_CLOUDINARY_UPLOAD_PRESET`.
+3. Merge the work into `main` (or run the workflow by hand from the **Actions** tab). The site appears at
+   `https://<your-user>.github.io/Cookbook/` after a minute or two.
+4. In Firebase, make sure `<your-user>.github.io` is under **Authentication > Settings > Authorised domains**.
+
 ## What members can do
 
 - **Anyone** (signed in or not) can read all recipes and photos.
