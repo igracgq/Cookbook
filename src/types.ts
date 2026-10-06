@@ -185,7 +185,7 @@ export type ScreenDestination =
   | { type: "detail"; recipeId: string }
   | { type: "addRecipe" }
   | { type: "shopping" }
-  | { type: "photos" }
+  | { type: "photos"; focusId?: string; fromRecipeId?: string }
   | { type: "print"; recipeId?: string };
 
 export interface MeatRoastingGuide {

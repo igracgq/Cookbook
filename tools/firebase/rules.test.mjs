@@ -247,3 +247,31 @@ test('an admin still cannot post as someone else or edit', async () => {
   await assertFails(setDoc(doc(as('boss'), 'photoComments/p/comments/z'), { text: 'hi', authorUid: 'u1', authorName: 'Ann', createdAt: serverTimestamp() }));
   await assertFails(setDoc(doc(as('boss'), 'recipeTips/r/tips/u1'), { text: 'tip', authorName: 'Ann', updatedAt: serverTimestamp() }));
 });
+
+const rating = (uid, recipeId, stars, over = {}) => ({ recipeId, uid, stars, updatedAt: serverTimestamp(), ...over });
+
+test('everyone reads ratings; a member sets, changes and removes only their own', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'recipeRatings/pasta_fresca__u1'), rating('u1', 'pasta_fresca', 5)));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'recipeRatings/pasta_fresca__u1')));
+  await assertSucceeds(setDoc(doc(as('u1'), 'recipeRatings/pasta_fresca__u1'), rating('u1', 'pasta_fresca', 3)));     // change it
+  await assertFails(setDoc(doc(as('u2'), 'recipeRatings/pasta_fresca__u1'), rating('u1', 'pasta_fresca', 1)));        // not under someone else's name
+  await assertFails(setDoc(doc(as('u2'), 'recipeRatings/pasta_fresca__u2'), rating('u1', 'pasta_fresca', 1)));        // uid must match
+  await assertFails(deleteDoc(doc(as('u2'), 'recipeRatings/pasta_fresca__u1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'recipeRatings/pasta_fresca__x'), rating('x', 'pasta_fresca', 4)));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'recipeRatings/pasta_fresca__u1')));
+});
+
+test('ratings are validated: 1 to 5 whole stars, one per member per recipe', async () => {
+  const db = as('u1');
+  for (const n of [1, 2, 3, 4, 5]) await assertSucceeds(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', n)));
+  await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', 0)));
+  await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', 6)));
+  await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', 4.5)));
+  await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', '5')));
+  await assertFails(setDoc(doc(db, 'recipeRatings/r2__u1'), rating('u1', 'r', 5)));                                     // id must match the recipe
+  await assertFails(setDoc(doc(db, 'recipeRatings/anything'), rating('u1', 'r', 5)));                                   // so one rating per recipe
+  await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', 5, { extra: 1 })));
+  await assertFails(setDoc(doc(db, 'recipeRatings/r__u1'), rating('u1', 'r', 5, { updatedAt: new Date('2001-01-01') })));
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'recipeRatings/r__g1'), rating('g1', 'r', 5)));
+});

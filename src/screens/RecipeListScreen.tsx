@@ -8,6 +8,7 @@ import {
   RecipeQuickFilter,
   SPICE_INFO
 } from '../types';
+import { RecipeRating } from '../components/RecipeRating';
 import { getRecipePhotoUrls, isStockPhotoUrl, COOKBOOK_COVER_TOP_URL, COOKBOOK_COVER_BOTTOM_URL } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { allRecipes } from '../data/cookbookDataSource';
@@ -276,6 +277,8 @@ export const RecipeListScreen: React.FC = () => {
                       </p>
                     )}
                   </div>
+
+                  <RecipeRating recipeId={recipe.id} size="sm" />
 
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#5C4E40]">
                     {recipe.cookTime && (
