@@ -1,10 +1,12 @@
 import React from 'react';
 import { useCookbook } from '../context/CookbookContext';
-import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer, Plus, ShoppingCart } from 'lucide-react';
+import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Printer, Plus, ShoppingCart, RefreshCw } from 'lucide-react';
 import { AuthButton } from './AuthButton';
+import { useAppUpdate } from '../context/AppUpdateContext';
 
 export const Navigation: React.FC = () => {
   const { currentScreen, navigateTo, openPrintExport, shoppingList } = useCookbook();
+  const { status: updateStatus, applyUpdate } = useAppUpdate();
   const toBuyCount = shoppingList.filter(i => !i.bought).length;
 
   const isExplore = currentScreen.type === 'explore';
@@ -112,6 +114,17 @@ export const Navigation: React.FC = () => {
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Add recipe</span>
             </button>
+            {updateStatus === 'available' && (
+              <button
+                id="nav_update_btn"
+                onClick={applyUpdate}
+                title="A new version of the cookbook is ready. Tap to update."
+                className="hidden sm:flex relative items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap rounded-lg border border-[#B8782B] bg-[#B8782B] text-white hover:bg-[#9A6422] transition-colors"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span className="hidden lg:inline">Update</span>
+              </button>
+            )}
             <button
               id="nav_shopping_list"
               onClick={() => navigateTo({ type: 'shopping' })}

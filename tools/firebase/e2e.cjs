@@ -31,8 +31,28 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(await page.locator('#auth_btn').isEnabled(), 'sign-in button is enabled when configured');
 
   await page.evaluate(() => window.__cookbookTestSignIn('ann-uid', 'ann@example.com'));
-  await page.waitForSelector('#sign_out_btn', { timeout: 15000 });
+  await page.waitForSelector('#account_btn', { timeout: 15000 });
   ok(true, 'signed in (emulator Google credential)');
+  ok(await page.locator('#account_btn').innerText().then(t => t.trim().length <= 1) && await page.locator('#account_btn svg').count() === 0, 'with no photo the account button shows an initial letter, not an icon');
+  ok(await page.locator('#sign_out_btn').count() === 0, 'sign out is tucked away until the account button is tapped');
+
+  // The Google photo shows on the account button, and tapping it offers Sign out
+  const ctxP = await b.newContext({ viewport: { width: 390, height: 800 }, isMobile: true });
+  const pp = await ctxP.newPage();
+  await pp.route('**/fonts.g*/**', r => r.abort());
+  await pp.route('https://lh3.googleusercontent.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await pp.goto('http://localhost:5173/Cookbook/'); await pp.waitForTimeout(2500);
+  await pp.evaluate(() => window.__cookbookTestSignIn('photo-uid', 'photo@example.com', 'Pia Photo', 'https://lh3.googleusercontent.com/a/test.png'));
+  await pp.waitForSelector('#account_btn', { timeout: 15000 });
+  ok(await pp.locator('#account_btn img[src^="https://lh3.googleusercontent.com"]').count() === 1, 'the Google account photo is shown on the account button');
+  ok(await pp.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), 'phone header still fits with the photo');
+  await pp.click('#account_btn');
+  ok((await pp.locator('[role=menu]').innerText()).includes('Pia Photo') && (await pp.locator('[role=menu]').innerText()).includes('photo@example.com'), 'tapping the photo shows the name and email');
+  await pp.keyboard.press('Escape'); await pp.waitForTimeout(200);
+  ok(await pp.locator('[role=menu]').count() === 0, 'Escape closes the menu');
+  await pp.click('#account_btn'); await pp.click('#sign_out_btn'); await pp.waitForSelector('#auth_btn');
+  ok(true, 'Sign out in the menu signs the member out');
+  await ctxP.close();
 
   // Favorites sync
   await page.click('[id^=fav_btn_]'); await page.waitForTimeout(800);
@@ -97,7 +117,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(true, 'note saved and tip shared');
 
   // Reload: still there, still signed in
-  await page.reload(); await page.waitForSelector('#sign_out_btn', { timeout: 15000 });
+  await page.reload(); await page.waitForSelector('#account_btn', { timeout: 15000 });
   ok(true, 'still signed in after reload');
   await page.fill('#recipe_search_input', 'Tiramisu'); await page.waitForTimeout(700);
   await page.locator('h3').first().click(); await page.waitForTimeout(1500);
@@ -126,7 +146,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await p3.route('**/fonts.g*/**', r => r.abort()); await p3.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
   await p3.goto('http://localhost:5173/Cookbook/'); await p3.waitForTimeout(2500);
   await p3.evaluate(() => window.__cookbookTestSignIn('bob-uid', 'bob@example.com'));
-  await p3.waitForSelector('#sign_out_btn', { timeout: 15000 });
+  await p3.waitForSelector('#account_btn', { timeout: 15000 });
   await p3.fill('#recipe_search_input', 'Tiramisu'); await p3.waitForTimeout(700);
   await p3.locator('h3').first().click(); await p3.waitForTimeout(1500);
   ok(await p3.inputValue('#recipe_note_textarea') === '', 'another member does not see Ann\'s private note');
@@ -141,7 +161,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
 
   // Same account on a second device: favorites follow it; the recipe document holds a URL, not image data
   await p2.evaluate(() => window.__cookbookTestSignIn('ann-uid', 'ann@example.com'));
-  await p2.waitForSelector('#sign_out_btn', { timeout: 15000 });
+  await p2.waitForSelector('#account_btn', { timeout: 15000 });
   await p2.click('#back_to_cookbook_btn'); await p2.waitForTimeout(500); await p2.fill('#recipe_search_input', ''); await p2.click('[id^=quick_filter_favorites]'); await p2.waitForTimeout(1500);
   const t2 = await p2.locator('text=/Showing/').first().innerText();
   ok(t2.includes('Showing 1 '), 'favorites follow the account to another device');
@@ -182,7 +202,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(/Sign in to keep your list/.test(await p4.locator('#shopping_sync_status').innerText()), 'signed-out list says it is only on this device');
   await p4.fill('#shopping_add_input', 'cheese grater'); await p4.click('text=Utensil or other'); await p4.press('#shopping_add_input', 'Enter');
   await p4.evaluate(() => window.__cookbookTestSignIn('cara-uid', 'cara@example.com'));
-  await p4.waitForSelector('#sign_out_btn', { timeout: 15000 }); await p4.waitForTimeout(2000);
+  await p4.waitForSelector('#account_btn', { timeout: 15000 }); await p4.waitForTimeout(2000);
   ok((await p4.locator('#shopping_list_screen').innerText()).includes('cheese grater'), 'item written while signed out is still there after signing in');
   ok(await p4.evaluate(() => localStorage.getItem('heritage_cookbook_shopping')) === null, 'and it is no longer kept on the device');
   const caraLists = JSON.stringify((await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents:runQuery', {
@@ -191,7 +211,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(caraLists.includes('cheese grater') && caraLists.includes('wooden spoon'), 'both members\' lists are saved, each in their own account');
 
   // After signing out the shared device no longer shows Ann's list
-  await page.click('#sign_out_btn'); await page.waitForTimeout(1200);
+  await page.click('#account_btn'); await page.click('#sign_out_btn'); await page.waitForTimeout(1200);
   ok(await page.locator('#shopping_badge').count() === 0, 'signed-out device does not show the account\'s shopping list');
 
   ok(await page.locator('#auth_btn').count() === 1, 'signed out');

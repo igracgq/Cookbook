@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'heritage-cookbook-v3';
+const CACHE_VERSION = 'heritage-cookbook-v4';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -47,6 +47,9 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
+
+  // Update checks from the app (see AppUpdateContext): always straight to the network, never cached.
+  if (url.searchParams.has('__v')) return;
 
   // 1. Image Caching Strategy: Cache First, then Network
   if (

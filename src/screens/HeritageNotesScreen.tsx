@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
 import { FAMILY_PHOTO_URL, FAMILY_GALLERY_URLS } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
+import { useAppUpdate } from '../context/AppUpdateContext';
 import {
   helpfulHints,
   roastingGuides,
@@ -20,6 +21,7 @@ import {
 
 export const HeritageNotesScreen: React.FC = () => {
   const { openPrintExport } = useCookbook();
+  const { supported: updatesSupported, status: updateStatus, checkForUpdate, applyUpdate } = useAppUpdate();
   const [activeTab, setActiveTab] = useState<'family' | 'roasting' | 'conversions' | 'hints'>('family');
 
   return (
@@ -264,6 +266,24 @@ export const HeritageNotesScreen: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* App updates */}
+      {updatesSupported && (
+        <div id="app_update_row" className="flex flex-wrap items-center justify-center gap-3 pt-6 text-xs text-[#7D6C5A]">
+          <span id="app_update_status">
+            {updateStatus === 'checking' && 'Checking for a new version…'}
+            {updateStatus === 'latest' && 'You have the latest version.'}
+            {updateStatus === 'available' && 'A new version is ready.'}
+            {updateStatus === 'error' && 'Could not check just now. Are you online?'}
+            {updateStatus === 'idle' && 'Updates are checked automatically.'}
+          </span>
+          {updateStatus === 'available' ? (
+            <button type="button" onClick={applyUpdate} className="px-3 py-1.5 rounded-lg bg-[#B8782B] text-white font-bold cursor-pointer">Update now</button>
+          ) : (
+            <button id="check_updates_btn" type="button" onClick={checkForUpdate} disabled={updateStatus === 'checking'} className="px-3 py-1.5 rounded-lg bg-[#EBE3D6] border border-[#D2C4B1] font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] disabled:opacity-60 cursor-pointer">Check for updates</button>
+          )}
         </div>
       )}
     </div>

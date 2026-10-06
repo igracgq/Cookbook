@@ -41,8 +41,8 @@ if (isCloudConfigured) {
     connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
     connectFirestoreEmulator(db, '127.0.0.1', 8080);
     // The emulator accepts a fake Google credential, which lets automated tests sign in without a popup.
-    (window as any).__cookbookTestSignIn = (sub: string, email: string) =>
-      signInWithCredential(auth!, GoogleAuthProvider.credential(JSON.stringify({ sub, email, email_verified: true })));
+    (window as any).__cookbookTestSignIn = (sub: string, email: string, name?: string, picture?: string) =>
+      signInWithCredential(auth!, GoogleAuthProvider.credential(JSON.stringify({ sub, email, email_verified: true, name, picture })));
   }
 }
 

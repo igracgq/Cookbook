@@ -16,6 +16,8 @@ import { RecipeDetailScreen } from './screens/RecipeDetailScreen';
 import { RecipeListScreen } from './screens/RecipeListScreen';
 import { ShoppingListScreen } from './screens/ShoppingListScreen';
 import { InstallPrompt } from './components/InstallPrompt';
+import { AppUpdateProvider } from './context/AppUpdateContext';
+import { UpdateBanner } from './components/UpdateBanner';
 import { WifiOff, CheckCircle2, X } from 'lucide-react';
 import { ScreenDestination } from './types';
 
@@ -155,6 +157,7 @@ const OfflineStatusBar: React.FC = () => {
 
 export function App() {
   return (
+    <AppUpdateProvider>
     <AuthProvider>
       <CommunityProvider>
         <CookbookProvider>
@@ -162,12 +165,14 @@ export function App() {
             <CulinaryMonochromeBackground />
             <OfflineStatusBar />
             <Navigation />
+            <UpdateBanner />
             <InstallPrompt />
             <MainContent />
           </div>
         </CookbookProvider>
       </CommunityProvider>
     </AuthProvider>
+    </AppUpdateProvider>
   );
 }
 
