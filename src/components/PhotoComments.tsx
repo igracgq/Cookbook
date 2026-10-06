@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
-import { Loader2, LogIn, Send } from 'lucide-react';
+import { Loader2, LogIn, Send, Smile } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
 import { timeAgo } from '../utils/timeAgo';
+import { COMMENT_EMOJIS } from '../utils/emojis';
 
 const MAX_COMMENT = 1000;
 const SHOWN_FIRST = 5;
@@ -40,6 +41,8 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [trayOpen, setTrayOpen] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (!db) return;
@@ -94,6 +97,21 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
     }
   };
 
+  // Put an emoji from the tray into the comment at the cursor, and keep typing.
+  const addEmoji = (emoji: string) => {
+    const el = inputRef.current;
+    const start = el?.selectionStart ?? text.length;
+    const end = el?.selectionEnd ?? text.length;
+    const next = (text.slice(0, start) + emoji + text.slice(end)).slice(0, MAX_COMMENT);
+    setText(next);
+    setError(null);
+    requestAnimationFrame(() => {
+      el?.focus();
+      const pos = Math.min(start + emoji.length, next.length);
+      el?.setSelectionRange(pos, pos);
+    });
+  };
+
   const remove = async (id: string) => {
     try { await deleteDoc(doc(db!, 'photoComments', photoId, 'comments', id)); }
     catch { setError('That comment could not be removed. Please try again.'); }
@@ -134,11 +152,12 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
 
       {loadFailed && <p className="text-xs text-[#B8452D]">Comments could not be loaded right now.</p>}
 
-      {user ? (
+      {user && (
         <form onSubmit={post} className="flex items-start gap-2.5">
           <Avatar name={user.displayName ?? '?'} photo={user.photoURL ?? undefined} />
           <div className="flex-1 min-w-0 flex items-end gap-2">
             <textarea
+              ref={inputRef}
               rows={1}
               value={text}
               maxLength={MAX_COMMENT}
@@ -149,6 +168,15 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
               className="comment-input flex-1 min-w-0 resize-none px-3.5 py-2 bg-white border border-[#D2C4B1] rounded-2xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]"
             />
             <button
+              type="button"
+              aria-label="Add an emoji"
+              aria-expanded={trayOpen}
+              onClick={() => setTrayOpen(o => !o)}
+              className="comment-emoji-btn p-2.5 rounded-full bg-[#EBE3D6] border border-[#D2C4B1] text-[#4A3B2C] hover:bg-[#E4DBCF] transition-colors cursor-pointer"
+            >
+              <Smile className="w-4 h-4" />
+            </button>
+            <button
               type="submit"
               disabled={busy || !text.trim()}
               aria-label="Post comment"
@@ -158,7 +186,23 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
             </button>
           </div>
         </form>
-      ) : (
+      )}
+      {user && trayOpen && (
+        <div role="group" aria-label="Emoji" className="comment-emoji-tray ml-[42px] flex flex-wrap gap-1 p-2 rounded-2xl bg-[#FAF7F2] border border-[#D2C4B1] shadow-sm">
+          {COMMENT_EMOJIS.map(e => (
+            <button
+              key={e}
+              type="button"
+              data-emoji={e}
+              onClick={() => addEmoji(e)}
+              className="w-9 h-9 text-xl rounded-lg hover:bg-[#EBE3D6] cursor-pointer"
+            >
+              {e}
+            </button>
+          ))}
+        </div>
+      )}
+      {!user && (
         <button type="button" onClick={signIn} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer">
           <LogIn className="w-3.5 h-3.5" /> Sign in to comment
         </button>

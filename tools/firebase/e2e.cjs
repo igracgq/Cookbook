@@ -219,6 +219,19 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await post3.locator('[data-reaction=yum]').click(); await page.waitForTimeout(1500);
   ok(await cnt(post, 'yum') === '1' && await cnt(post3, 'love') === '1', 'another member\'s reaction shows up live for the first (and theirs for them)');
   ok(/You/.test(await post.locator('[data-reaction-who]').innerText()) && (await post.locator('[data-reaction-who]').innerText()).includes(' and '), 'the line under the buttons says who reacted: ' + (await post.locator('[data-reaction-who]').innerText()));
+  // New reactions (🙌 👏) and emoji inside comments
+  await post.locator('[data-reaction=clap]').click(); await post3.locator('[data-reaction=celebrate]').click(); await page.waitForTimeout(1500);
+  ok(await cnt(post, 'clap') === '1' && await cnt(post, 'celebrate') === '1', 'the new 👏 and 🙌 reactions work and show for everyone');
+  await post.locator('.comment-emoji-btn').click();
+  ok(await post.locator('.comment-emoji-tray [data-emoji]').count() >= 6, 'the comment box has an emoji tray');
+  await post.locator('.comment-input').fill('Delicious ');
+  await post.locator('[data-emoji="🙌"]').click(); await post.locator('[data-emoji="👏"]').click(); await post.locator('[data-emoji="👍"]').click();
+  ok((await post.locator('.comment-input').inputValue()) === 'Delicious 🙌👏👍', 'tapping emoji puts them in the comment');
+  await post.locator('.comment-input').press('Enter'); await page.waitForTimeout(1200);
+  ok(/Delicious 🙌👏👍/.test(await post.innerText()), 'a comment with emoji is posted and shown');
+  await p3.waitForTimeout(500);
+  ok(/Delicious 🙌👏👍/.test(await post3.innerText()), 'and other members see the emoji too');
+
   const ctxS = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const ps = await ctxS.newPage();
   await ps.route('**/fonts.g*/**', r => r.abort()); await ps.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
@@ -226,14 +239,14 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await ps.click('#nav_photos_desktop'); await ps.waitForSelector('#photos_screen'); await ps.waitForTimeout(2000);
   const postS = ps.locator('article[data-photo-id="shared_tiramisu_classic"]');
   ok(/What a beautiful tiramisu!/.test(await postS.innerText()) && /Agreed, Nonna/.test(await postS.innerText()), 'a signed-out visitor reads the whole conversation');
-  ok(await cnt(postS, 'love') === '1' && await cnt(postS, 'yum') === '1', 'a signed-out visitor sees the reaction counts');
+  ok(await cnt(postS, 'clap') === '1' && await cnt(postS, 'celebrate') === '1', 'a signed-out visitor sees the reaction counts');
   ok(await postS.locator('.comment-input').count() === 0 && await postS.locator('text=Sign in to comment').count() === 1, 'but is asked to sign in to comment');
   await ctxS.close();
 
-  await post3.locator('[data-reaction=like]').click(); await page.waitForTimeout(1500);   // Bob switches from yum to like
-  ok(await cnt(post, 'yum') === '0' && await cnt(post, 'like') === '1', 'switching a reaction moves it (one reaction per member)');
-  await post.locator('[data-reaction=love]').click(); await page.waitForTimeout(1500);       // Ann takes hers back
-  ok(await cnt(post3, 'love') === '0' && await post.locator('[data-reaction=love]').getAttribute('aria-pressed') === 'false', 'tapping the same reaction again takes it back');
+  await post3.locator('[data-reaction=like]').click(); await page.waitForTimeout(1500);   // Bob switches from celebrate to like
+  ok(await cnt(post, 'celebrate') === '0' && await cnt(post, 'like') === '1', 'switching a reaction moves it (one reaction per member)');
+  await post.locator('[data-reaction=clap]').click(); await page.waitForTimeout(1500);       // Ann takes hers back
+  ok(await cnt(post3, 'clap') === '0' && await post.locator('[data-reaction=clap]').getAttribute('aria-pressed') === 'false', 'tapping the same reaction again takes it back');
   await post.locator('[data-comment]').first().locator('button:has-text("Delete")').click(); await page.waitForTimeout(1500);
   ok(!/What a beautiful tiramisu!/.test(await post.innerText()), 'a member can delete their own comment');
   await page.reload(); await page.waitForSelector('#account_btn', { timeout: 15000 });

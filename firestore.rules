@@ -146,7 +146,7 @@ service cloud.firestore {
     match /photoReactions/{photoId}/reactions/{uid} {
       function validReaction(d) {
         return d.keys().hasOnly(['type', 'authorName', 'updatedAt'])
-          && d.type in ['like', 'love', 'yum', 'haha']
+          && d.type in ['like', 'love', 'yum', 'haha', 'celebrate', 'clap']
           && shortText(d.authorName, 200)
           && d.updatedAt == request.time;
       }

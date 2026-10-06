@@ -2,15 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
-
-export type ReactionType = 'like' | 'love' | 'yum' | 'haha';
-
-const REACTIONS: Array<{ type: ReactionType; emoji: string; label: string }> = [
-  { type: 'like', emoji: '👍', label: 'Like' },
-  { type: 'love', emoji: '❤️', label: 'Love' },
-  { type: 'yum', emoji: '😋', label: 'Yum' },
-  { type: 'haha', emoji: '😂', label: 'Haha' }
-];
+import { REACTIONS, ReactionType } from '../utils/emojis';
 
 interface Reaction {
   uid: string;
