@@ -187,7 +187,7 @@ export type ScreenDestination =
   | { type: "index" }
   | { type: "heritage" }
   | { type: "detail"; recipeId: string }
-  | { type: "addRecipe" }
+  | { type: "addRecipe"; editRecipeId?: string }
   | { type: "shopping" }
   | { type: "photos"; focusId?: string; fromRecipeId?: string }
   | { type: "print"; recipeId?: string };

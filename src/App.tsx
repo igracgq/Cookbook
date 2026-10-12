@@ -99,7 +99,7 @@ const MainContent: React.FC = () => {
           {currentScreen.type === 'pantry' && <PantryMatcherScreen />}
           {currentScreen.type === 'index' && <AlphabeticalIndexScreen />}
           {currentScreen.type === 'heritage' && <HeritageNotesScreen />}
-          {currentScreen.type === 'addRecipe' && <AddRecipeScreen />}
+          {currentScreen.type === 'addRecipe' && <AddRecipeScreen key={currentScreen.editRecipeId ?? 'new'} />}
           {currentScreen.type === 'shopping' && <ShoppingListScreen />}
           {currentScreen.type === 'photos' && <PhotosScreen />}
         </motion.div>

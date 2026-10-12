@@ -67,6 +67,24 @@ test('only the author can change or delete a recipe', async () => {
   await assertSucceeds(deleteDoc(doc(as('u1'), 'recipes/r1')));
 });
 
+test('editing a recipe: the author can change its text and photo, nobody else can, and ownership cannot be changed', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'recipes/r1'), recipe('u1', { imageUrl: '' })));
+  const edit = { title: 'Sunday Gravy (Nonna\'s)', category: 'MEATS', servings: '8', prepTime: '30 mins', cookTime: '4 hrs',
+    ingredients: ['2 cans tomatoes', '1 lb pork'], instructions: ['Brown the pork.', 'Simmer.'], notes: 'Better the next day' };
+  await assertSucceeds(updateDoc(doc(as('u1'), 'recipes/r1'), edit));
+  await assertSucceeds(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, imageUrl: IMG }));                 // add or replace the photo
+  await assertSucceeds(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, imageUrl: '' }));                  // remove it
+  await assertFails(updateDoc(doc(as('u2'), 'recipes/r1'), edit));                                          // someone else
+  await assertFails(updateDoc(doc(env.unauthenticatedContext().firestore(), 'recipes/r1'), edit));
+  await assertFails(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, title: '' }));                        // still validated
+  await assertFails(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, ingredients: [] }));
+  await assertFails(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, imageUrl: 'https://evil.example/x.jpg' }));
+  await assertFails(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, authorUid: 'u2' }));                  // cannot give it away
+  await assertFails(updateDoc(doc(as('u1'), 'recipes/r1'), { ...edit, createdAt: serverTimestamp() }));     // or change when it was added
+  const admin = 'boss'; await makeAdmin(admin);
+  await assertFails(updateDoc(doc(as(admin), 'recipes/r1'), edit));                                         // even the owner edits only by deleting
+});
+
 test('one shared photo per recipe, owned by whoever shared it', async () => {
   await assertSucceeds(setDoc(doc(as('u1'), 'recipePhotos/pasta_fresca'), photo('u1')));
   await assertFails(setDoc(doc(as('u2'), 'recipePhotos/pasta_fresca'), photo('u2')));     // cannot take over
