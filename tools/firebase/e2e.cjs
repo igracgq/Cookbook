@@ -356,6 +356,42 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(!ids3.includes(ids2[0]) && ids3.includes(TID), 'a member can remove their own photo');
   await ctxDan.close();
 
+  // Email and password: create an account with a name, confirm the email, then contribute; sign out and back in
+  const ctxE = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const pe = await ctxE.newPage();
+  await pe.route('**/fonts.g*/**', r => r.abort()); await pe.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await pe.goto('http://localhost:5173/Cookbook/'); await pe.waitForTimeout(2500);
+  await pe.click('#auth_btn'); await pe.waitForSelector('#sign_in_dialog');
+  ok(await pe.locator('#signin_google_btn').count() === 1 && await pe.locator('#auth_tab_signup').count() === 1, 'the sign-in window offers Google and email');
+  await pe.fill('#auth_email', 'rosa@example.com'); await pe.fill('#auth_password', 'wrong-one'); await pe.click('#auth_submit_btn');
+  await pe.waitForSelector('#sign_in_dialog [role=alert]');
+  ok(/do not match/.test(await pe.locator('#sign_in_dialog [role=alert]').first().innerText()), 'signing in with an unknown email says it does not match');
+  await pe.click('#auth_tab_signup');
+  await pe.fill('#auth_name', 'Nonna Rosa'); await pe.fill('#auth_email', 'rosa@example.com'); await pe.fill('#auth_password', 'secret1');
+  await pe.click('#auth_submit_btn'); await pe.waitForSelector('#auth_confirm_btn');
+  ok((await pe.locator('#sign_in_dialog').innerText()).includes('rosa@example.com'), 'creating an account asks the person to confirm their email');
+  await pe.click('#auth_confirm_btn'); await pe.waitForSelector('text=cannot see the confirmation');
+  ok(await pe.locator('#account_btn').count() === 0, 'before confirming, the person is not signed in to the cookbook');
+  const oob = (await (await fetch('http://127.0.0.1:9099/emulator/v1/projects/demo-cookbook/oobCodes')).json()).oobCodes
+    .filter(c => c.email === 'rosa@example.com' && c.requestType === 'VERIFY_EMAIL').pop();
+  await fetch(oob.oobLink);
+  await pe.click('#auth_confirm_btn'); await pe.waitForSelector('#account_btn', { timeout: 15000 });
+  ok((await pe.getAttribute('#account_btn', 'title')).includes('Nonna Rosa'), 'after confirming, they are signed in under the name they typed');
+  await pe.fill('#recipe_search_input', 'Tiramisu'); await pe.waitForTimeout(700);
+  await pe.locator('h3').first().click(); await pe.waitForSelector('#recipe_tips_box');
+  await pe.fill('#recipe_tip_textarea', 'Rosa says use strong coffee'); await pe.click('#share_tip_btn');
+  await pe.waitForSelector('text=Your tip is shared', { timeout: 10000 });
+  ok(true, 'an email member can contribute (shared a tip)');
+  await pe.click('#account_btn'); await pe.click('#sign_out_btn'); await pe.waitForTimeout(1000);
+  await pe.click('#auth_btn'); await pe.fill('#auth_email', 'rosa@example.com'); await pe.fill('#auth_password', 'secret1'); await pe.click('#auth_submit_btn');
+  await pe.waitForSelector('#account_btn', { timeout: 15000 });
+  ok(true, 'signing in again with the email and password works');
+  const rosaUsers = JSON.stringify(await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents:runQuery', {
+    method: 'POST', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' },
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'users' }] } }) })).json());
+  ok(rosaUsers.includes('Nonna Rosa'), 'their name is saved on their member record');
+  await ctxE.close();
+
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const p4 = await ctx4.newPage();

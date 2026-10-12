@@ -111,6 +111,17 @@ test('member photos must be Cloudinary URLs, carry your own uid, and be signed i
   await assertFails(setDoc(doc(guest, 'sharedPhotos/x6'), memberPhoto('g1')));
 });
 
+test('email-and-password members can contribute only once their email is confirmed', async () => {
+  const unconfirmed = as('e1', { firebase: { sign_in_provider: 'password' }, email_verified: false });
+  const confirmed = as('e2', { firebase: { sign_in_provider: 'password' }, email_verified: true });
+  await assertFails(setDoc(doc(unconfirmed, 'sharedPhotos/aaa111'), memberPhoto('e1')));
+  await assertFails(setDoc(doc(unconfirmed, 'users/e1'), { displayName: 'Eve' }, { merge: true }));
+  await assertSucceeds(setDoc(doc(confirmed, 'sharedPhotos/bbb222'), memberPhoto('e2')));
+  await assertSucceeds(setDoc(doc(confirmed, 'users/e2'), { displayName: 'Eve', photoURL: '', lastSignIn: serverTimestamp() }, { merge: true }));
+  await assertSucceeds(getDoc(doc(unconfirmed, 'sharedPhotos/bbb222')));                       // anyone can still read
+  await assertSucceeds(deleteDoc(doc(confirmed, 'sharedPhotos/bbb222')));                      // and remove their own photo
+});
+
 test('favorites and profile are private to each member', async () => {
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { displayName: 'Ann', photoURL: '', lastSignIn: serverTimestamp() }, { merge: true }));
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { favorites: arrayUnion('pasta_fresca') }, { merge: true }));

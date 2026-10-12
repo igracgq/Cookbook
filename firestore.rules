@@ -1,11 +1,14 @@
 rules_version = '2';
 
-// Heritage Cookbook: anyone may read; only people signed in with Google may contribute.
+// Heritage Cookbook: anyone may read; only people signed in may contribute. That means a Google account, or an
+// email-and-password account whose email address has been confirmed.
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function signedIn() {
-      return request.auth != null && request.auth.token.firebase.sign_in_provider == 'google.com';
+      return request.auth != null
+        && (request.auth.token.firebase.sign_in_provider == 'google.com'
+            || (request.auth.token.firebase.sign_in_provider == 'password' && request.auth.token.email_verified == true));
     }
     function isCloudinaryUrl(u) {
       return u is string && u.size() <= 500 && u.matches('^https://res\\.cloudinary\\.com/.+');

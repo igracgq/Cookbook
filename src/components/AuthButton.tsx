@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-/** Google sign-in / sign-out for the header. */
+/** Sign in (opens the sign-in window) and the account menu for the header. */
 export const AuthButton: React.FC = () => {
-  const { cloudAvailable, user, loading, signIn, signOut, authError } = useAuth();
+  const { cloudAvailable, user, loading, signIn } = useAuth();
 
   if (!cloudAvailable) {
     return (
@@ -35,13 +35,8 @@ export const AuthButton: React.FC = () => {
           className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-[#FAF7F2] bg-[#4A3B2C] rounded-lg hover:bg-[#382B1E] transition-colors cursor-pointer"
         >
           <LogIn className="w-3.5 h-3.5" />
-          <span>Sign in<span className="hidden md:inline"> with Google</span></span>
+          <span>Sign in</span>
         </button>
-        {authError && (
-          <p role="alert" className="absolute right-0 top-full mt-2 w-64 text-[11px] leading-snug bg-[#FAF7F2] border border-[#B8452D] text-[#B8452D] rounded-xl p-2.5 shadow-lg z-50">
-            {authError}
-          </p>
-        )}
       </div>
     );
   }
@@ -49,7 +44,7 @@ export const AuthButton: React.FC = () => {
   return <AccountMenu />;
 };
 
-/** Signed in: the member's Google photo. Tapping it opens a small menu with the name and Sign out. */
+/** Signed in: the member's photo (or first initial). Tapping it opens a small menu with the name and Sign out. */
 const AccountMenu: React.FC = () => {
   const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);

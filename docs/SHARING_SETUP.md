@@ -6,7 +6,7 @@ Sign in and Add recipe buttons explain that sharing is not switched on.
 
 | Part | Service | What it stores |
 |---|---|---|
-| Who is signed in | Firebase Authentication (Google sign-in) | The Google account |
+| Who is signed in | Firebase Authentication (Google, or email and password) | The account (email accounts: name, email, password kept by Firebase) |
 | Members, recipes, shared-photo links, favorites | Cloud Firestore | Text, plus the **URL** of each photo |
 | The photos themselves | Cloudinary | Resized JPEGs |
 
@@ -15,7 +15,7 @@ Firebase Cloud Storage is not used, and no image data is ever put in Firestore.
 ## 1. Firebase
 
 1. Create a project at https://console.firebase.google.com.
-2. **Authentication > Sign-in method:** turn on **Google**.
+2. **Authentication > Sign-in method:** turn on **Google** and **Email/Password** (leave "Email link (passwordless sign-in)" off).
 3. **Authentication > Settings > Authorised domains:** add the address the cookbook is served from
    (for GitHub Pages that is `igracgq.github.io`). `localhost` is there already for local testing.
 4. **Firestore Database:** create a database in production mode.
@@ -81,7 +81,7 @@ Either way the published site is public: anyone with the link can read the cookb
 ## What members can do
 
 - **Anyone** (signed in or not) can read all recipes and photos.
-- **Signed in with Google** can add a recipe (name, section, times, ingredients, steps, notes, one optional photo),
+- **Signed in** (with Google, or with an email and password) can add a recipe (name, section, times, ingredients, steps, notes, one optional photo),
   add as many photos as they like to any recipe (Upload Photo or Take Photo on the recipe page), favorite recipes
   (saved to the account), and delete their own recipe.
 - Every photo a member adds also appears in the **Photos** section, newest first at the top, and on the recipe page
@@ -106,8 +106,14 @@ Either way the published site is public: anyone with the link can read the cookb
 
 ## Limits worth knowing
 
-- **Any Google account can sign in and contribute.** That is what "signed-in users can contribute" means in the
-  rules. To limit it to family, add an allowed-emails check to `signedIn()` in `firestore.rules`.
+- **Anyone can sign in and contribute:** any Google account, or any email address that has been confirmed. That is
+  what "signed-in users can contribute" means in the rules. To limit it to family, add an allowed-emails check to
+  `signedIn()` in `firestore.rules`.
+- **Email accounts:** the sign-up form asks for a name (shown on photos and comments) and an email and password
+  (6 or more characters). Firebase emails a link to confirm the address; until it is clicked the person cannot
+  contribute (the rules check `email_verified`). "Forgot your password?" sends a reset link. Email addresses are
+  never shown to other members. The confirmation and reset emails come from Firebase's default sender and may land
+  in spam; the wording can be edited under Authentication > Templates.
 - The Cloudinary preset is unsigned, so anyone who finds the cloud name and preset name in the built site could
   upload to your Cloudinary account. The preset limits (formats, size, folder) and Cloudinary's usage quota
   bound the damage. Signed uploads would need a small server (for example a Firebase Cloud Function).
@@ -116,7 +122,7 @@ Either way the published site is public: anyone with the link can read the cookb
 - Firestore rules cannot check the length of each ingredient or step line, only how many lines there are. The
   form enforces the per-line limits.
 - Shared recipes do not get the dietary tags (gluten-free, vegan and so on), so they do not appear in those filters.
-- Sign-in uses a Google popup. It does not work inside the claude.ai artifact preview, which blocks it. Use the
+- Google sign-in uses a popup. It does not work inside the claude.ai artifact preview, which blocks it. Use the
   deployed site or `npm run dev`.
 
 ## Tests

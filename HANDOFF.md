@@ -34,6 +34,10 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
 - **Member photos:** any signed-in member can add any number of photos to any recipe (recipe page: Upload Photo / Take
   Photo). They go to Cloudinary, the URL is saved in Firestore `sharedPhotos`, and they appear on the recipe and at the
   top of Photos. Older single shares (`recipePhotos`) still show. Tapping a recipe photo opens it in Photos, with Back to recipe.
+- **Sign-in:** the Sign in buttons open one window (`src/components/SignInDialog.tsx`, state in `src/context/AuthContext.tsx`)
+  with Continue with Google, or email and password. Creating an email account asks for a name and needs the emailed link
+  clicked before the person can contribute (the rules check `email_verified`). Email/Password must be switched on in
+  Firebase > Authentication > Sign-in method (done).
 - **Star ratings:** one per member per recipe; averages show on cards and recipe pages (`recipeRatings`).
 - **Owner moderation:** an `admins/{uid}` document (made in the Firebase console) adds Delete (owner) buttons on comments,
   tips, shared recipes and member photos.

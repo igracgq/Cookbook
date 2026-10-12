@@ -103,13 +103,13 @@ export const AddRecipeScreen: React.FC = () => {
   if (!user) {
     return shell(
       <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D2C4B1] space-y-3 text-sm text-[#5C4E40]">
-        <p>Please sign in with your Google account to add a recipe. Anyone can read the cookbook, but only signed-in family members can add to it.</p>
+        <p>Please sign in (with Google, or with your email) to add a recipe. Anyone can read the cookbook, but only signed-in family members can add to it.</p>
         <button
           type="button"
           onClick={signIn}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] text-sm font-semibold hover:bg-[#382B1E] cursor-pointer"
         >
-          <LogIn className="w-4 h-4" /> Sign in with Google
+          <LogIn className="w-4 h-4" /> Sign in
         </button>
       </div>
     );
