@@ -56,6 +56,21 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
 - **After any change to `firestore.rules`,** the owner must paste the file into Firebase Console > Firestore Database > Rules
   and Publish, or the new feature shows "could not be saved".
 
+## How the owner likes to work
+
+The owner is not a developer: give plain, step-by-step test instructions and plain-language explanations.
+
+**Merging (agreed in Oct 2026, "option 3"):**
+- **Small things:** wording, layout, small visual changes and bug fixes. Open a PR, and once the automated tests pass, **merge it without
+  waiting**, then tell the owner straight afterwards (what changed, and how to check it after the green tick in the Actions tab and a hard
+  refresh, Ctrl+Shift+R).
+- **Ask first (open the PR, do not merge)** when a change needs something from the owner before it goes live, or touches people's data
+  or accounts: publishing `firestore.rules`, adding or changing GitHub secrets or Firebase settings, new sign-in methods, anything that
+  deletes or moves existing data, or phone/email notifications. Say exactly what they need to do, then merge when they say so.
+- When in doubt, ask. The owner can change this rule at any time.
+- Whenever `firestore.rules` changes, give the owner the **whole file** to paste (Firebase Console > Firestore Database > Rules > Publish).
+- No screenshots or separate preview site are wanted (they declined both).
+
 ## Tools
 
 | Path | What it does |
