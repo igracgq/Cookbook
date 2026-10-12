@@ -3,6 +3,29 @@
 Everything through PR 13 is merged into `main`; start each new piece of work on a new `claude/` branch from the latest `main`. React + Vite app in `src/`, recipe data in
 `src/data/recipes.json` (1,184 recipes), photos in `public/images/`.
 
+## Architecture (how the app is built)
+
+**A React single-page app with no server of our own.** Not Next.js (no server-side rendering, no API routes, no `next` package).
+
+| Part | Technology |
+|---|---|
+| The app | React 18 + TypeScript, bundled by **Vite**, styled with Tailwind CSS 4; icons from lucide-react; `motion` for some animation. Source in `src/` (screens in `src/screens`, pieces in `src/components`, shared state in `src/context`, Firebase/Cloudinary/push code in `src/services`). |
+| Recipes | One bundled file, `src/data/recipes.json` (1,184 recipes). Original and stock photos in `public/images/`. |
+| Installable / offline | PWA: `public/manifest.webmanifest` and the service worker `public/sw.js` (offline cache, phone pop-ups). |
+| Sign-in and shared data | **Firebase** (free plan): Authentication (Google, email + password) and Cloud Firestore. The app talks straight to Firestore, so **`firestore.rules` is the security layer**. |
+| Member photos | **Cloudinary** (free plan, unsigned upload preset). Firestore stores only the photo's link. |
+| Hosting and automation | **GitHub**: code, GitHub Pages (serves `https://igracgq.github.io/Cookbook/`), and GitHub Actions (`.github/workflows/deploy.yml` builds and publishes on every change to `main`; `send-push-notifications.yml` runs every 10 minutes). |
+| Node.js | A build and test tool only (Vite, the test scripts, the phone-alerts job `tools/push/send.mjs`). It is not a web server. |
+| Python | One-off helper scripts only (`tools/stock-photos`, `tools/dietary`, `tools/artifact`). Never part of the running app. |
+| Leftovers | `app/`, `build.gradle.kts`, `gradle*` are an old Android project from the start; `metadata.json` is from Google AI Studio. The website uses none of them. |
+
+**Data flow example (a comment):** the browser writes it to Firestore (the rules approve it) -> every open copy of the app sees it live ->
+the app also writes a notice for the photo's owner (the bell) -> every 10 minutes the GitHub job sends unsent notices as phone pop-ups.
+
+**Why this shape:** free at family size, nothing to run or patch, and fast because the recipes ship inside the app. The trade-off: anything
+that must happen on its own (email, instant phone pop-ups) needs a backend somewhere; today a scheduled GitHub job does it (10 to 20 minutes
+late). Instant pop-ups would need Firebase Cloud Functions on the paid Blaze plan.
+
 ## What is done
 
 - **Photos.** Every recipe has a photo. The 49 recipes from the family book keep their original photos
