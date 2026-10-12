@@ -38,6 +38,10 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
   with Continue with Google, or email and password. Creating an email account asks for a name and needs the emailed link
   clicked before the person can contribute (the rules check `email_verified`). Email/Password must be switched on in
   Firebase > Authentication > Sign-in method (done).
+- **Notifications (bell, signed-in members only):** a bell in the header with a red number. It lists who commented on your
+  photo, who commented on a photo you also commented on, and who reacted to your photo; tapping one opens that photo.
+  In-app only. No email or phone push (those need a server: Firebase Cloud Functions on the paid Blaze plan, or a scheduled
+  GitHub Action). Code: `src/components/NotificationBell.tsx`, `src/services/notifications.ts`; Firestore `notifications`.
 - **Star ratings:** one per member per recipe; averages show on cards and recipe pages (`recipeRatings`).
 - **Owner moderation:** an `admins/{uid}` document (made in the Firebase console) adds Delete (owner) buttons on comments,
   tips, shared recipes and member photos.

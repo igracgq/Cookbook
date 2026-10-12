@@ -3,6 +3,7 @@ import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
 import { REACTIONS, ReactionType } from '../utils/emojis';
+import { notifyAboutReaction, withdrawReactionNotice } from '../services/notifications';
 
 interface Reaction {
   uid: string;
@@ -23,7 +24,12 @@ function whoReacted(list: Reaction[], myUid?: string): string {
  * tap the same one again to take it back). One reaction per member per photo, stored in
  * photoReactions/{photoId}/reactions/{uid}.
  */
-export const PhotoReactions: React.FC<{ photoId: string }> = ({ photoId }) => {
+export const PhotoReactions: React.FC<{
+  photoId: string;
+  /** Who shared the photo (so they are told about reactions), and how to name the photo in notices. */
+  ownerUid?: string;
+  label?: string;
+}> = ({ photoId, ownerUid, label = 'a family photo' }) => {
   const { cloudAvailable, user, signIn } = useAuth();
   const [reactions, setReactions] = useState<Reaction[]>([]);
   const [error, setError] = useState(false);
@@ -50,8 +56,13 @@ export const PhotoReactions: React.FC<{ photoId: string }> = ({ photoId }) => {
     setError(false);
     const ref = doc(db!, 'photoReactions', photoId, 'reactions', user.uid);
     try {
-      if (mine === type) await deleteDoc(ref);
-      else await setDoc(ref, { type, authorName: user.displayName ?? 'Family member', updatedAt: serverTimestamp() });
+      if (mine === type) {
+        await deleteDoc(ref);
+        withdrawReactionNotice({ user, photoId, ownerUid });
+      } else {
+        await setDoc(ref, { type, authorName: user.displayName ?? 'Family member', updatedAt: serverTimestamp() });
+        notifyAboutReaction({ user, photoId, label, ownerUid, reaction: type });
+      }
     } catch {
       setError(true);
     }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCookbook } from '../context/CookbookContext';
 import { BookOpen, UtensilsCrossed, ArrowDownAZ, BookHeart, Images, Share2, Plus, ShoppingCart, RefreshCw } from 'lucide-react';
 import { AuthButton } from './AuthButton';
+import { NotificationBell } from './NotificationBell';
 import { ShareCookbookModal } from './ShareCookbookModal';
 import { useAppUpdate } from '../context/AppUpdateContext';
 
@@ -171,6 +172,7 @@ export const Navigation: React.FC = () => {
               <Share2 className="w-3.5 h-3.5" />
               <span className="hidden xl:inline">Share Cookbook</span>
             </button>
+            <NotificationBell />
             <AuthButton />
           </div>
         </div>

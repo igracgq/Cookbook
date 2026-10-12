@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
 import { timeAgo } from '../utils/timeAgo';
 import { COMMENT_EMOJIS } from '../utils/emojis';
+import { notifyAboutComment } from '../services/notifications';
 
 const MAX_COMMENT = 1000;
 const SHOWN_FIRST = 5;
@@ -33,7 +34,13 @@ const Avatar: React.FC<{ name: string; photo?: string }> = ({ name, photo }) => 
  * The comments under one photo: everyone sees them, signed-in members add their own, and can remove their own.
  * They live in photoComments/{photoId}/comments, so a photo always shows the same conversation.
  */
-export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) => void }> = ({ photoId, onCount }) => {
+export const PhotoComments: React.FC<{
+  photoId: string;
+  onCount?: (n: number) => void;
+  /** Who shared the photo (so they are told about new comments), and how to name the photo in notices. */
+  ownerUid?: string;
+  label?: string;
+}> = ({ photoId, onCount, ownerUid, label = 'a family photo' }) => {
   const { cloudAvailable, user, isAdmin, signIn } = useAuth();
   const [comments, setComments] = useState<Comment[]>([]);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -90,6 +97,8 @@ export const PhotoComments: React.FC<{ photoId: string; onCount?: (n: number) =>
       if (user.photoURL) data.authorPhoto = user.photoURL;
       await addDoc(collection(db!, 'photoComments', photoId, 'comments'), data);
       setText('');
+      // Tell the photo's owner, and anyone who commented before, that there is something new.
+      notifyAboutComment({ user, photoId, label, text: t, ownerUid, earlierCommenterUids: comments.map(c => c.authorUid) });
     } catch {
       setError('Your comment could not be posted. Please try again.');
     } finally {
