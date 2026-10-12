@@ -9,7 +9,8 @@ import {
   SPICE_INFO
 } from '../types';
 import { RecipeRating } from '../components/RecipeRating';
-import { getRecipePhotoUrls, isStockPhotoUrl, COOKBOOK_COVER_TOP_URL, COOKBOOK_COVER_BOTTOM_URL } from '../utils/photoResolver';
+import { KitchenSketch } from '../components/KitchenSketch';
+import { getRecipePhotoUrls, isStockPhotoUrl, COOKBOOK_COVER_TOP_URL } from '../utils/photoResolver';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { allRecipes } from '../data/cookbookDataSource';
 import { calculateDifficulty } from '../utils/recipeCalculator';
@@ -93,13 +94,7 @@ export const RecipeListScreen: React.FC = () => {
           </div>
         </div>
 
-        <img
-          src={COOKBOOK_COVER_BOTTOM_URL}
-          alt=""
-          className="w-[238px] max-w-full h-auto select-none [mask-image:linear-gradient(to_bottom,#000_82%,transparent)]"
-          loading="eager"
-          draggable={false}
-        />
+        <KitchenSketch />
       </div>
 
       {/* Categories Horizontal Scroll / Pills */}
