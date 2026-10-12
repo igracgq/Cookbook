@@ -101,11 +101,10 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   // Share a photo on a cookbook recipe
   await page.fill('#recipe_search_input', 'Tiramisu'); await page.waitForTimeout(700);
   await page.locator('h3').first().click(); await page.waitForTimeout(800);
-  await page.locator('#shared_photo_panel input[type=file]').setInputFiles(FILES + '/big.jpg');
-  await page.waitForSelector('text=Photo shared', { timeout: 20000 });
+  await page.locator('#recipe_detail_screen > input[type=file]').first().setInputFiles(FILES + '/big.jpg');
+  await page.waitForSelector('text=Photo added', { timeout: 20000 });
   await page.waitForTimeout(800);
   ok(await page.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'shared photo shows on a cookbook recipe');
-  ok(await page.locator('text=Replace shared photo').count() === 1, 'owner can replace their photo');
 
   // Private cooking note and shared tip
   ok(/visible to you only/.test(await page.getAttribute('#recipe_note_textarea', 'placeholder')), 'notes box says the notes are visible to you only');
@@ -132,7 +131,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await p2.fill('#recipe_search_input', 'Zia Ann Test Lasagna'); await p2.waitForTimeout(1200);
   ok(await p2.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'a signed-out visitor sees the shared recipe and photo');
   await p2.locator('h3:has-text("Zia Ann Test Lasagna")').first().click(); await p2.waitForTimeout(600);
-  ok(await p2.locator('text=Sign in to share a photo').count() === 1, 'signed-out visitor is asked to sign in to share');
+  ok(await p2.locator('text=Sign in to add a photo').count() === 1, 'signed-out visitor is asked to sign in to share');
   ok(await p2.locator('text=Delete my recipe').count() === 0, 'signed-out visitor cannot see delete');
 
   // A signed-out visitor reads the tip but not the note; another member sees the tip and has no note
@@ -196,15 +195,16 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   // Photos section: shared photos appear at the top, comments are shared live and always shown
   await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(1500);
   const ids = await page.evaluate(() => [...document.querySelectorAll('article[data-photo-id]')].map(a => a.dataset.photoId));
-  ok(ids[0].startsWith('shared_') || ids[0].startsWith('recipe_'), 'a photo members shared is at the top of Photos: ' + ids.slice(0, 3).join(', '));
-  ok(ids.includes('shared_tiramisu_classic') && ids.includes('cook_family'), 'the shared Tiramisu photo and the original cookbook photos are all there');
-  const post = page.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  ok(ids[0].startsWith('photo_') || ids[0].startsWith('recipe_'), 'a photo a member added is at the top of Photos: ' + ids.slice(0, 3).join(', '));
+  const TID = ids.find(i => i.startsWith('photo_'));
+  ok(TID && ids.includes('cook_family'), 'the shared Tiramisu photo and the original cookbook photos are all there');
+  const post = page.locator('article[data-photo-id="' + TID + '"]');
   await post.locator('.comment-input').fill('What a beautiful tiramisu!'); await post.locator('.comment-input').press('Enter');
   await post.locator('[data-comment]').first().waitFor({ timeout: 10000 });
   ok(/What a beautiful tiramisu!/.test(await post.innerText()) && /1 comment/.test(await post.locator('[data-comment-count]').innerText()), 'a signed-in member can comment and the count updates');
 
   await p3.click('#back_to_cookbook_btn'); await p3.click('#nav_photos_desktop'); await p3.waitForSelector('#photos_screen'); await p3.waitForTimeout(2000);
-  const post3 = p3.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  const post3 = p3.locator('article[data-photo-id="' + TID + '"]');
   ok(/What a beautiful tiramisu!/.test(await post3.innerText()), 'another member sees that comment under the photo');
   ok(await post3.locator('[data-comment] button:has-text("Delete")').count() === 0, 'and cannot delete someone else\'s comment');
   await post3.locator('.comment-input').fill('Agreed, Nonna would love it'); await post3.locator('.comment-input').press('Enter');
@@ -237,7 +237,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await ps.route('**/fonts.g*/**', r => r.abort()); await ps.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
   await ps.goto('http://localhost:5173/Cookbook/'); await ps.waitForTimeout(2500);
   await ps.click('#nav_photos_desktop'); await ps.waitForSelector('#photos_screen'); await ps.waitForTimeout(2000);
-  const postS = ps.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  const postS = ps.locator('article[data-photo-id="' + TID + '"]');
   ok(/What a beautiful tiramisu!/.test(await postS.innerText()) && /Agreed, Nonna/.test(await postS.innerText()), 'a signed-out visitor reads the whole conversation');
   ok(await cnt(postS, 'clap') === '1' && await cnt(postS, 'celebrate') === '1', 'a signed-out visitor sees the reaction counts');
   ok(await postS.locator('.comment-input').count() === 0 && await postS.locator('text=Sign in to comment').count() === 1, 'but is asked to sign in to comment');
@@ -251,7 +251,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(!/What a beautiful tiramisu!/.test(await post.innerText()), 'a member can delete their own comment');
   await page.reload(); await page.waitForSelector('#account_btn', { timeout: 15000 });
   await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(2000);
-  ok(/Agreed, Nonna would love it/.test(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').innerText()), 'the remaining comment is still there after a reload');
+  ok(/Agreed, Nonna would love it/.test(await page.locator('article[data-photo-id="' + TID + '"]').innerText()), 'the remaining comment is still there after a reload');
 
   // Star ratings: one per member, averaged for everyone, on the list cards and on the recipe page
   const sum = loc => loc.locator('[data-rating-summary]').innerText();
@@ -273,14 +273,14 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
 
   // Tapping a recipe photo opens it in the Photos section with its comments; Back returns to the recipe
   await page.click('#open_photo_btn'); await page.waitForSelector('#photo_focus_screen');
-  ok(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').count() === 1 && await page.locator('#photos_screen').count() === 0, 'tapping the recipe photo opens just that photo with its comments');
-  const focusPost = page.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  ok(await page.locator('article[data-photo-id="' + TID + '"]').count() === 1 && await page.locator('#photos_screen').count() === 0, 'tapping the recipe photo opens just that photo with its comments');
+  const focusPost = page.locator('article[data-photo-id="' + TID + '"]');
   await focusPost.locator('.comment-input').fill('Opened from the recipe page'); await focusPost.locator('.comment-input').press('Enter');
   await focusPost.locator('[data-comment]').last().waitFor({ timeout: 10000 });
   await page.click('#back_to_recipe_btn'); await page.waitForSelector('#open_photo_btn');
   ok((await page.locator('h1').allInnerTexts()).some(t => /Tiramisu/i.test(t)), 'Back to recipe returns to the same recipe');
   await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(1500);
-  ok(/Opened from the recipe page/.test(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').innerText()), 'the same comment shows in the main Photos feed');
+  ok(/Opened from the recipe page/.test(await page.locator('article[data-photo-id="' + TID + '"]').innerText()), 'the same comment shows in the main Photos feed');
   await page.click('#nav_explore_desktop'); await page.fill('#recipe_search_input', 'First Communion Bread for Aiden'); await page.waitForTimeout(800);
   await page.locator('h3:has-text("First Communion Bread for Aiden")').first().click(); await page.waitForSelector('#open_photo_btn');
   await page.click('#open_photo_btn'); await page.waitForSelector('#photo_focus_screen');
@@ -312,14 +312,14 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(mk.ok, 'owner record created the way you will do it in the console');
   await pa.reload(); await pa.waitForSelector('#account_btn', { timeout: 15000 });
   await pa.click('#nav_photos_desktop'); await pa.waitForSelector('#photos_screen'); await pa.waitForTimeout(2000);
-  const postA = pa.locator('article[data-photo-id="shared_tiramisu_classic"]');
+  const postA = pa.locator('article[data-photo-id="' + TID + '"]');
   const agreed = postA.locator('[data-comment]', { hasText: 'Agreed, Nonna' });
   ok(await agreed.locator('button:has-text("Delete (owner)")').count() === 1, 'the owner sees a delete button on another member\'s comment');
   ok(await post3.locator('button:has-text("Delete (owner)")').count() === 0, 'an ordinary member does not');
   await agreed.locator('button:has-text("Delete (owner)")').click(); await pa.waitForTimeout(1500);
   ok(!/Agreed, Nonna/.test(await postA.innerText()), 'the owner deleted a member\'s comment');
   await page.click('#nav_photos_desktop'); await page.waitForSelector('#photos_screen'); await page.waitForTimeout(2000);
-  ok(!/Agreed, Nonna/.test(await page.locator('article[data-photo-id="shared_tiramisu_classic"]').innerText()), 'and it disappeared for everyone else too');
+  ok(!/Agreed, Nonna/.test(await page.locator('article[data-photo-id="' + TID + '"]').innerText()), 'and it disappeared for everyone else too');
   await pa.click('#nav_explore_desktop'); await pa.fill('#recipe_search_input', 'Tiramisu'); await pa.waitForTimeout(600);
   await pa.locator('h3').first().click(); await pa.waitForSelector('#recipe_tips_box'); await pa.waitForTimeout(1500);
   await pa.locator('#recipe_tips_box button:has-text("Delete (owner)")').click(); await pa.waitForTimeout(1500);
@@ -330,6 +330,30 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await pa.fill('#recipe_search_input', 'Zia Ann Test Lasagna'); await pa.waitForTimeout(800);
   ok(await pa.locator('h3:has-text("Zia Ann Test Lasagna")').count() === 0, 'the owner deleted a member\'s shared recipe');
   await ctxA.close();
+
+  // A member can add a second photo to the same recipe: it goes to the top of Photos, and its owner can remove it
+  const ctxDan = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const pd = await ctxDan.newPage();
+  await pd.route('**/fonts.g*/**', r => r.abort()); await pd.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await pd.route('https://api.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ secure_url: 'https://res.cloudinary.com/democloud/image/upload/v1/heritage-cookbook/dan.png', public_id: 'x' }) }));
+  await pd.goto('http://localhost:5173/Cookbook/'); await pd.waitForTimeout(2500);
+  await pd.evaluate(() => window.__cookbookTestSignIn('dan-uid', 'dan@example.com'));
+  await pd.waitForSelector('#account_btn', { timeout: 15000 });
+  await pd.fill('#recipe_search_input', 'Tiramisu'); await pd.waitForTimeout(700);
+  await pd.locator('h3').first().click(); await pd.waitForSelector('#recipe_tips_box');
+  await pd.locator('#recipe_detail_screen > input[type=file]').first().setInputFiles(FILES + '/big.jpg');
+  await pd.waitForSelector('text=Photo added', { timeout: 20000 });
+  await pd.waitForFunction(() => document.querySelectorAll('button[aria-label^="Show photo"]').length >= 2, null, { timeout: 20000 });
+  ok(true, 'a second member can add their own photo to a recipe that already has one');
+  await pd.click('#back_to_cookbook_btn'); await pd.click('#nav_photos_desktop'); await pd.waitForSelector('#photos_screen'); await pd.waitForTimeout(1500);
+  const ids2 = await pd.evaluate(() => [...document.querySelectorAll('article[data-photo-id]')].map(a => a.dataset.photoId));
+  ok(ids2[0].startsWith('photo_') && ids2[0] !== TID && ids2.includes(TID), 'the new photo is at the top of Photos and the earlier one is still there: ' + ids2.slice(0, 3).join(', '));
+  ok(await pd.locator('article[data-photo-id="' + TID + '"] [data-remove-photo]').count() === 0, 'a member cannot remove someone else\'s photo');
+  await pd.locator('article[data-photo-id="' + ids2[0] + '"] [data-remove-photo]').click();
+  await pd.click('text=Yes, remove'); await pd.waitForTimeout(1500);
+  const ids3 = await pd.evaluate(() => [...document.querySelectorAll('article[data-photo-id]')].map(a => a.dataset.photoId));
+  ok(!ids3.includes(ids2[0]) && ids3.includes(TID), 'a member can remove their own photo');
+  await ctxDan.close();
 
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });

@@ -11,7 +11,9 @@ import {
 } from '../types';
 import { generateAutoTags } from '../utils/autoTagging';
 import { scaleAndConvert } from '../utils/ingredientScaler';
-import { getRecipePhotoUrls, getPhotoCredit, isStockPhotoUrl } from '../utils/photoResolver';
+import { getRecipePhotoUrls, getPhotoCredit, isStockPhotoUrl, memberPhotosOf } from '../utils/photoResolver';
+import { isUploadConfigured, validateImageFile } from '../services/cloudinary';
+import { useCommunity } from '../context/CommunityContext';
 import { RecipePhoto } from '../components/RecipePhoto';
 import { calculateDifficulty, calculateNutrition, scaleNutrition } from '../utils/recipeCalculator';
 import { optimizeImageFile } from '../utils/imageOptimizer';
@@ -89,8 +91,12 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
     removeShoppingItem
   } = useCookbook();
 
-  const { cloudAvailable } = useAuth();
+  const { cloudAvailable, user, signIn } = useAuth();
+  const { shareRecipePhoto } = useCommunity();
   const recipe = getRecipeById(recipeId);
+  // With sharing switched on, photos go to Cloudinary and the Photos section for everyone; otherwise they stay on this device.
+  const sharing = cloudAvailable && isUploadConfigured;
+  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -141,10 +147,34 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
   const photos = [...(isCustomPhoto ? [customRecipePhotos[recipe.id]] : []), ...getRecipePhotoUrls(recipe)];
   const activePhoto = photos[Math.min(photoIdx, Math.max(photos.length - 1, 0))];
   const commentablePhotoId = cloudAvailable ? photoPostIdForUrl(recipe, activePhoto) : null;
+  const activeMember = memberPhotosOf(recipe).find(p => p.url === activePhoto);
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file) return;
+
+    if (sharing) {
+      const problem = validateImageFile(file);
+      if (problem) {
+        setPhotoFeedbackToast(problem);
+        setTimeout(() => setPhotoFeedbackToast(null), 5000);
+        return;
+      }
+      setUploading(true);
+      setPhotoFeedbackToast('Uploading your photo…');
+      try {
+        await shareRecipePhoto(recipe, file);
+        setPhotoIdx(0);
+        setPhotoFeedbackToast('Photo added. Everyone can see it here and at the top of the Photos section.');
+      } catch (err: any) {
+        setPhotoFeedbackToast(err?.message || 'The photo could not be shared. Please try again.');
+      } finally {
+        setUploading(false);
+      }
+      setTimeout(() => setPhotoFeedbackToast(null), 5000);
+      return;
+    }
 
     try {
       const optimizedDataUrl = await optimizeImageFile(file, 1280, 960, 0.82);
@@ -156,6 +186,12 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
       setPhotoFeedbackToast('Could not save photo. Please try a different image.');
       setTimeout(() => setPhotoFeedbackToast(null), 3000);
     }
+  };
+
+  // Signed out with sharing on: a photo can only be shared by a signed-in member, so offer sign-in instead of the file picker.
+  const pickPhoto = (input: React.RefObject<HTMLInputElement | null>) => {
+    if (sharing && !user) { signIn(); return; }
+    input.current?.click();
   };
 
   const handleResetPhoto = () => {
@@ -371,6 +407,10 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           </div>
         )}
 
+        {activeMember && (
+          <p className="text-[11px] text-[#7D6C5A]">Photo shared by <strong>{activeMember.by}</strong>.</p>
+        )}
+
         {isCustomPhoto && (
           <span className="inline-flex px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[11px] font-bold items-center gap-1">
             <ImageIcon className="w-3 h-3" />
@@ -405,8 +445,18 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           <span>
             {isCustomPhoto ? (
               <>
-                <strong>Custom Photo Active:</strong> Overriding original cookbook image.
+                <strong>Custom Photo Active:</strong> Overriding original cookbook image{sharing ? ' (only on this device)' : ''}.
               </>
+            ) : sharing ? (
+              user ? (
+                <>
+                  <strong>Add your photo:</strong> upload a photo of this dish. Everyone can see it here, and it also appears at the top of the Photos section.
+                </>
+              ) : (
+                <>
+                  <strong>Add your photo:</strong> sign in with Google to share a photo of this dish with the whole family.
+                </>
+              )
             ) : (
               <>
                 <strong>Dish Photo:</strong> You can upload your own homemade dish photo to personalize this recipe.
@@ -419,17 +469,19 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           <button
             id="choose_photo_btn"
             type="button"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => pickPhoto(fileInputRef)}
+            disabled={uploading}
             className="px-3 py-1.5 rounded-xl bg-[#EBE3D6] hover:bg-[#E4DBCF] text-[#4A3B2C] font-semibold border border-[#D2C4B1] transition-colors cursor-pointer flex items-center gap-1.5"
           >
             <ImageIcon className="w-3.5 h-3.5" />
-            <span>Upload Photo</span>
+            <span>{sharing && !user ? 'Sign in to add a photo' : 'Upload Photo'}</span>
           </button>
 
           <button
             id="camera_photo_btn"
             type="button"
-            onClick={() => cameraInputRef.current?.click()}
+            onClick={() => pickPhoto(cameraInputRef)}
+            disabled={uploading}
             className="px-3 py-1.5 rounded-xl bg-[#EBE3D6] hover:bg-[#E4DBCF] text-[#4A3B2C] font-semibold border border-[#D2C4B1] transition-colors cursor-pointer flex items-center gap-1.5"
           >
             <Camera className="w-3.5 h-3.5" />

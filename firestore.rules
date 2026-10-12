@@ -110,6 +110,23 @@ service cloud.firestore {
       allow delete: if signedIn() && (resource.data.uploadedBy == request.auth.uid || isAdmin());
     }
 
+    // Photos members add to a recipe: as many as they like, each its own document (any id). Each one also appears
+    // in the Photos section. Anyone can read; a member adds their own; only the person who added one (or an admin)
+    // can remove it. No editing.
+    match /sharedPhotos/{photoId} {
+      function validSharedPhoto(d) {
+        return d.keys().hasOnly(['recipeId', 'imageUrl', 'uploadedBy', 'uploadedByName', 'createdAt'])
+          && d.recipeId is string && d.recipeId.matches('^[A-Za-z0-9_-]{1,100}$')
+          && isCloudinaryUrl(d.imageUrl)
+          && d.uploadedBy == request.auth.uid
+          && shortText(d.uploadedByName, 200)
+          && d.createdAt == request.time;
+      }
+      allow read: if true;
+      allow create: if signedIn() && photoId.matches('^[A-Za-z0-9]{1,60}$') && validSharedPhoto(request.resource.data);
+      allow delete: if signedIn() && (resource.data.uploadedBy == request.auth.uid || isAdmin());
+    }
+
     // Tips shared with everyone, one per member per recipe (the document id is the member's uid).
     // Only that member can write, replace or remove their tip.
     match /recipeTips/{recipeId}/tips/{uid} {

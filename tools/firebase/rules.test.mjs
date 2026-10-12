@@ -83,6 +83,34 @@ test('shared photos must be Cloudinary URLs and carry your own uid', async () =>
   await assertFails(setDoc(doc(db, 'recipePhotos/bad id with spaces'), photo('u1')));
 });
 
+const memberPhoto = (uid, over = {}) => ({ recipeId: 'pasta_fresca', imageUrl: IMG, uploadedBy: uid, uploadedByName: 'Ann', createdAt: serverTimestamp(), ...over });
+
+test('members can add any number of photos to a recipe; only the owner of each can remove it', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'sharedPhotos/aaa111'), memberPhoto('u1')));
+  await assertSucceeds(setDoc(doc(as('u2'), 'sharedPhotos/bbb222'), memberPhotoFor('u2')));   // a second photo on the same recipe
+  await assertSucceeds(setDoc(doc(as('u1'), 'sharedPhotos/ccc333'), memberPhoto('u1')));      // and a second one from the same member
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'sharedPhotos/aaa111')));
+  await assertFails(deleteDoc(doc(as('u2'), 'sharedPhotos/aaa111')));
+  await assertFails(updateDoc(doc(as('u1'), 'sharedPhotos/aaa111'), { imageUrl: IMG }));       // no editing
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'sharedPhotos/aaa111')));
+  await makeAdmin('boss');
+  await assertSucceeds(deleteDoc(doc(as('boss'), 'sharedPhotos/bbb222')));                      // the owner can moderate
+});
+
+function memberPhotoFor(uid) { return memberPhoto(uid, { uploadedByName: 'Bob' }); }
+
+test('member photos must be Cloudinary URLs, carry your own uid, and be signed in', async () => {
+  const db = as('u1');
+  await assertFails(setDoc(doc(db, 'sharedPhotos/x1'), memberPhoto('u1', { imageUrl: 'https://evil.example/a.jpg' })));
+  await assertFails(setDoc(doc(db, 'sharedPhotos/x2'), memberPhoto('u2')));
+  await assertFails(setDoc(doc(db, 'sharedPhotos/x3'), memberPhoto('u1', { extra: 1 })));
+  await assertFails(setDoc(doc(db, 'sharedPhotos/x4'), memberPhoto('u1', { recipeId: 'bad id' })));
+  await assertFails(setDoc(doc(db, 'sharedPhotos/bad id'), memberPhoto('u1')));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'sharedPhotos/x5'), memberPhoto('u1')));
+  const guest = as('g1', { firebase: { sign_in_provider: 'anonymous' } });
+  await assertFails(setDoc(doc(guest, 'sharedPhotos/x6'), memberPhoto('g1')));
+});
+
 test('favorites and profile are private to each member', async () => {
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { displayName: 'Ann', photoURL: '', lastSignIn: serverTimestamp() }, { merge: true }));
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { favorites: arrayUnion('pasta_fresca') }, { merge: true }));
@@ -226,8 +254,9 @@ test('an admin can delete anything members posted, an ordinary member cannot', a
     await setDoc(doc(f, 'recipeTips/r/tips/u1'), { text: 'tip', authorName: 'Ann', updatedAt: new Date() });
     await setDoc(doc(f, 'recipes/r1'), { title: 'x', authorUid: 'u1' });
     await setDoc(doc(f, 'recipePhotos/r2'), { imageUrl: IMG, uploadedBy: 'u1' });
+    await setDoc(doc(f, 'sharedPhotos/p3'), { recipeId: 'r2', imageUrl: IMG, uploadedBy: 'u1' });
   });
-  const paths = ['photoComments/p/comments/c1', 'recipeTips/r/tips/u1', 'recipes/r1', 'recipePhotos/r2'];
+  const paths = ['photoComments/p/comments/c1', 'recipeTips/r/tips/u1', 'recipes/r1', 'recipePhotos/r2', 'sharedPhotos/p3'];
   for (const p of paths) await assertFails(deleteDoc(doc(as('u2'), p)));          // another member: no
   for (const p of paths) await assertSucceeds(deleteDoc(doc(as('boss'), p)));     // the owner: yes
 });

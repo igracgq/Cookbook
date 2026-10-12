@@ -1,6 +1,6 @@
 # Handoff: Heritage Cookbook (Ruffolo-Vitale family cookbook)
 
-Branch: `claude/keen-dirac-6pii53` (all work is pushed). React + Vite app in `src/`, recipe data in
+Everything through PR 13 is merged into `main`; start each new piece of work on a new `claude/` branch from the latest `main`. React + Vite app in `src/`, recipe data in
 `src/data/recipes.json` (1,184 recipes), photos in `public/images/`.
 
 ## What is done
@@ -25,6 +25,21 @@ Firestore), and favorites synced to the account. Switched on by the `VITE_FIREBA
 values in `.env.local`; the app works without them. Setup, data model and limits: `docs/SHARING_SETUP.md`.
 Rules: `firestore.rules`. Tests against the emulators: `tools/firebase/`. The claude.ai artifact preview cannot
 use any of it (no network, no sign-in popup), so the artifact shows the buttons switched off.
+
+## Community features (all in the live site; details in `docs/SHARING_SETUP.md`)
+
+- **Photos section** (top navigation): a feed of every member photo, newest first, then the original cookbook photos.
+  Each photo has reactions (like, love, yum, haha, 🙌, 👏), comments with an emoji tray, and (for its owner) a Remove button.
+  Code: `src/screens/PhotosScreen.tsx`, `src/components/PhotoPostCard.tsx`, `src/data/photoFeed.ts`.
+- **Member photos:** any signed-in member can add any number of photos to any recipe (recipe page: Upload Photo / Take
+  Photo). They go to Cloudinary, the URL is saved in Firestore `sharedPhotos`, and they appear on the recipe and at the
+  top of Photos. Older single shares (`recipePhotos`) still show. Tapping a recipe photo opens it in Photos, with Back to recipe.
+- **Star ratings:** one per member per recipe; averages show on cards and recipe pages (`recipeRatings`).
+- **Owner moderation:** an `admins/{uid}` document (made in the Firebase console) adds Delete (owner) buttons on comments,
+  tips, shared recipes and member photos.
+- **Share button** on the recipe page (WhatsApp, SMS and so on).
+- **After any change to `firestore.rules`,** the owner must paste the file into Firebase Console > Firestore Database > Rules
+  and Publish, or the new feature shows "could not be saved".
 
 ## Tools
 
