@@ -123,6 +123,10 @@ export interface Recipe {
   imageAt?: number;
   /** Firebase uid of the member who added a community recipe. */
   authorUid?: string;
+  /** Firebase uid of the member who shared the older single photo (imageUrl) on a cookbook recipe. */
+  imageUid?: string;
+  /** Photos members have added to this recipe (as many as they like), from the sharedPhotos collection. */
+  memberPhotos?: Array<{ id: string; url: string; by: string; uid: string; at: number }>;
 }
 
 export interface ShoppingItem {

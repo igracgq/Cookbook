@@ -82,9 +82,12 @@ Either way the published site is public: anyone with the link can read the cookb
 
 - **Anyone** (signed in or not) can read all recipes and photos.
 - **Signed in with Google** can add a recipe (name, section, times, ingredients, steps, notes, one optional photo),
-  share one photo for any cookbook recipe, favorite recipes (saved to the account), and delete their own recipe.
-- A photo shared on a cookbook recipe replaces the illustrative stock photo for everyone. Only the person who
-  shared it can replace or remove it. The photo on a shared recipe belongs to whoever added the recipe.
+  add as many photos as they like to any recipe (Upload Photo or Take Photo on the recipe page), favorite recipes
+  (saved to the account), and delete their own recipe.
+- Every photo a member adds also appears in the **Photos** section, newest first at the top, and on the recipe page
+  in front of the cookbook's own photos. A member photo replaces the illustrative stock photo for everyone. Each photo
+  can be removed only by the person who added it (button under the photo in the Photos section), or by the owner.
+- Signed out (or with sharing switched off) the recipe page's Upload Photo still saves a picture on that device only.
 - Photos: image files only (JPEG, PNG, WebP, HEIC), at most 15 MB chosen, shrunk to 1600 px on the long side and
   re-encoded as JPEG before upload.
 
@@ -95,10 +98,11 @@ Either way the published site is public: anyone with the link can read the cookb
 - `users/{uid}/notes/{recipeId}`: a member's private cooking note (`text`, `updatedAt`). Only that member can read or write it. Signed out, notes stay in the browser on that device instead.
 - `users/{uid}/lists/shopping`: the member's shopping list (`items`, `updatedAt`). Only that member can read or write it. Signed out, the list stays in the browser on that device instead.
 - `recipeTips/{recipeId}/tips/{uid}`: the tip a member shares with everyone for a recipe (`text`, `authorName`, `updatedAt`). Anyone can read; only that member can write or remove theirs.
-- `photoComments/{photoId}/comments/{id}`: a comment under a photo in the Photos section (`text`, `authorUid`, `authorName`, `authorPhoto`, `createdAt`). Anyone can read; signed-in members add their own and can delete only their own; no editing. `photoId` is the photo's file name for original cookbook photos (e.g. `cook_p195_1`), `shared_<recipeId>` for a photo shared on a cookbook recipe, and `recipe_<id>` for the photo of a recipe a member added.
+- `photoComments/{photoId}/comments/{id}`: a comment under a photo in the Photos section (`text`, `authorUid`, `authorName`, `authorPhoto`, `createdAt`). Anyone can read; signed-in members add their own and can delete only their own; no editing. `photoId` is the photo's file name for original cookbook photos (e.g. `cook_p195_1`), `photo_<id>` for a member photo in `sharedPhotos`, `shared_<recipeId>` for an older single shared photo, and `recipe_<id>` for the photo of a recipe a member added.
 - `photoReactions/{photoId}/reactions/{uid}`: a member's one reaction to a photo (`type`: like, love, yum, haha, celebrate (🙌) or clap (👏); `authorName`; `updatedAt`). Anyone can read; only that member sets, changes or removes theirs.
 - `recipeRatings/{recipeId}__{uid}`: a member's star rating of a recipe (`recipeId`, `uid`, `stars` 1-5, `updatedAt`). The document id fixes it to one rating per member per recipe. Anyone can read them (the app averages them); a member sets, changes or removes only their own.
-- `recipePhotos/{recipeId}`: the one shared photo for a cookbook recipe: `imageUrl`, `uploadedBy`, `uploadedByName`, `updatedAt`.
+- `sharedPhotos/{id}`: a photo a member added to a recipe, any number per recipe: `recipeId`, `imageUrl`, `uploadedBy`, `uploadedByName`, `createdAt`. Anyone can read; a signed-in member adds their own; only that member (or an admin) can delete it; no editing. Its Photos-section id is `photo_<id>`.
+- `recipePhotos/{recipeId}`: the older single shared photo for a cookbook recipe (from before `sharedPhotos`): `imageUrl`, `uploadedBy`, `uploadedByName`, `updatedAt`. Still shown (Photos id `shared_<recipeId>`) and removable by its owner, but the app no longer creates new ones.
 
 ## Limits worth knowing
 
@@ -126,7 +130,7 @@ Either way the published site is public: anyone with the link can read the cookb
 
 ## After updating the app
 
-Whenever `firestore.rules` changes (most recently for star ratings), paste the whole file into
+Whenever `firestore.rules` changes (most recently for the `sharedPhotos` collection), paste the whole file into
 Firebase console > Firestore Database > Rules and click **Publish**. Until then the new features show "could not be saved".
 
 ## Owner: deleting anything

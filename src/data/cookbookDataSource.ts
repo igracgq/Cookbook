@@ -11,12 +11,18 @@ export const cookbookRecipes: Recipe[] = (rawRecipes as unknown as Recipe[]).sor
  */
 export const allRecipes: Recipe[] = [...cookbookRecipes];
 
-export function setSharedContent(shared: Recipe[], sharedPhotos: Record<string, { url: string; by: string; at?: number }>) {
+export function setSharedContent(
+  shared: Recipe[],
+  sharedPhotos: Record<string, { url: string; by: string; uid?: string; at?: number }>,
+  memberPhotos: Record<string, NonNullable<Recipe['memberPhotos']>> = {}
+) {
   const merged = cookbookRecipes.map(r => {
     const p = sharedPhotos[r.id];
-    return p ? { ...r, imageUrl: p.url, imageBy: p.by, imageAt: p.at } : r;
+    const extra = memberPhotos[r.id];
+    const withLegacy = p ? { ...r, imageUrl: p.url, imageBy: p.by, imageUid: p.uid, imageAt: p.at } : r;
+    return extra ? { ...withLegacy, memberPhotos: extra } : withLegacy;
   });
-  merged.push(...shared);
+  merged.push(...shared.map(r => (memberPhotos[r.id] ? { ...r, memberPhotos: memberPhotos[r.id] } : r)));
   merged.sort((a, b) => a.title.localeCompare(b.title));
   allRecipes.length = 0;
   allRecipes.push(...merged);

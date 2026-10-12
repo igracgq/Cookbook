@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-  collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, type DocumentData
+  addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, type DocumentData
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { setSharedContent } from '../data/cookbookDataSource';
@@ -26,11 +26,10 @@ interface CommunityContextType {
   contentVersion: number;
   addRecipe: (input: NewRecipeInput) => Promise<string>;
   deleteRecipe: (recipeId: string) => Promise<void>;
-  /** One shared photo per recipe: this adds it, or replaces it if you are the one who shared it. */
+  /** Adds a photo to a recipe. Members can add as many as they like; each also appears in the Photos section. */
   shareRecipePhoto: (recipe: Recipe, file: File) => Promise<void>;
-  removeSharedPhoto: (recipe: Recipe) => Promise<void>;
-  /** Who shared the photo currently shown for a recipe (uid), if any. */
-  photoOwners: Record<string, string>;
+  /** Removes a member photo (the file stays in Cloudinary). Only allowed for its owner, or the cookbook owner. */
+  removeMemberPhoto: (photo: { id: string; source: 'photo' | 'legacy' | 'recipe'; recipeId?: string }) => Promise<void>;
 }
 
 const CommunityContext = createContext<CommunityContextType | null>(null);
@@ -70,6 +69,7 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [version, setVersion] = useState(0);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [photos, setPhotos] = useState<Record<string, { url: string; by: string; uid: string; at: number }>>({});
+  const [memberPhotos, setMemberPhotos] = useState<Record<string, NonNullable<Recipe['memberPhotos']>>>({});
 
   useEffect(() => {
     if (!db) return;
@@ -96,14 +96,34 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       },
       () => {}
     );
-    return () => { offRecipes(); offPhotos(); };
+    const offMember = onSnapshot(
+      collection(db, 'sharedPhotos'),
+      snap => {
+        const next: Record<string, NonNullable<Recipe['memberPhotos']>> = {};
+        snap.forEach(d => {
+          const x = d.data();
+          if (!x.imageUrl || !x.recipeId) return;
+          (next[x.recipeId] ??= []).push({
+            id: d.id,
+            url: x.imageUrl,
+            by: x.uploadedByName ?? '',
+            uid: x.uploadedBy ?? '',
+            // a photo just added has no server time yet, so treat it as now
+            at: typeof x.createdAt?.toMillis === 'function' ? x.createdAt.toMillis() : Date.now()
+          });
+        });
+        setMemberPhotos(next);
+      },
+      () => {}
+    );
+    return () => { offRecipes(); offPhotos(); offMember(); };
   }, []);
 
   // Push the shared content into the recipe list the whole app reads from.
   useEffect(() => {
-    setSharedContent(recipes, Object.fromEntries(Object.entries(photos).map(([k, v]) => [k, { url: v.url, by: v.by, at: v.at }])));
+    setSharedContent(recipes, photos, memberPhotos);
     setVersion(v => v + 1);
-  }, [recipes, photos]);
+  }, [recipes, photos, memberPhotos]);
 
   const requireUser = () => {
     if (!user || !db) throw new Error('Please sign in first.');
@@ -141,29 +161,25 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const shareRecipePhoto = async (recipe: Recipe, file: File) => {
     const { user, db } = requireUser();
     const { url } = await uploadRecipePhoto(file, 'heritage-cookbook/photos');
-    if (recipe.community) {
-      // A shared recipe keeps its one photo in its own document.
-      await setDoc(doc(db, 'recipes', recipe.id), { imageUrl: url }, { merge: true });
-    } else {
-      await setDoc(doc(db, 'recipePhotos', recipe.id), {
-        imageUrl: url,
-        uploadedBy: user.uid,
-        uploadedByName: user.displayName ?? 'Family member',
-        updatedAt: serverTimestamp()
-      });
-    }
+    await addDoc(collection(db, 'sharedPhotos'), {
+      recipeId: recipe.id,
+      imageUrl: url,
+      uploadedBy: user.uid,
+      uploadedByName: user.displayName ?? 'Family member',
+      createdAt: serverTimestamp()
+    });
   };
 
-  const removeSharedPhoto = async (recipe: Recipe) => {
+  const removeMemberPhoto = async (photo: { id: string; source: 'photo' | 'legacy' | 'recipe'; recipeId?: string }) => {
     const { db } = requireUser();
-    if (recipe.community) await setDoc(doc(db, 'recipes', recipe.id), { imageUrl: '' }, { merge: true });
-    else await deleteDoc(doc(db, 'recipePhotos', recipe.id));
+    if (photo.source === 'photo') await deleteDoc(doc(db, 'sharedPhotos', photo.id.replace(/^photo_/, '')));
+    else if (!photo.recipeId) throw new Error('Unknown recipe.');
+    else if (photo.source === 'legacy') await deleteDoc(doc(db, 'recipePhotos', photo.recipeId));
+    else await setDoc(doc(db, 'recipes', photo.recipeId), { imageUrl: '' }, { merge: true });
   };
-
-  const photoOwners = Object.fromEntries(Object.entries(photos).map(([k, v]) => [k, v.uid]));
 
   return (
-    <CommunityContext.Provider value={{ contentVersion: version, addRecipe, deleteRecipe, shareRecipePhoto, removeSharedPhoto, photoOwners }}>
+    <CommunityContext.Provider value={{ contentVersion: version, addRecipe, deleteRecipe, shareRecipePhoto, removeMemberPhoto }}>
       {children}
     </CommunityContext.Provider>
   );

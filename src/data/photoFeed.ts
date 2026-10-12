@@ -1,6 +1,6 @@
 import { cookbookRecipes, allRecipes } from './cookbookDataSource';
 import { Recipe } from '../types';
-import { FAMILY_PHOTO_URL, FAMILY_GALLERY_URLS, isSharedPhotoUrl, photoUrl } from '../utils/photoResolver';
+import { FAMILY_PHOTO_URL, FAMILY_GALLERY_URLS, memberPhotosOf, photoUrl } from '../utils/photoResolver';
 
 /** One photo in the Photos section. */
 export interface PhotoPost {
@@ -13,6 +13,10 @@ export interface PhotoPost {
   recipeTitle?: string;
   /** Who shared it (shared photos and added recipes). */
   by?: string;
+  /** Firebase uid of the member who shared it (decides who may remove it). */
+  uid?: string;
+  /** Where a member's photo is stored, so it can be removed: 'photo' (sharedPhotos), 'legacy' (recipePhotos) or 'recipe' (the recipe's own document). */
+  source?: 'photo' | 'legacy' | 'recipe';
   /** When it was shared (milliseconds). */
   at?: number;
   /** Page in the original cookbook. */
@@ -23,22 +27,25 @@ export interface PhotoPost {
 
 /**
  * Everything the Photos section shows, newest first:
- * photos members shared (on cookbook recipes, or as part of a recipe they added), then the photos from the
+ * every photo members added (on any recipe, or as part of a recipe they added), then the photos from the
  * original family cookbook. Illustrative stock photos are never included.
  */
 export function buildPhotoFeed(): PhotoPost[] {
   const shared: PhotoPost[] = [];
   for (const r of allRecipes) {
-    if (!isSharedPhotoUrl(r.imageUrl)) continue;
-    shared.push({
-      id: r.community ? `recipe_${r.id}` : `shared_${r.id}`,
-      url: r.imageUrl!,
-      kind: r.community ? 'recipe' : 'shared',
-      recipeId: r.id,
-      recipeTitle: r.title,
-      by: r.imageBy || r.contributor,
-      at: r.community ? r.addedAt : r.imageAt
-    });
+    for (const p of memberPhotosOf(r)) {
+      shared.push({
+        id: p.id,
+        url: p.url,
+        kind: p.source === 'recipe' ? 'recipe' : 'shared',
+        recipeId: r.id,
+        recipeTitle: r.title,
+        by: p.by,
+        uid: p.uid,
+        source: p.source,
+        at: p.at
+      });
+    }
   }
   shared.sort((a, b) => (b.at ?? 0) - (a.at ?? 0));
 
@@ -75,7 +82,8 @@ export function buildPhotoFeed(): PhotoPost[] {
  */
 export function photoPostIdForUrl(recipe: Recipe, url?: string | null): string | null {
   if (!url) return null;
-  if (recipe.imageUrl && url === recipe.imageUrl) return recipe.community ? `recipe_${recipe.id}` : `shared_${recipe.id}`;
+  const member = memberPhotosOf(recipe).find(p => p.url === url);
+  if (member) return member.id;
   const m = url.match(/\/images\/(cook_[A-Za-z0-9_]+)\.jpg(?:$|\?)/);
   return m ? m[1] : null;
 }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { BookOpen, MessageCircle } from 'lucide-react';
+import { BookOpen, MessageCircle, Trash2 } from 'lucide-react';
 import { PhotoPost } from '../data/photoFeed';
 import { PhotoComments } from './PhotoComments';
 import { PhotoReactions } from './PhotoReactions';
 import { useAuth } from '../context/AuthContext';
+import { useCommunity } from '../context/CommunityContext';
 import { timeAgo } from '../utils/timeAgo';
 
 interface PhotoPostCardProps {
@@ -13,9 +14,22 @@ interface PhotoPostCardProps {
 
 /** One photo with its caption and, underneath, the conversation about it. */
 export const PhotoPostCard: React.FC<PhotoPostCardProps> = ({ post, onOpenRecipe }) => {
-  const { cloudAvailable } = useAuth();
+  const { cloudAvailable, user, isAdmin } = useAuth();
+  const { removeMemberPhoto } = useCommunity();
   const [count, setCount] = useState(0);
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState(false);
   const original = post.kind === 'cookbook';
+  const mine = !!user && !!post.uid && post.uid === user.uid;
+  // The cookbook owner can remove any member photo, except the photo of a recipe (remove the recipe itself instead).
+  const canRemove = !original && !!post.source && (mine || (isAdmin && post.source !== 'recipe'));
+
+  const remove = async () => {
+    setRemoving(true); setRemoveError(false);
+    try { await removeMemberPhoto({ id: post.id, source: post.source!, recipeId: post.recipeId }); }
+    catch { setRemoveError(true); setRemoving(false); setConfirmRemove(false); }
+  };
 
   const heading =
     post.kind === 'recipe' ? <><strong>{post.by}</strong> added a new recipe</>
@@ -74,6 +88,23 @@ export const PhotoPostCard: React.FC<PhotoPostCardProps> = ({ post, onOpenRecipe
       </div>
 
       <PhotoReactions photoId={post.id} />
+
+      {canRemove && (
+        <div className="px-4 py-2 border-t border-[#E4DBCF] text-xs text-[#7D6C5A] flex flex-wrap items-center gap-2">
+          {!confirmRemove ? (
+            <button type="button" data-remove-photo onClick={() => setConfirmRemove(true)} className="flex items-center gap-1.5 hover:text-[#B8452D] cursor-pointer">
+              <Trash2 className="w-3.5 h-3.5" /> {mine ? 'Remove my photo' : 'Remove this photo (owner)'}
+            </button>
+          ) : (
+            <>
+              Remove this photo for everyone?
+              <button type="button" disabled={removing} onClick={remove} className="px-2.5 py-1 rounded-lg bg-[#B8452D] text-white font-semibold cursor-pointer">Yes, remove</button>
+              <button type="button" onClick={() => setConfirmRemove(false)} className="px-2.5 py-1 rounded-lg bg-[#EBE3D6] border border-[#D2C4B1] cursor-pointer">Keep it</button>
+            </>
+          )}
+          {removeError && <span role="status" className="text-[#B8452D]">The photo could not be removed. Please try again.</span>}
+        </div>
+      )}
 
       {cloudAvailable && (
         <div className="px-4 py-2 border-y border-[#E4DBCF] text-xs text-[#7D6C5A] flex items-center gap-1.5">
