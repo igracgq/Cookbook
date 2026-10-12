@@ -131,7 +131,8 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await p2.fill('#recipe_search_input', 'Zia Ann Test Lasagna'); await p2.waitForTimeout(1200);
   ok(await p2.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'a signed-out visitor sees the shared recipe and photo');
   await p2.locator('h3:has-text("Zia Ann Test Lasagna")').first().click(); await p2.waitForTimeout(600);
-  ok(await p2.locator('text=Sign in to add a photo').count() === 1, 'signed-out visitor is asked to sign in to share');
+  ok(await p2.locator('#sign_in_to_share_btn').count() === 1, 'signed-out visitor is asked to sign in to share');
+  ok((await p2.locator('#sign_in_to_share_btn').innerText()).includes('Sign in to share a photo with others') && (await p2.locator('#recipe_detail_screen').innerText()).includes('Own photo archive - only you will see your photos in the app'), 'signed-out wording: sign in to share with others, and own photo archive is only seen by you');
   ok(await p2.locator('text=Delete my recipe').count() === 0, 'signed-out visitor cannot see delete');
 
   // A signed-out visitor reads the tip but not the note; another member sees the tip and has no note

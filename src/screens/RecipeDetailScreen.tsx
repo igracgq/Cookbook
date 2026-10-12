@@ -43,6 +43,7 @@ import {
   Share2,
   Image as ImageIcon,
   RotateCcw,
+  LogIn,
   MessageCircle,
   Lock,
   ShoppingCart,
@@ -94,8 +95,10 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
   const { cloudAvailable, user, signIn } = useAuth();
   const { shareRecipePhoto } = useCommunity();
   const recipe = getRecipeById(recipeId);
-  // With sharing switched on, photos go to Cloudinary and the Photos section for everyone; otherwise they stay on this device.
+  // Signed in with sharing switched on, photos go to Cloudinary and the Photos section for everyone.
+  // Otherwise (signed out, or sharing off) they are saved on this device only.
   const sharing = cloudAvailable && isUploadConfigured;
+  const shareMode = sharing && !!user;
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
@@ -154,7 +157,7 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
     e.target.value = '';
     if (!file) return;
 
-    if (sharing) {
+    if (shareMode) {
       const problem = validateImageFile(file);
       if (problem) {
         setPhotoFeedbackToast(problem);
@@ -186,12 +189,6 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
       setPhotoFeedbackToast('Could not save photo. Please try a different image.');
       setTimeout(() => setPhotoFeedbackToast(null), 3000);
     }
-  };
-
-  // Signed out with sharing on: a photo can only be shared by a signed-in member, so offer sign-in instead of the file picker.
-  const pickPhoto = (input: React.RefObject<HTMLInputElement | null>) => {
-    if (sharing && !user) { signIn(); return; }
-    input.current?.click();
   };
 
   const handleResetPhoto = () => {
@@ -443,20 +440,15 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
         <div className="flex items-center gap-2">
           <Camera className="w-4 h-4 text-[#7D6C5A]" />
           <span>
-            {isCustomPhoto ? (
+            {shareMode ? (
               <>
-                <strong>Custom Photo Active:</strong> Overriding original cookbook image{sharing ? ' (only on this device)' : ''}.
+                <strong>Add your photo:</strong> upload a photo of this dish. Everyone can see it here, and it also appears at the top of the Photos section.
+                {isCustomPhoto && ' You also have a photo saved only on this device.'}
               </>
-            ) : sharing ? (
-              user ? (
-                <>
-                  <strong>Add your photo:</strong> upload a photo of this dish. Everyone can see it here, and it also appears at the top of the Photos section.
-                </>
-              ) : (
-                <>
-                  <strong>Add your photo:</strong> sign in with Google to share a photo of this dish with the whole family.
-                </>
-              )
+            ) : isCustomPhoto || sharing ? (
+              <>
+                <strong>Own photo archive</strong> - only you will see your photos in the app
+              </>
             ) : (
               <>
                 <strong>Dish Photo:</strong> You can upload your own homemade dish photo to personalize this recipe.
@@ -465,22 +457,33 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipeId
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {sharing && !user && (
+            <button
+              id="sign_in_to_share_btn"
+              type="button"
+              onClick={signIn}
+              className="px-3 py-1.5 rounded-xl bg-[#4A3B2C] hover:bg-[#382B1E] text-[#FAF7F2] font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Sign in to share a photo with others</span>
+            </button>
+          )}
           <button
             id="choose_photo_btn"
             type="button"
-            onClick={() => pickPhoto(fileInputRef)}
+            onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
             className="px-3 py-1.5 rounded-xl bg-[#EBE3D6] hover:bg-[#E4DBCF] text-[#4A3B2C] font-semibold border border-[#D2C4B1] transition-colors cursor-pointer flex items-center gap-1.5"
           >
             <ImageIcon className="w-3.5 h-3.5" />
-            <span>{sharing && !user ? 'Sign in to add a photo' : 'Upload Photo'}</span>
+            <span>Upload Photo</span>
           </button>
 
           <button
             id="camera_photo_btn"
             type="button"
-            onClick={() => pickPhoto(cameraInputRef)}
+            onClick={() => cameraInputRef.current?.click()}
             disabled={uploading}
             className="px-3 py-1.5 rounded-xl bg-[#EBE3D6] hover:bg-[#E4DBCF] text-[#4A3B2C] font-semibold border border-[#D2C4B1] transition-colors cursor-pointer flex items-center gap-1.5"
           >
