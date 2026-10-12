@@ -392,6 +392,98 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(rosaUsers.includes('Nonna Rosa'), 'their name is saved on their member record');
   await ctxE.close();
 
+  // Notifications (the bell): Dan shares a photo; Eve comments and reacts; Fay comments after Eve
+  const mkMember = async (uid, email, name) => {
+    const c = await b.newContext({ viewport: { width: 1100, height: 900 } });
+    const pg = await c.newPage();
+    await pg.route('**/fonts.g*/**', r => r.abort()); await pg.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+    await pg.route('https://api.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ secure_url: 'https://res.cloudinary.com/democloud/image/upload/v1/heritage-cookbook/' + uid + '.png', public_id: 'x' }) }));
+    await pg.goto('http://localhost:5173/Cookbook/'); await pg.waitForTimeout(2500);
+    await pg.evaluate(([u, e, n]) => window.__cookbookTestSignIn(u, e, n), [uid, email, name]);
+    await pg.waitForSelector('#account_btn', { timeout: 15000 });
+    return { c, pg };
+  };
+  const dan = await mkMember('dan2-uid', 'dan2@example.com', 'Dan Test');
+  await dan.pg.fill('#recipe_search_input', 'Tiramisu'); await dan.pg.waitForTimeout(700);
+  await dan.pg.locator('h3').first().click(); await dan.pg.waitForSelector('#recipe_tips_box');
+  await dan.pg.locator('#recipe_detail_screen > input[type=file]').first().setInputFiles(FILES + '/big.jpg');
+  await dan.pg.waitForSelector('text=Photo added', { timeout: 20000 });
+  await dan.pg.click('#back_to_cookbook_btn'); await dan.pg.click('#nav_photos_desktop'); await dan.pg.waitForSelector('#photos_screen'); await dan.pg.waitForTimeout(1500);
+  const DID = await dan.pg.locator('article[data-photo-id]').first().getAttribute('data-photo-id');
+  ok(await dan.pg.locator('#notification_bell').count() === 1 && await dan.pg.locator('#notification_badge').count() === 0, 'signed in, the bell is there with nothing new');
+
+  const eve = await mkMember('eve2-uid', 'eve2@example.com', 'Eve Test');
+  await eve.pg.click('#nav_photos_desktop'); await eve.pg.waitForSelector('#photos_screen'); await eve.pg.waitForTimeout(1500);
+  const evePost = eve.pg.locator('article[data-photo-id="' + DID + '"]');
+  await evePost.locator('.comment-input').fill('Lovely!'); await evePost.locator('.comment-input').press('Enter');
+  await evePost.locator('[data-comment]').first().waitFor({ timeout: 10000 });
+  await evePost.locator('[data-reaction="love"]').click(); await eve.pg.waitForTimeout(1200);
+  ok(await eve.pg.locator('#notification_badge').count() === 0, 'people are not notified about their own comments and reactions');
+
+  await dan.pg.waitForSelector('#notification_badge', { timeout: 15000 });
+  await dan.pg.waitForFunction(() => document.querySelector('#notification_badge')?.textContent === '2', null, { timeout: 15000 });
+  ok(true, 'the photo owner sees a red 2 on the bell (a comment and a reaction)');
+  await dan.pg.click('#notification_bell'); await dan.pg.waitForSelector('#notification_panel');
+  const panel = await dan.pg.locator('#notification_panel').innerText();
+  ok(/Eve Test commented on your photo of Classic Italian Tiramisu/.test(panel) && /Lovely!/.test(panel) && /Eve Test reacted .* to your photo of Classic Italian Tiramisu/.test(panel), 'the list says who commented and who reacted');
+  await dan.pg.locator('[data-notification=comment]').click(); await dan.pg.waitForSelector('#photo_focus_screen');
+  ok(await dan.pg.locator('article[data-photo-id="' + DID + '"]').count() === 1, 'tapping a notice opens that photo');
+  await dan.pg.waitForFunction(() => document.querySelector('#notification_badge')?.textContent === '1', null, { timeout: 10000 });
+  ok(true, 'and that notice is marked as read (the red number drops to 1)');
+
+  const fay = await mkMember('fay2-uid', 'fay2@example.com', 'Fay Test');
+  await fay.pg.click('#nav_photos_desktop'); await fay.pg.waitForSelector('#photos_screen'); await fay.pg.waitForTimeout(1500);
+  const fayPost = fay.pg.locator('article[data-photo-id="' + DID + '"]');
+  await fayPost.locator('.comment-input').fill('Agreed, gorgeous'); await fayPost.locator('.comment-input').press('Enter');
+  await fayPost.locator('[data-comment]').nth(1).waitFor({ timeout: 10000 });
+  await eve.pg.waitForFunction(() => document.querySelector('#notification_badge')?.textContent === '1', null, { timeout: 15000 });
+  await eve.pg.click('#notification_bell'); await eve.pg.waitForSelector('#notification_panel');
+  ok(/Fay Test also commented on the photo of Classic Italian Tiramisu/.test(await eve.pg.locator('#notification_panel').innerText()), 'someone who commented earlier is told about the next comment');
+  await eve.pg.keyboard.press('Escape');
+
+  await evePost.locator('[data-reaction="clap"]').click(); await eve.pg.waitForTimeout(1500);
+  await dan.pg.click('#notification_bell'); await dan.pg.waitForSelector('#notification_panel'); await dan.pg.waitForTimeout(800);
+  ok(await dan.pg.locator('[data-notification=reaction]').count() === 1, 'changing an emoji updates the one reaction notice instead of adding another');
+  ok(/Eve Test reacted 👏/.test(await dan.pg.locator('[data-notification=reaction]').innerText()), 'it shows the new emoji');
+  await dan.pg.click('#notification_mark_read'); await dan.pg.waitForTimeout(1000);
+  ok(await dan.pg.locator('#notification_badge').count() === 0, 'Mark all as read clears the red number');
+  await evePost.locator('[data-reaction="clap"]').click(); await eve.pg.waitForTimeout(1200);
+  await dan.pg.waitForTimeout(500);
+  ok(await dan.pg.locator('[data-notification=reaction]').count() === 0, 'taking a reaction back takes its notice back');
+  for (const m of [dan, eve, fay]) await m.c.close();
+
+  // Phone alerts: turn on for this device (the phone's push service is faked), see the record, turn off; sign out and in again
+  const ctxPush = await b.newContext({ viewport: { width: 1100, height: 900 }, permissions: ['notifications'] });
+  const pph = await ctxPush.newPage();
+  await pph.addInitScript(() => {
+    const fake = { endpoint: 'https://push.example/e2e/device-1', getKey: () => new Uint8Array([1, 2, 3, 4]).buffer, unsubscribe: async () => { window.__fakeSub = null; return true; } };
+    window.__fakeSub = null;
+    PushManager.prototype.getSubscription = async function () { return window.__fakeSub; };
+    PushManager.prototype.subscribe = async function () { window.__fakeSub = fake; return fake; };
+  });
+  await pph.route('**/fonts.g*/**', r => r.abort());
+  await pph.goto('http://localhost:5173/Cookbook/'); await pph.waitForTimeout(2500);
+  await pph.evaluate(() => window.__cookbookTestSignIn('push-uid', 'push@example.com', 'Push Tester'));
+  await pph.waitForSelector('#notification_bell', { timeout: 15000 });
+  const pushDocs = async () => JSON.stringify(await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents:runQuery', {
+    method: 'POST', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' },
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'pushSubscriptions' }] } }) })).json());
+  await pph.click('#notification_bell'); await pph.waitForSelector('#phone_alerts_btn');
+  ok((await pph.locator('#phone_alerts_btn').innerText()).includes('Turn on phone alerts'), 'the bell offers to turn phone alerts on');
+  await pph.click('#phone_alerts_btn'); await pph.waitForSelector('text=Phone alerts are on');
+  const withDevice = await pushDocs();
+  const savedSub = JSON.parse(withDevice).map(r => r.document).filter(Boolean)[0];
+  ok(savedSub && savedSub.name.split('/').pop().startsWith(savedSub.fields.uid.stringValue + '_') && savedSub.fields.endpoint.stringValue === 'https://push.example/e2e/device-1', 'turning it on saves this device under the member\'s own account');
+  await pph.click('#phone_alerts_btn'); await pph.waitForSelector('text=Get a pop-up on this device'); await pph.waitForTimeout(500);
+  ok(!(await pushDocs()).includes('device-1'), 'turning it off forgets the device');
+  await pph.click('#phone_alerts_btn'); await pph.waitForSelector('text=Phone alerts are on');
+  await pph.keyboard.press('Escape'); await pph.click('#account_btn'); await pph.click('#sign_out_btn'); await pph.waitForTimeout(1500);
+  ok(!(await pushDocs()).includes('device-1'), 'signing out stops pop-ups for that person on this device');
+  await pph.evaluate(() => window.__cookbookTestSignIn('push-uid', 'push@example.com', 'Push Tester'));
+  await pph.waitForSelector('#account_btn', { timeout: 15000 }); await pph.waitForTimeout(2000);
+  ok((await pushDocs()).includes('device-1'), 'signing in again switches their alerts back on');
+  await ctxPush.close();
+
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const p4 = await ctx4.newPage();

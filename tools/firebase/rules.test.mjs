@@ -122,6 +122,67 @@ test('email-and-password members can contribute only once their email is confirm
   await assertSucceeds(deleteDoc(doc(confirmed, 'sharedPhotos/bbb222')));                      // and remove their own photo
 });
 
+const notice = (from, over = {}) => {
+  const d = { type: 'comment', photoId: 'photo_abc', label: 'Tiramisu', fromUid: from, fromName: 'Eve', text: 'Lovely!', createdAt: serverTimestamp(), read: false, ...over };
+  for (const k of Object.keys(d)) if (d[k] === undefined) delete d[k];   // "text: undefined" means leave it out
+  return d;
+};
+
+test('notifications: anyone signed in can notify someone else, in their own name only', async () => {
+  await assertSucceeds(setDoc(doc(as('u2'), 'notifications/u1/items/n1'), notice('u2')));
+  await assertSucceeds(setDoc(doc(as('u2'), 'notifications/u1/items/n2'), notice('u2', { type: 'reaction', reaction: 'clap', text: undefined }) ));
+  await assertFails(setDoc(doc(as('u2'), 'notifications/u1/items/n3'), notice('u3')));                     // not in someone else's name
+  await assertFails(setDoc(doc(as('u1'), 'notifications/u1/items/n4'), notice('u1')));                     // not to yourself
+  await assertFails(setDoc(doc(as('u2'), 'notifications/u1/items/n5'), notice('u2', { read: true })));      // must start unread
+  await assertFails(setDoc(doc(as('u2'), 'notifications/u1/items/n6'), notice('u2', { type: 'spam' })));
+  await assertFails(setDoc(doc(as('u2'), 'notifications/u1/items/n7'), notice('u2', { extra: 'x' })));
+  await assertFails(setDoc(doc(as('u2'), 'notifications/u1/items/n8'), notice('u2', { text: 'x'.repeat(201) })));
+  await assertFails(setDoc(doc(as('u2'), 'notifications/u1/items/n9'), notice('u2', { reaction: 'poop', type: 'reaction' })));
+  await assertFails(setDoc(doc(env.unauthenticatedContext().firestore(), 'notifications/u1/items/n10'), notice('u2')));
+  const unconfirmed = as('e1', { firebase: { sign_in_provider: 'password' }, email_verified: false });
+  await assertFails(setDoc(doc(unconfirmed, 'notifications/u1/items/n11'), notice('e1')));
+});
+
+test('notifications: only the recipient reads them, marks them read, and deletes them', async () => {
+  await assertSucceeds(setDoc(doc(as('u2'), 'notifications/u1/items/n1'), notice('u2')));
+  await assertSucceeds(getDoc(doc(as('u1'), 'notifications/u1/items/n1')));
+  await assertFails(getDoc(doc(as('u2'), 'notifications/u1/items/n1')));                                   // not even the sender
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'notifications/u1/items/n1')));
+  await assertFails(updateDoc(doc(as('u3'), 'notifications/u1/items/n1'), { read: true }));
+  await assertFails(updateDoc(doc(as('u1'), 'notifications/u1/items/n1'), { text: 'changed' }));            // recipient changes only "read"
+  await assertSucceeds(updateDoc(doc(as('u1'), 'notifications/u1/items/n1'), { read: true }));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'notifications/u1/items/n1')));
+});
+
+test('notifications: the sender can re-send or withdraw their own notice, nobody else can', async () => {
+  const id = 'notifications/u1/items/reaction_photo_abc_u2';
+  await assertSucceeds(setDoc(doc(as('u2'), id), notice('u2', { type: 'reaction', reaction: 'love', text: undefined })));
+  await assertSucceeds(setDoc(doc(as('u2'), id), notice('u2', { type: 'reaction', reaction: 'clap', text: undefined })));  // switched emoji
+  await assertFails(setDoc(doc(as('u3'), id), notice('u3', { type: 'reaction', reaction: 'clap', text: undefined })));
+  await assertFails(deleteDoc(doc(as('u3'), id)));
+  await assertSucceeds(deleteDoc(doc(as('u2'), id)));
+});
+
+const pushSub = (uid, over = {}) => ({ uid, endpoint: 'https://fcm.googleapis.com/fcm/send/abc', p256dh: 'BPk', auth: 'xyz', createdAt: serverTimestamp(), ...over });
+
+test('phone alert subscriptions are private to the member who made them', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123'), pushSub('u1')));
+  await assertSucceeds(setDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123'), pushSub('u1')));            // turning on twice just replaces it
+  await assertSucceeds(getDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123')));
+  await assertFails(getDoc(doc(as('u2'), 'pushSubscriptions/u1_abc123')));                               // nobody else can read it
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'pushSubscriptions/u1_abc123')));
+  await assertFails(deleteDoc(doc(as('u2'), 'pushSubscriptions/u1_abc123')));
+  await assertFails(setDoc(doc(as('u2'), 'pushSubscriptions/u1_zzz'), pushSub('u2')));                   // cannot file one under another member's name
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u2_abc'), pushSub('u1')));
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u1_def'), pushSub('u2')));                   // uid inside must be yours
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u1_ghi'), pushSub('u1', { endpoint: 'http://insecure.example/x' })));
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u1_jkl'), pushSub('u1', { extra: 1 })));
+  const unconfirmed = as('e1', { firebase: { sign_in_provider: 'password' }, email_verified: false });
+  await assertFails(setDoc(doc(unconfirmed, 'pushSubscriptions/e1_abc'), pushSub('e1')));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123')));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'pushSubscriptions/u1_notthere')));                       // removing one that is already gone is fine
+});
+
 test('favorites and profile are private to each member', async () => {
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { displayName: 'Ann', photoURL: '', lastSignIn: serverTimestamp() }, { merge: true }));
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { favorites: arrayUnion('pasta_fresca') }, { merge: true }));

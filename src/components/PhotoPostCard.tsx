@@ -21,6 +21,7 @@ export const PhotoPostCard: React.FC<PhotoPostCardProps> = ({ post, onOpenRecipe
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState(false);
   const original = post.kind === 'cookbook';
+  const noticeLabel = post.recipeTitle || post.caption || 'a family photo';
   const mine = !!user && !!post.uid && post.uid === user.uid;
   // The cookbook owner can remove any member photo, except the photo of a recipe (remove the recipe itself instead).
   const canRemove = !original && !!post.source && (mine || (isAdmin && post.source !== 'recipe'));
@@ -87,7 +88,7 @@ export const PhotoPostCard: React.FC<PhotoPostCardProps> = ({ post, onOpenRecipe
         />
       </div>
 
-      <PhotoReactions photoId={post.id} />
+      <PhotoReactions photoId={post.id} ownerUid={post.uid} label={noticeLabel} />
 
       {canRemove && (
         <div className="px-4 py-2 border-t border-[#E4DBCF] text-xs text-[#7D6C5A] flex flex-wrap items-center gap-2">
@@ -114,7 +115,7 @@ export const PhotoPostCard: React.FC<PhotoPostCardProps> = ({ post, onOpenRecipe
       )}
 
       <div className="px-4 py-4">
-        <PhotoComments photoId={post.id} onCount={setCount} />
+        <PhotoComments photoId={post.id} onCount={setCount} ownerUid={post.uid} label={noticeLabel} />
       </div>
     </article>
   );

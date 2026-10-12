@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 
 # Builds the cookbook and publishes it at https://<user>.github.io/Cookbook/ whenever main changes.
-# The six VITE_* values come from repository secrets (Settings > Secrets and variables > Actions).
+# The VITE_* values come from repository secrets (Settings > Secrets and variables > Actions).
 # Without them the site still builds; sign-in and sharing just stay switched off.
 on:
   push:
@@ -35,6 +35,7 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
           VITE_CLOUDINARY_CLOUD_NAME: ${{ secrets.VITE_CLOUDINARY_CLOUD_NAME }}
           VITE_CLOUDINARY_UPLOAD_PRESET: ${{ secrets.VITE_CLOUDINARY_UPLOAD_PRESET }}
+          VITE_VAPID_PUBLIC_KEY: ${{ secrets.VITE_VAPID_PUBLIC_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

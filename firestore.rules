@@ -193,6 +193,49 @@ service cloud.firestore {
       allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isAdmin());
     }
 
+    // Notifications ("bell" in the app): notifications/{recipientUid}/items/{id}. Only the recipient can read them,
+    // mark them read, or delete them. A signed-in member can create one for someone else, but only in their own
+    // name (fromUid is checked) and only in the fixed shape below. The sender may also re-send or withdraw their own
+    // (the reaction notice has a fixed id, so changing your emoji does not pile up notices).
+    match /notifications/{recipientUid}/items/{id} {
+      function validNotification(d) {
+        return d.keys().hasOnly(['type', 'photoId', 'label', 'fromUid', 'fromName', 'text', 'reaction', 'createdAt', 'read'])
+          && d.type in ['comment', 'reply', 'reaction']
+          && d.photoId is string && d.photoId.matches('^[A-Za-z0-9_-]{1,120}$')
+          && shortText(d.label, 200)
+          && d.fromUid == request.auth.uid
+          && shortText(d.fromName, 200)
+          && (!('text' in d) || shortText(d.text, 200))
+          && (!('reaction' in d) || d.reaction in ['like', 'love', 'yum', 'haha', 'celebrate', 'clap'])
+          && d.createdAt == request.time
+          && d.read == false;
+      }
+      allow read: if signedIn() && request.auth.uid == recipientUid;
+      allow create: if signedIn() && request.auth.uid != recipientUid && validNotification(request.resource.data);
+      allow update: if signedIn() && (
+        (request.auth.uid == recipientUid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
+          && request.resource.data.read is bool)
+        || (resource.data.fromUid == request.auth.uid && validNotification(request.resource.data)));
+      allow delete: if signedIn() && (request.auth.uid == recipientUid || resource.data.fromUid == request.auth.uid);
+    }
+
+    // Phone alerts: one record per member per device, with the address the phone's browser gave us for pop-ups.
+    // The id is "<uid>_<short hash>", so a member can only create, read or remove their own. The scheduled
+    // GitHub job reads them with the service account (which is not bound by these rules).
+    match /pushSubscriptions/{subId} {
+      function validSub(d) {
+        return d.keys().hasOnly(['uid', 'endpoint', 'p256dh', 'auth', 'createdAt'])
+          && d.uid == request.auth.uid
+          && d.endpoint is string && d.endpoint.size() <= 1000 && d.endpoint.matches('^https://.+')
+          && shortText(d.p256dh, 200) && shortText(d.auth, 100)
+          && d.createdAt == request.time;
+      }
+      allow read, delete: if signedIn() && subId.matches('^' + request.auth.uid + '_[A-Za-z0-9_-]{1,100}$');
+      allow create, update: if signedIn() && subId.matches('^' + request.auth.uid + '_[A-Za-z0-9_-]{1,100}$')
+        && validSub(request.resource.data);
+    }
+
     // Everything else is closed.
     match /{document=**} {
       allow read, write: if false;

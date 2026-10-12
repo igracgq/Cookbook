@@ -38,6 +38,15 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
   with Continue with Google, or email and password. Creating an email account asks for a name and needs the emailed link
   clicked before the person can contribute (the rules check `email_verified`). Email/Password must be switched on in
   Firebase > Authentication > Sign-in method (done).
+- **Notifications (bell, signed-in members only):** a bell in the header with a red number. It lists who commented on your
+  photo, who commented on a photo you also commented on, and who reacted to your photo; tapping one opens that photo.
+  Code: `src/components/NotificationBell.tsx`, `src/services/notifications.ts`; Firestore `notifications`. No email.
+- **Phone alerts (optional, free):** a pop-up on the member's phone/computer for the same notices. The member turns it on in the bell
+  (`PhoneAlerts.tsx`, `src/services/push.ts`, `public/sw.js` push handlers; Web Push with VAPID keys, subscriptions in Firestore
+  `pushSubscriptions`). A GitHub Action every 10 minutes (`.github/workflows/send-push-notifications.yml`, `tools/push/send.mjs`)
+  sends them, so they arrive 10 to 20 minutes late, not instantly. Needs three GitHub secrets (`FIREBASE_SERVICE_ACCOUNT`,
+  `VITE_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`); until they exist it does nothing. Setup: `docs/PHONE_ALERTS_SETUP.md`. iPhones need
+  the cookbook on the Home Screen. Instant pop-ups would need Firebase Cloud Functions (paid Blaze plan).
 - **Star ratings:** one per member per recipe; averages show on cards and recipe pages (`recipeRatings`).
 - **Owner moderation:** an `admins/{uid}` document (made in the Firebase console) adds Delete (owner) buttons on comments,
   tips, shared recipes and member photos.

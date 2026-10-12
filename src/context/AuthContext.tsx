@@ -6,6 +6,7 @@ import {
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db, googleProvider, isCloudConfigured } from '../services/firebase';
 import { SignInDialog } from '../components/SignInDialog';
+import { pausePushForSignOut, resumePushOnSignIn } from '../services/push';
 
 interface AuthContextType {
   /** False when Firebase is not set up (see docs/SHARING_SETUP.md); the cookbook then works as before. */
@@ -70,6 +71,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!db) return;
     // The rules let a person read only their own admins document; it simply does not exist for ordinary members.
     getDoc(doc(db, 'admins', u.uid)).then(snap => setIsAdmin(snap.exists())).catch(() => setIsAdmin(false));
+    // If this person had phone alerts on for this device before, switch them back on.
+    resumePushOnSignIn(u);
     // Keep a small profile document for each member (users/{uid}); favorites live in the same document.
     setDoc(
       doc(db, 'users', u.uid),
@@ -157,6 +160,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     setPending(null);
+    // Stop this person's phone alerts on this device before signing out, so a shared phone does not show their pop-ups.
+    if (user) await pausePushForSignOut(user).catch(() => {});
     if (auth) await fbSignOut(auth);
   };
 

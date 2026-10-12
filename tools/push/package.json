@@ -1,0 +1,17 @@
+{
+  "name": "heritage-cookbook-push",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sends phone pop-ups for new notifications. Run by .github/workflows/send-push-notifications.yml",
+  "scripts": {
+    "test": "firebase emulators:exec --only firestore --project demo-cookbook --config ../../firebase.json \"node --test send.test.mjs\""
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.0.0"
+  }
+}
