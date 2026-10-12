@@ -97,6 +97,45 @@ Other commands: `npm run build` (the full production build and type check).
    **Actions** tab, then a hard refresh: Ctrl+Shift+R).
 5. Anything that changes `firestore.rules` must also be pasted into Firebase console > Firestore Database > Rules > Publish.
 
+## Switching between VS Code and Claude Code
+
+The GitHub repository is the single source of truth. Each Claude Code cloud session starts by copying the latest code from
+GitHub, and VS Code works on a copy on your computer. To move between them without losing anything:
+
+1. **Push before you switch.** Changes that exist only on your computer (unsaved, uncommitted or unpushed) are invisible to Claude.
+   In VS Code: **Source Control**, write a message, **Commit**, then **Sync Changes** (or **Publish Branch**).
+2. **Merge it, or give Claude the branch name.** If your work is on a branch that is not merged, start the next Claude session with
+   "continue from branch `<name>`". Otherwise Claude starts from `main` and will not see it.
+3. **Pull before you start in VS Code.** On `main`: **Ctrl+Shift+P > Git: Pull**. That brings in what Claude merged. (If you are on
+   a branch, first **Git: Checkout to...** `main`.) Run `npm install --no-save --no-package-lock` again if `package.json` changed.
+4. **One at a time.** Do not edit the same files in both places at once; that causes merge conflicts. Finish and merge in one
+   place, then switch.
+5. **Keep `HANDOFF.md` current.** It is the shared memory between sessions. At the end of a session ask: "Update HANDOFF.md with
+   everything we did and anything I still need to set up."
+6. **Things outside the code stay as they are** whichever tool you use: GitHub secrets, Firebase settings, and `firestore.rules`
+   (pasted into Firebase console by hand whenever it changes).
+
+## Testing a change on your computer before it goes live
+
+Claude puts every change on a branch with a pull request, and nothing is live until it is merged. To try one yourself first:
+
+1. Tell Claude to **hold** the pull request ("hold this one, I will test it"). Claude then leaves it open and does not merge it.
+2. In VS Code open the `Cookbook` folder. **Ctrl+Shift+P > Git: Fetch**, then **Git: Checkout to...** and choose the branch named in the
+   pull request (it starts with `claude/`; pick the `origin/...` entry).
+3. In the terminal: `npm install --no-save --no-package-lock`, then `npm run dev`, and open http://localhost:3000.
+4. If the change touched `firestore.rules`, paste the new file into Firebase console > Firestore Database > Rules > Publish **before**
+   you test, or the new feature will say it "could not be saved". Publishing early is harmless: the live site keeps working.
+5. Try it. When you are happy, tell Claude to merge. To go back to the old version afterwards: **Git: Checkout to... `main`**, then
+   **Git: Pull**.
+
+Good to know:
+- It uses your real Firebase and Cloudinary, so anything you post while testing is real. Delete test items afterwards.
+- **Phone-size look:** in Chrome press F12 then Ctrl+Shift+M (the phone icon) to see the phone layout on your computer.
+- **On a real phone** over your Wi-Fi: open `http://<your-computer's-address>:3000` (the terminal prints it). Google sign-in works only on
+  `localhost`, so on the phone use email and password, or add that address under Firebase > Authentication > Settings > Authorised domains.
+- **Phone alerts and the installed app** only work on the live site, not on `localhost`.
+- To check the real production build (the `/Cookbook/` address and the offline cache): `npm run build`, then `npm run preview`.
+
 ## Using Claude in VS Code
 
 Install the **Claude Code** extension, open the `Cookbook` folder, and start with the prompt in `HANDOFF.md`'s first lines ("Read

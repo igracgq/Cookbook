@@ -75,7 +75,7 @@ The owner is not a developer: give plain, step-by-step test instructions and pla
 
 `docs/LOCAL_SETUP.md` explains, step by step, how to copy the repo into a new folder in VS Code, create the private `.env.local`
 file (which values go in it and where to find them; the same values are also GitHub secrets), run it, and send changes back, plus
-a note on Google AI Studio (work on a branch; do not let it rewrite `vite.config.ts`, `package.json` or `.github/workflows`).
+how to switch between VS Code and Claude Code, how to test a pull request on the owner's computer first (the owner says "hold this one" and Claude leaves the PR open), and a note on Google AI Studio (work on a branch; do not let it rewrite `vite.config.ts`, `package.json` or `.github/workflows`).
 No real secrets are in the repository.
 
 ## Tools
