@@ -1,0 +1,40 @@
+name: Send phone alerts
+
+# Every 10 minutes (GitHub may start it a few minutes late): sends a pop-up to the phones of members who switched
+# phone alerts on and have a new comment or reaction on their photos. Setup: docs/PHONE_ALERTS_SETUP.md
+# Until the three secrets below exist, this does nothing and finishes successfully.
+#   FIREBASE_SERVICE_ACCOUNT  the downloaded service-account key (whole file)
+#   VITE_VAPID_PUBLIC_KEY     public push key (also used when the site is built)
+#   VAPID_PRIVATE_KEY         private push key
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: send-push-notifications
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/push/package-lock.json
+      - run: npm ci --omit=dev
+        working-directory: tools/push
+      - run: node send.mjs
+        working-directory: tools/push
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          VAPID_PUBLIC_KEY: ${{ secrets.VITE_VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: https://igracgq.github.io/Cookbook/

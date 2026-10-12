@@ -103,12 +103,13 @@ Either way the published site is public: anyone with the link can read the cookb
 - `recipeRatings/{recipeId}__{uid}`: a member's star rating of a recipe (`recipeId`, `uid`, `stars` 1-5, `updatedAt`). The document id fixes it to one rating per member per recipe. Anyone can read them (the app averages them); a member sets, changes or removes only their own.
 - `sharedPhotos/{id}`: a photo a member added to a recipe, any number per recipe: `recipeId`, `imageUrl`, `uploadedBy`, `uploadedByName`, `createdAt`. Anyone can read; a signed-in member adds their own; only that member (or an admin) can delete it; no editing. Its Photos-section id is `photo_<id>`.
 - `notifications/{recipientUid}/items/{id}`: the bell. A notice for the person a photo or comment belongs to (`type`: comment, reply or reaction; `photoId`, `label`, `fromUid`, `fromName`, optional `text` and `reaction`, `createdAt`, `read`). Only the recipient can read, mark read or delete them. A signed-in member can create one for someone else, only in their own name; the sender can re-send or withdraw their own (a reaction notice has the fixed id `reaction_<photoId>_<senderUid>`, so changing emoji updates it). The app writes them when someone comments (the photo's owner gets a `comment`, earlier commenters get a `reply`) or reacts (the owner gets a `reaction`). Nobody is notified about their own actions, and original cookbook photos have no owner. The newest 30 show in the bell.
+- `pushSubscriptions/{uid}_{hash}`: one phone/computer a member turned phone alerts on for (`uid`, `endpoint`, `p256dh`, `auth`, `createdAt`). Only that member can read, create or remove their own; the scheduled GitHub job reads all of them with the service account. See `docs/PHONE_ALERTS_SETUP.md`.
 - `recipePhotos/{recipeId}`: the older single shared photo for a cookbook recipe (from before `sharedPhotos`): `imageUrl`, `uploadedBy`, `uploadedByName`, `updatedAt`. Still shown (Photos id `shared_<recipeId>`) and removable by its owner, but the app no longer creates new ones.
 
 ## Limits worth knowing
 
 - **Notices are written by the app, not a server.** A determined member could send another member junk notices (the rules limit
-  them to the fixed shape and to the sender's own name). They are in-app only: nothing is emailed and nothing pops up on a phone.
+  them to the fixed shape and to the sender's own name). The bell is in-app. Pop-ups on phones are an optional extra sent by a scheduled GitHub job (`docs/PHONE_ALERTS_SETUP.md`); nothing is emailed.
 - **Anyone can sign in and contribute:** any Google account, or any email address that has been confirmed. That is
   what "signed-in users can contribute" means in the rules. To limit it to family, add an allowed-emails check to
   `signedIn()` in `firestore.rules`.

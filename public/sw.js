@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'heritage-cookbook-v4';
+const CACHE_VERSION = 'heritage-cookbook-v5';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -137,6 +137,37 @@ self.addEventListener('fetch', (event) => {
         .catch(() => cachedResponse);
 
       return cachedResponse || fetchPromise;
+    })
+  );
+});
+
+// Phone alerts: a pop-up when someone comments on or reacts to your photo. The message is sent by the
+// scheduled GitHub job in tools/push (see docs/PHONE_ALERTS_SETUP.md).
+self.addEventListener('push', (event) => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (e) { /* plain text or empty */ }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Heritage Cookbook', {
+      body: data.body || 'Something new on your photos.',
+      icon: scopeUrl('icon-192.png'),
+      badge: scopeUrl('icon-192.png'),
+      tag: data.tag || 'cookbook-notice',
+      renotify: true,
+      data: { url: scopeUrl('./') }
+    })
+  );
+});
+
+// Tapping the pop-up brings the cookbook to the front (or opens it); the bell inside shows what happened.
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const target = (event.notification.data && event.notification.data.url) || scopeUrl('./');
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const client of list) {
+        if (client.url.startsWith(self.registration.scope) && 'focus' in client) return client.focus();
+      }
+      return self.clients.openWindow(target);
     })
   );
 });

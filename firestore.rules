@@ -220,6 +220,22 @@ service cloud.firestore {
       allow delete: if signedIn() && (request.auth.uid == recipientUid || resource.data.fromUid == request.auth.uid);
     }
 
+    // Phone alerts: one record per member per device, with the address the phone's browser gave us for pop-ups.
+    // The id is "<uid>_<short hash>", so a member can only create, read or remove their own. The scheduled
+    // GitHub job reads them with the service account (which is not bound by these rules).
+    match /pushSubscriptions/{subId} {
+      function validSub(d) {
+        return d.keys().hasOnly(['uid', 'endpoint', 'p256dh', 'auth', 'createdAt'])
+          && d.uid == request.auth.uid
+          && d.endpoint is string && d.endpoint.size() <= 1000 && d.endpoint.matches('^https://.+')
+          && shortText(d.p256dh, 200) && shortText(d.auth, 100)
+          && d.createdAt == request.time;
+      }
+      allow read, delete: if signedIn() && subId.matches('^' + request.auth.uid + '_[A-Za-z0-9_-]{1,100}$');
+      allow create, update: if signedIn() && subId.matches('^' + request.auth.uid + '_[A-Za-z0-9_-]{1,100}$')
+        && validSub(request.resource.data);
+    }
+
     // Everything else is closed.
     match /{document=**} {
       allow read, write: if false;

@@ -6,6 +6,7 @@ import { useCookbook } from '../context/CookbookContext';
 import { db } from '../services/firebase';
 import { REACTIONS } from '../utils/emojis';
 import { timeAgo } from '../utils/timeAgo';
+import { PhoneAlerts } from './PhoneAlerts';
 
 interface Notice {
   id: string;
@@ -146,6 +147,7 @@ export const NotificationBell: React.FC = () => {
               ))}
             </ul>
           )}
+          <PhoneAlerts user={user!} />
         </div>
       )}
     </div>

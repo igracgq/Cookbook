@@ -163,6 +163,26 @@ test('notifications: the sender can re-send or withdraw their own notice, nobody
   await assertSucceeds(deleteDoc(doc(as('u2'), id)));
 });
 
+const pushSub = (uid, over = {}) => ({ uid, endpoint: 'https://fcm.googleapis.com/fcm/send/abc', p256dh: 'BPk', auth: 'xyz', createdAt: serverTimestamp(), ...over });
+
+test('phone alert subscriptions are private to the member who made them', async () => {
+  await assertSucceeds(setDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123'), pushSub('u1')));
+  await assertSucceeds(setDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123'), pushSub('u1')));            // turning on twice just replaces it
+  await assertSucceeds(getDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123')));
+  await assertFails(getDoc(doc(as('u2'), 'pushSubscriptions/u1_abc123')));                               // nobody else can read it
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), 'pushSubscriptions/u1_abc123')));
+  await assertFails(deleteDoc(doc(as('u2'), 'pushSubscriptions/u1_abc123')));
+  await assertFails(setDoc(doc(as('u2'), 'pushSubscriptions/u1_zzz'), pushSub('u2')));                   // cannot file one under another member's name
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u2_abc'), pushSub('u1')));
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u1_def'), pushSub('u2')));                   // uid inside must be yours
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u1_ghi'), pushSub('u1', { endpoint: 'http://insecure.example/x' })));
+  await assertFails(setDoc(doc(as('u1'), 'pushSubscriptions/u1_jkl'), pushSub('u1', { extra: 1 })));
+  const unconfirmed = as('e1', { firebase: { sign_in_provider: 'password' }, email_verified: false });
+  await assertFails(setDoc(doc(unconfirmed, 'pushSubscriptions/e1_abc'), pushSub('e1')));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'pushSubscriptions/u1_abc123')));
+  await assertSucceeds(deleteDoc(doc(as('u1'), 'pushSubscriptions/u1_notthere')));                       // removing one that is already gone is fine
+});
+
 test('favorites and profile are private to each member', async () => {
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { displayName: 'Ann', photoURL: '', lastSignIn: serverTimestamp() }, { merge: true }));
   await assertSucceeds(setDoc(doc(as('u1'), 'users/u1'), { favorites: arrayUnion('pasta_fresca') }, { merge: true }));
