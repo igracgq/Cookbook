@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Pencil } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCommunity } from '../context/CommunityContext';
 import { useCookbook } from '../context/CookbookContext';
 import { Recipe } from '../types';
 
 /**
- * Under the photos of a recipe a member added: who shared the recipe, and the buttons to delete it
- * (its author, or the cookbook owner). Adding photos is done from the "Dish Photo" bar further down the page;
+ * Under the photos of a recipe a member added: who shared the recipe, and the buttons to edit it (only
+ * its author) and to delete it (its author, or the cookbook owner). Adding photos is done from the "Dish Photo" bar further down the page;
  * removing a photo is done from the photo itself in the Photos section.
  */
 export const SharedPhotoPanel: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
@@ -40,7 +41,17 @@ export const SharedPhotoPanel: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
       <p><strong>Shared recipe</strong> from {recipe.contributor}.</p>
 
       {mine && (
-        <div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          {!confirmDelete && (
+            <button
+              id="edit_recipe_btn"
+              type="button"
+              onClick={() => navigateTo({ type: 'addRecipe', editRecipeId: recipe.id })}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer"
+            >
+              <Pencil className="w-3.5 h-3.5" /> Edit my recipe
+            </button>
+          )}
           {!confirmDelete ? (
             <button type="button" onClick={() => setConfirmDelete(true)} className="text-[#7D6C5A] underline hover:text-[#B8452D] cursor-pointer">Delete my recipe</button>
           ) : confirmButtons}

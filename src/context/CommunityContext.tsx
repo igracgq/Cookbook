@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-  addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, type DocumentData
+  addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, updateDoc, type DocumentData
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { setSharedContent } from '../data/cookbookDataSource';
@@ -25,6 +25,8 @@ interface CommunityContextType {
   /** Changes whenever shared recipes or photos change, so screens and memos can refresh. */
   contentVersion: number;
   addRecipe: (input: NewRecipeInput) => Promise<string>;
+  /** Changes a recipe the signed-in member added. A new photo replaces the old one; removePhoto clears it. */
+  updateRecipe: (recipeId: string, input: NewRecipeInput & { removePhoto?: boolean }) => Promise<void>;
   deleteRecipe: (recipeId: string) => Promise<void>;
   /** Adds a photo to a recipe. Members can add as many as they like; each also appears in the Photos section. */
   shareRecipePhoto: (recipe: Recipe, file: File) => Promise<void>;
@@ -153,6 +155,25 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return ref.id;
   };
 
+  const updateRecipe = async (recipeId: string, input: NewRecipeInput & { removePhoto?: boolean }) => {
+    const { db } = requireUser();
+    const changes: Record<string, unknown> = {
+      title: input.title.trim(),
+      category: input.category,
+      servings: input.servings.trim(),
+      prepTime: input.prepTime.trim(),
+      cookTime: input.cookTime.trim(),
+      ingredients: input.ingredients,
+      instructions: input.instructions,
+      notes: input.notes.trim()
+    };
+    // Photo first, so the recipe is written once. Without a new photo the old one is kept, unless it was removed.
+    if (input.photo) changes.imageUrl = (await uploadRecipePhoto(input.photo, 'heritage-cookbook/recipes')).url;
+    else if (input.removePhoto) changes.imageUrl = '';
+    // Only these fields are sent: who added the recipe and when stay as they were (the rules insist on it).
+    await updateDoc(doc(db, 'recipes', recipeId), changes);
+  };
+
   const deleteRecipe = async (recipeId: string) => {
     const { db } = requireUser();
     await deleteDoc(doc(db, 'recipes', recipeId));
@@ -179,7 +200,7 @@ export const CommunityProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   return (
-    <CommunityContext.Provider value={{ contentVersion: version, addRecipe, deleteRecipe, shareRecipePhoto, removeMemberPhoto }}>
+    <CommunityContext.Provider value={{ contentVersion: version, addRecipe, updateRecipe, deleteRecipe, shareRecipePhoto, removeMemberPhoto }}>
       {children}
     </CommunityContext.Provider>
   );

@@ -47,6 +47,8 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
   sends them, so they arrive 10 to 20 minutes late, not instantly. Needs three GitHub secrets (`FIREBASE_SERVICE_ACCOUNT`,
   `VITE_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`); until they exist it does nothing. Setup: `docs/PHONE_ALERTS_SETUP.md`. iPhones need
   the cookbook on the Home Screen. Instant pop-ups would need Firebase Cloud Functions (paid Blaze plan).
+- **Editing a recipe:** the person who added a recipe sees **Edit my recipe** on its page; it opens the Add recipe form filled in
+  (`AddRecipeScreen.tsx` with `editRecipeId`, `updateRecipe` in `CommunityContext.tsx`). Only the author can save changes (rules already enforce it).
 - **Star ratings:** one per member per recipe; averages show on cards and recipe pages (`recipeRatings`).
 - **Owner moderation:** an `admins/{uid}` document (made in the Firebase console) adds Delete (owner) buttons on comments,
   tips, shared recipes and member photos.

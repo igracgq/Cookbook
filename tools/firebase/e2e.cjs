@@ -90,6 +90,29 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(await page.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'recipe page shows the image');
   ok(await page.locator('text=Delete my recipe').count() === 1, 'author can delete their recipe');
 
+  // Editing: only the person who added a recipe can change it
+  ok(await page.locator('#edit_recipe_btn').count() === 1, 'the author sees an Edit my recipe button');
+  await page.click('#edit_recipe_btn'); await page.waitForSelector('#new_title');
+  ok(await page.inputValue('#new_title') === 'Zia Ann Test Lasagna' && (await page.inputValue('#new_ingredients')).length > 0 && (await page.inputValue('#new_steps')).length > 0, 'the edit form opens filled in with the recipe');
+  await page.fill('#new_ingredients', (await page.inputValue('#new_ingredients')) + '\nOne extra bay leaf'); await page.fill('#new_servings', '12 servings'); await page.fill('#new_notes', 'Edited note');
+  await page.click('#save_recipe_btn'); await page.waitForSelector('text=Your changes to');
+  await page.click('#view_edited_recipe_btn'); await page.waitForSelector('#recipe_detail_screen'); await page.waitForTimeout(800);
+  const editedText = await page.locator('#recipe_detail_screen').innerText();
+  ok(editedText.includes('One extra bay leaf') && editedText.includes('12') && editedText.includes('Edited note'), 'the recipe page shows the changes');
+  ok(await page.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'the photo is kept when only the text is edited');
+  await page.click('#edit_recipe_btn'); await page.waitForSelector('#new_title'); await page.click('#cancel_edit_btn'); await page.waitForSelector('#shared_photo_panel');
+  ok(true, 'Cancel goes back to the recipe');
+  const ctxNA = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const pna = await ctxNA.newPage();
+  await pna.route('**/fonts.g*/**', r => r.abort()); await pna.route('https://res.cloudinary.com/**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tiny }));
+  await pna.goto('http://localhost:5173/Cookbook/'); await pna.waitForTimeout(2500);
+  await pna.evaluate(() => window.__cookbookTestSignIn('notauthor-uid', 'na@example.com', 'Not Author'));
+  await pna.waitForSelector('#account_btn', { timeout: 15000 });
+  await pna.fill('#recipe_search_input', 'Zia Ann Test Lasagna'); await pna.waitForTimeout(1200);
+  await pna.locator('h3:has-text("Zia Ann Test Lasagna")').first().click(); await pna.waitForSelector('#shared_photo_panel');
+  ok(await pna.locator('#edit_recipe_btn').count() === 0 && (await pna.locator('#recipe_detail_screen').innerText()).includes('One extra bay leaf'), 'another member sees the edited recipe but no Edit button');
+  await ctxNA.close();
+
   // Latest Additions: sits between All Dishes and Favorites, lists added recipes
   await page.click('#back_to_cookbook_btn'); await page.fill('#recipe_search_input', ''); await page.waitForTimeout(500);
   const chips = await page.locator('[id^=quick_filter_]').allInnerTexts();
@@ -132,6 +155,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok(await p2.locator('img[src^="https://res.cloudinary.com/democloud"]').count() >= 1, 'a signed-out visitor sees the shared recipe and photo');
   await p2.locator('h3:has-text("Zia Ann Test Lasagna")').first().click(); await p2.waitForTimeout(600);
   ok(await p2.locator('#sign_in_to_share_btn').count() === 1, 'signed-out visitor is asked to sign in to share');
+  ok(await p2.locator('#edit_recipe_btn').count() === 0, 'signed-out visitor cannot see the edit button');
   ok((await p2.locator('#sign_in_to_share_btn').innerText()).includes('Sign in to share a photo with others') && (await p2.locator('#recipe_detail_screen').innerText()).includes('Own photo archive - only you will see your photos in the app'), 'signed-out wording: sign in to share with others, and own photo archive is only seen by you');
   ok(await p2.locator('text=Delete my recipe').count() === 0, 'signed-out visitor cannot see delete');
 

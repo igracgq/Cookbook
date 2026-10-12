@@ -5,6 +5,7 @@ import { useCommunity } from '../context/CommunityContext';
 import { useCookbook } from '../context/CookbookContext';
 import { isUploadConfigured, validateImageFile } from '../services/cloudinary';
 import { CATEGORY_INFO, RecipeCategory } from '../types';
+import { findRecipeById } from '../data/cookbookDataSource';
 
 export const RECIPE_LIMITS = { title: 120, line: 300, step: 1000, lines: 60, notes: 2000, short: 60 };
 
@@ -13,10 +14,18 @@ const splitLines = (text: string) => text.split('\n').map(l => l.trim()).filter(
 const field = 'w-full px-3 py-2 bg-[#FAF7F2] border border-[#D2C4B1] rounded-xl text-sm text-[#261D16] placeholder:text-[#857566] focus:outline-none focus:ring-2 focus:ring-[#4A3B2C]';
 const label = 'block text-xs font-bold uppercase tracking-wider text-[#5C4E40] mb-1';
 
+/**
+ * The form for adding a recipe, which is also the form for editing one: opened with editRecipeId it starts filled in
+ * with that recipe, and only the member who added the recipe can save changes (the security rules insist on it too).
+ */
 export const AddRecipeScreen: React.FC = () => {
   const { cloudAvailable, user, loading, signIn } = useAuth();
-  const { addRecipe } = useCommunity();
-  const { navigateTo } = useCookbook();
+  const { addRecipe, updateRecipe } = useCommunity();
+  const { navigateTo, currentScreen } = useCookbook();
+  const editId = currentScreen.type === 'addRecipe' ? currentScreen.editRecipeId : undefined;
+  const editing = editId ? findRecipeById(editId) : undefined;
+  const isEdit = !!editId;
+  const canEdit = !!editing && !!user && editing.community === true && editing.authorUid === user.uid;
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<RecipeCategory>(RecipeCategory.PASTA_AND_SAUCES);
@@ -31,7 +40,23 @@ export const AddRecipeScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [savedTitle, setSavedTitle] = useState<string | null>(null);
+  const [removeExisting, setRemoveExisting] = useState(false);
+  const filled = useRef(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
+
+  // Editing: start with the recipe as it is now (once, so typing is never overwritten).
+  useEffect(() => {
+    if (!editing || !canEdit || filled.current) return;
+    filled.current = true;
+    setTitle(editing.title);
+    setCategory(editing.category);
+    setServings(editing.servings);
+    setPrepTime(editing.prepTime);
+    setCookTime(editing.cookTime);
+    setIngredients(editing.ingredients.map(i => i.rawText).join('\n'));
+    setInstructions(editing.instructions.join('\n'));
+    setNotes(editing.notes);
+  }, [editing, canEdit]);
 
   useEffect(() => {
     if (!photo) { setPreview(null); return; }
@@ -65,7 +90,9 @@ export const AddRecipeScreen: React.FC = () => {
     if (notes.length > RECIPE_LIMITS.notes) return setError(`Notes can be at most ${RECIPE_LIMITS.notes} characters.`);
     setSaving(true);
     try {
-      await addRecipe({ title, category, servings, prepTime, cookTime, ingredients: ing, instructions: steps, notes, photo });
+      const input = { title, category, servings, prepTime, cookTime, ingredients: ing, instructions: steps, notes, photo };
+      if (isEdit) await updateRecipe(editId!, { ...input, removePhoto: removeExisting });
+      else await addRecipe(input);
       setSavedTitle(title.trim());
     } catch (err: any) {
       setError(err?.message || 'The recipe could not be saved. Please try again.');
@@ -82,8 +109,10 @@ export const AddRecipeScreen: React.FC = () => {
   const shell = (children: React.ReactNode) => (
     <div id="add_recipe_screen" className="max-w-2xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-16 space-y-5">
       <div className="space-y-1">
-        <h2 className="font-serif-heritage text-3xl font-bold text-[#261D16]">Add a recipe</h2>
-        <p className="text-sm text-[#5C4E40]">Share a recipe with the family. Everyone using the cookbook will see it.</p>
+        <h2 className="font-serif-heritage text-3xl font-bold text-[#261D16]">{isEdit ? 'Edit your recipe' : 'Add a recipe'}</h2>
+        <p className="text-sm text-[#5C4E40]">
+          {isEdit ? 'Change anything you like. Everyone will see the updated recipe once you save.' : 'Share a recipe with the family. Everyone using the cookbook will see it.'}
+        </p>
       </div>
       {children}
     </div>
@@ -103,7 +132,9 @@ export const AddRecipeScreen: React.FC = () => {
   if (!user) {
     return shell(
       <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D2C4B1] space-y-3 text-sm text-[#5C4E40]">
-        <p>Please sign in (with Google, or with your email) to add a recipe. Anyone can read the cookbook, but only signed-in family members can add to it.</p>
+        <p>{isEdit
+          ? 'Please sign in to edit your recipe.'
+          : 'Please sign in (with Google, or with your email) to add a recipe. Anyone can read the cookbook, but only signed-in family members can add to it.'}</p>
         <button
           type="button"
           onClick={signIn}
@@ -115,13 +146,35 @@ export const AddRecipeScreen: React.FC = () => {
     );
   }
 
+  if (isEdit && !canEdit) {
+    return shell(
+      <div id="edit_not_allowed" className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#D2C4B1] space-y-3 text-sm text-[#5C4E40]">
+        <p>{editing ? 'Only the person who added a recipe can edit it.' : 'This recipe is not available any more.'}</p>
+        <button type="button" onClick={() => navigateTo(editing ? { type: 'detail', recipeId: editing.id } : { type: 'explore' })} className="px-3 py-1.5 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] font-semibold cursor-pointer">
+          {editing ? 'Back to the recipe' : 'Back to the cookbook'}
+        </button>
+      </div>
+    );
+  }
+
   if (savedTitle) {
     return shell(
       <div className="p-5 rounded-2xl bg-[#E4EFE0] border border-[#A7CE9B] space-y-3 text-sm text-[#2A441E]">
-        <p className="flex items-center gap-2 font-semibold"><CheckCircle2 className="w-4 h-4" /> “{savedTitle}” is now in the cookbook.</p>
+        <p className="flex items-center gap-2 font-semibold">
+          <CheckCircle2 className="w-4 h-4" /> {isEdit ? <>Your changes to “{savedTitle}” are saved.</> : <>“{savedTitle}” is now in the cookbook.</>}
+        </p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => navigateTo({ type: 'explore' })} className="px-3 py-1.5 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] font-semibold cursor-pointer">Back to the cookbook</button>
-          <button type="button" onClick={reset} className="px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#A7CE9B] font-semibold cursor-pointer">Add another</button>
+          {isEdit ? (
+            <>
+              <button id="view_edited_recipe_btn" type="button" onClick={() => navigateTo({ type: 'detail', recipeId: editId! })} className="px-3 py-1.5 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] font-semibold cursor-pointer">View the recipe</button>
+              <button type="button" onClick={() => navigateTo({ type: 'explore' })} className="px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#A7CE9B] font-semibold cursor-pointer">Back to the cookbook</button>
+            </>
+          ) : (
+            <>
+              <button type="button" onClick={() => navigateTo({ type: 'explore' })} className="px-3 py-1.5 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] font-semibold cursor-pointer">Back to the cookbook</button>
+              <button type="button" onClick={reset} className="px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#A7CE9B] font-semibold cursor-pointer">Add another</button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -172,35 +225,66 @@ export const AddRecipeScreen: React.FC = () => {
         <span className={label}>Photo <span className="normal-case font-normal text-[#857566]">(optional, one per recipe)</span></span>
         {!isUploadConfigured ? (
           <p className="text-xs text-[#857566]">Photo uploads are not switched on yet, so this recipe will be saved without a picture.</p>
-        ) : preview ? (
-          <div className="flex items-start gap-3">
-            <img src={preview} alt="Chosen photo" className="w-32 h-24 object-cover rounded-xl border border-[#D2C4B1]" />
-            <button type="button" onClick={() => setPhoto(null)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] cursor-pointer">
-              <Trash2 className="w-3.5 h-3.5" /> Remove photo
-            </button>
-          </div>
         ) : (
           <>
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" className="hidden" onChange={chooseFile} />
-            <button type="button" onClick={() => fileRef.current?.click()} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer">
-              <ImagePlus className="w-4 h-4" /> Choose a photo
-            </button>
-            <p className="text-[11px] text-[#857566] mt-1">JPEG, PNG, WebP or HEIC. Big photos are shrunk before they are uploaded.</p>
+            {preview ? (
+              <div className="flex items-start gap-3">
+                <img src={preview} alt="Chosen photo" className="w-32 h-24 object-cover rounded-xl border border-[#D2C4B1]" />
+                <button type="button" onClick={() => setPhoto(null)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] cursor-pointer">
+                  <Trash2 className="w-3.5 h-3.5" /> {isEdit && editing?.imageUrl ? 'Keep the old photo instead' : 'Remove photo'}
+                </button>
+              </div>
+            ) : isEdit && editing?.imageUrl && !removeExisting ? (
+              <div className="flex items-start gap-3">
+                <img src={editing.imageUrl} alt="Current photo" referrerPolicy="no-referrer" className="w-32 h-24 object-cover rounded-xl border border-[#D2C4B1]" />
+                <div className="flex flex-col gap-2">
+                  <button type="button" onClick={() => fileRef.current?.click()} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer">
+                    <ImagePlus className="w-3.5 h-3.5" /> Replace photo
+                  </button>
+                  <button type="button" onClick={() => setRemoveExisting(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer">
+                    <Trash2 className="w-3.5 h-3.5" /> Remove photo
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <button type="button" onClick={() => fileRef.current?.click()} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-xs font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer">
+                  <ImagePlus className="w-4 h-4" /> Choose a photo
+                </button>
+                {removeExisting && (
+                  <button type="button" onClick={() => setRemoveExisting(false)} className="ml-2 text-xs font-semibold text-[#4A3B2C] underline cursor-pointer">Keep the old photo</button>
+                )}
+                <p className="text-[11px] text-[#857566] mt-1">JPEG, PNG, WebP or HEIC. Big photos are shrunk before they are uploaded.</p>
+              </>
+            )}
           </>
         )}
       </div>
 
       {error && <p role="alert" className="text-sm text-[#B8452D] bg-[#FAF7F2] border border-[#B8452D]/40 rounded-xl p-3">{error}</p>}
 
-      <button
-        id="save_recipe_btn"
-        type="submit"
-        disabled={saving}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] text-sm font-semibold hover:bg-[#382B1E] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-      >
-        {saving && <Loader2 className="w-4 h-4 animate-spin" />}
-        {saving ? (photo ? 'Uploading photo…' : 'Saving…') : 'Save recipe'}
-      </button>
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          id="save_recipe_btn"
+          type="submit"
+          disabled={saving}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#4A3B2C] text-[#FAF7F2] text-sm font-semibold hover:bg-[#382B1E] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        >
+          {saving && <Loader2 className="w-4 h-4 animate-spin" />}
+          {saving ? (photo ? 'Uploading photo…' : 'Saving…') : isEdit ? 'Save changes' : 'Save recipe'}
+        </button>
+        {isEdit && (
+          <button
+            id="cancel_edit_btn"
+            type="button"
+            onClick={() => navigateTo({ type: 'detail', recipeId: editId! })}
+            className="px-4 py-2.5 rounded-xl bg-[#EBE3D6] border border-[#D2C4B1] text-sm font-semibold text-[#4A3B2C] hover:bg-[#E4DBCF] cursor-pointer"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

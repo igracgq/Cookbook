@@ -83,7 +83,8 @@ Either way the published site is public: anyone with the link can read the cookb
 - **Anyone** (signed in or not) can read all recipes and photos.
 - **Signed in** (with Google, or with an email and password) can add a recipe (name, section, times, ingredients, steps, notes, one optional photo),
   add as many photos as they like to any recipe (Upload Photo or Take Photo on the recipe page), favorite recipes
-  (saved to the account), and delete their own recipe.
+  (saved to the account), edit their own recipe (name, section, times, ingredients, steps, notes and photo), and delete their own recipe.
+- Only the person who added a recipe can edit it (the **Edit my recipe** button under its photo). Nobody else, not even the owner, can change someone else's recipe; the owner can delete it. Who added it and when stay as they were.
 - Every photo a member adds also appears in the **Photos** section, newest first at the top, and on the recipe page
   in front of the cookbook's own photos. A member photo replaces the illustrative stock photo for everyone. Each photo
   can be removed only by the person who added it (button under the photo in the Photos section), or by the owner.
