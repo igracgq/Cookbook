@@ -95,3 +95,29 @@
     page-break-after: always;
   }
 }
+
+/* Front page sketch (KitchenSketch.tsx): utensils swing slowly from their hooks, steam rises from the pot. */
+@keyframes cookbook-swing {
+  from { transform: rotate(calc(var(--swing, 3deg) * -1)); }
+  to { transform: rotate(var(--swing, 3deg)); }
+}
+.cookbook-swing {
+  animation: cookbook-swing 5s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes cookbook-steam {
+  0% { opacity: 0; transform: translateY(13px) scaleY(0.8); }
+  25% { opacity: 0.7; }
+  70% { opacity: 0.32; }
+  100% { opacity: 0; transform: translateY(-26px) scaleY(1.15); }
+}
+.cookbook-steam {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: cookbook-steam 4s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cookbook-swing { animation: none; }
+  .cookbook-steam { animation: none; opacity: 0; }
+}

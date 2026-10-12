@@ -14,6 +14,9 @@ Everything through PR 13 is merged into `main`; start each new piece of work on 
   Seafood, Red Meat) and the recipe-page tags use it. Rules and limits are in `tools/dietary/README.md`.
   Re-run it after editing recipes: `python3 tools/dietary/classify.py`.
 - **Home screen.** The family photo (`cook_family.jpg`) replaces the "Family Heirloom Collection" heading.
+- **Front-page sketch is animated** (`src/components/KitchenSketch.tsx`, keyframes in `src/index.css`): the five hanging utensils swing
+  slowly and steam rises from the pot. The artwork is cut into layers: `public/images/cook_cover_bottom_static.png` (everything except the
+  utensils) and `cook_utensil_1..5.png`. Stops for people who have "reduce motion" on.
 - **Section buttons** show names only, without page ranges. (The A-Z Index screen still shows page ranges.)
 - **Preview artifact:** https://claude.ai/artifact/WFAUZ8LWeKrLpoaExDp31p. It is a snapshot and only changes
   when republished. See `tools/artifact/README.md`.
