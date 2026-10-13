@@ -508,6 +508,29 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   ok((await pushDocs()).includes('device-1'), 'signing in again switches their alerts back on');
   await ctxPush.close();
 
+  // Print / export: recipe text a member typed must show as plain text, never become real HTML in the print window
+  const sv = v => ({ stringValue: v });
+  const marked = 'Print escape check <i id="print-injection-check">x</i>';
+  const seeded = await (await fetch('http://127.0.0.1:8080/v1/projects/demo-cookbook/databases/(default)/documents/recipes', {
+    method: 'POST', headers: { Authorization: 'Bearer owner', 'content-type': 'application/json' },
+    body: JSON.stringify({ fields: { title: sv(marked), category: sv('SOUPS'), servings: sv('4'), prepTime: sv('1'), cookTime: sv('1'),
+      ingredients: { arrayValue: { values: [sv('1 cup <b id="print-ing-check">water</b>')] } }, instructions: { arrayValue: { values: [sv('Boil & serve.')] } },
+      notes: sv('Note with <u id="print-note-check">tags</u>'), imageUrl: sv(''), authorUid: sv('someone'), authorName: sv('Someone'),
+      createdAt: { timestampValue: new Date().toISOString() } } }) })).json();
+  const ctxPr = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const ppr = await ctxPr.newPage(); await ppr.route('**/fonts.g*/**', r => r.abort());
+  await ppr.goto('http://localhost:5173/Cookbook/'); await ppr.waitForTimeout(2500);
+  await ppr.click('#global_share_btn'); await ppr.waitForSelector('#share_cookbook_modal');
+  await ppr.locator('#share_cookbook_modal button:has-text("Print")').first().click(); await ppr.waitForSelector('#open_print_new_tab_btn');
+  const [printWin] = await Promise.all([ctxPr.waitForEvent('page'), ppr.click('#open_print_new_tab_btn')]);
+  await printWin.waitForTimeout(1200);
+  const injected = await printWin.evaluate(() => ['print-injection-check', 'print-ing-check', 'print-note-check'].filter(id => document.getElementById(id)));
+  const shown = await printWin.evaluate(() => document.body.innerText);
+  ok(injected.length === 0, 'recipe text cannot add HTML elements to the print window (found: ' + JSON.stringify(injected) + ')');
+  ok(shown.includes('<i id="print-injection-check">x</i>') && shown.includes('<b id="print-ing-check">water</b>') && shown.includes('Boil & serve.'), 'the same text is shown exactly as typed, as plain text');
+  await ctxPr.close();
+  await fetch('http://127.0.0.1:8080/v1/' + seeded.name, { method: 'DELETE', headers: { Authorization: 'Bearer owner' } });
+
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const p4 = await ctx4.newPage();
