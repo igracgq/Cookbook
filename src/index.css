@@ -121,3 +121,18 @@
   .cookbook-swing { animation: none; }
   .cookbook-steam { animation: none; opacity: 0; }
 }
+
+/* "Add to Home Screen" pop-up (InstallSheet.tsx): slides up from the bottom; a small arrow points at the browser's buttons. */
+@keyframes install-sheet-in {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.install-sheet-in { animation: install-sheet-in 0.28s ease-out; }
+@keyframes install-sheet-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+.install-sheet-bounce { animation: install-sheet-bounce 1.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .install-sheet-in, .install-sheet-bounce { animation: none; }
+}

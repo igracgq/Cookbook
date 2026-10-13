@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { BellRing, Loader2 } from 'lucide-react';
 import type { User } from 'firebase/auth';
+import { useInstall } from '../context/InstallContext';
 import { currentSubscription, disablePush, enablePush, isInstalledApp, isIos, isPushConfigured, pushSupported } from '../services/push';
 
 /** In the bell panel: turn phone pop-ups on or off for this device. */
 export const PhoneAlerts: React.FC<{ user: User }> = ({ user }) => {
+  const { openInstallHelp } = useInstall();
   const [on, setOn] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,10 @@ export const PhoneAlerts: React.FC<{ user: User }> = ({ user }) => {
   if (isIos() && !isInstalledApp()) {
     return (
       <div id="phone_alerts" className={box}>
-        <p><strong>Pop-ups on your iPhone:</strong> first add the cookbook to your Home Screen (tap the Share button, then "Add to Home Screen"). Open the cookbook from that icon, then come back here to turn them on.</p>
+        <p><strong>Pop-ups on your iPhone:</strong> first add the cookbook to your Home Screen. Open the cookbook from that icon, then come back here to turn them on.</p>
+        <button id="phone_alerts_how_btn" type="button" onClick={openInstallHelp} className="font-semibold text-[#4A3B2C] underline cursor-pointer">
+          Show me how
+        </button>
       </div>
     );
   }
