@@ -58,7 +58,8 @@ with exactly these names:
    phone asks.
 2. **Android (Chrome):** works in the browser. It works best if the cookbook is added to the home screen
    (menu > Add to Home screen / Install app).
-3. **iPhone/iPad:** the cookbook must first be on the Home Screen (Safari > Share button > **Add to Home Screen**), and
+3. **iPhone/iPad:** the cookbook must first be on the Home Screen (Safari > **•••** > **Share** > **Add to Home Screen**; the bell's
+   **Show me how** link and Share Cookbook > **Add to Home Screen** show the steps), and
    iOS must be 16.4 or newer. Open the cookbook **from that icon**, then turn alerts on from the bell. It does not work in a
    normal Safari tab.
 4. Alerts are per device. Turn them on on each phone or computer that should show pop-ups. Signing out stops that person's

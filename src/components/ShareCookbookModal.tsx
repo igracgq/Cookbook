@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Check, Copy, Mail, MessageCircle, Printer, Send, Share2, ExternalLink, X } from 'lucide-react';
+import { Check, Copy, Mail, MessageCircle, Printer, Send, Share2, ExternalLink, SquarePlus, X } from 'lucide-react';
+import { useInstall } from '../context/InstallContext';
 import { ModalPortal } from './ModalPortal';
 
 interface ShareCookbookModalProps {
@@ -12,8 +13,9 @@ interface ShareCookbookModalProps {
 const channel =
   'flex items-center gap-2.5 p-3 rounded-xl bg-[#EBE3D6]/70 border border-[#D2C4B1] hover:bg-[#E4DBCF] text-xs font-semibold text-[#261D16] transition-colors text-left cursor-pointer';
 
-/** Share the whole cookbook (its web address) by email, WhatsApp, Facebook, Instagram, text or X, or print it. */
+/** Share the whole cookbook (its web address) by email, WhatsApp, Facebook, Instagram, text or X, print it, or add it to the Home Screen. */
 export const ShareCookbookModal: React.FC<ShareCookbookModalProps> = ({ isOpen, onClose, onPrint }) => {
+  const { installed, openInstallHelp } = useInstall();
   const [copied, setCopied] = useState(false);
   const [instagramNote, setInstagramNote] = useState(false);
 
@@ -174,6 +176,20 @@ export const ShareCookbookModal: React.FC<ShareCookbookModalProps> = ({ isOpen, 
                 </div>
                 <span className="text-[11px] text-[#7D6C5A]">Paper or PDF</span>
               </button>
+              {!installed && (
+                <button
+                  id="share_cookbook_install_btn"
+                  type="button"
+                  onClick={() => { onClose(); openInstallHelp(); }}
+                  className="w-full flex items-center justify-between p-3 rounded-xl bg-white border border-[#D2C4B1] hover:bg-[#FAF7F2] text-xs font-semibold text-[#261D16] transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <SquarePlus className="w-4 h-4 text-[#7D6C5A]" />
+                    <span>Add to Home Screen</span>
+                  </div>
+                  <span className="text-[11px] text-[#7D6C5A]">Opens like an app</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

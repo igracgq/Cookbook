@@ -531,6 +531,82 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) process
   await ctxPr.close();
   await fetch('http://127.0.0.1:8080/v1/' + seeded.name, { method: 'DELETE', headers: { Authorization: 'Bearer owner' } });
 
+  // "Add to Home Screen" pop-up: the right steps for each phone and browser, sensible timing, and ways to open it again
+  const pwDevices = require(process.env.PLAYWRIGHT_PATH || 'playwright').devices;
+  const iphone = pwDevices['iPhone 13'];
+  const phonePage = async (device, opts = {}) => {
+    const c = await b.newContext({ ...device, ...(opts.userAgent ? { userAgent: opts.userAgent } : {}) });
+    if (opts.init) await c.addInitScript(opts.init);
+    const pg = await c.newPage(); await pg.route('**/fonts.g*/**', r => r.abort());
+    await pg.goto('http://localhost:5173/Cookbook/'); await pg.waitForTimeout(2000);
+    return { c, pg };
+  };
+  const openRecipe = async pg => { await pg.locator('h3').first().click(); await pg.waitForTimeout(900); };
+  const sheetMode = async pg => (await pg.locator('#install_sheet').count()) ? pg.locator('#install_sheet').getAttribute('data-install-mode') : null;
+
+  const ios = await phonePage(iphone);
+  ok(await ios.pg.locator('#install_sheet').count() === 0, 'iPhone: the pop-up does not appear the moment the page opens');
+  await openRecipe(ios.pg);
+  ok(await sheetMode(ios.pg) === 'ios-safari', 'iPhone Safari: it appears after opening a recipe, with the Safari steps');
+  const iosText = await ios.pg.locator('#install_sheet').innerText();
+  ok(/Add to Home Screen/.test(iosText) && /Open as Web App/.test(iosText) && /Share/.test(iosText) && /Don't show this again/.test(iosText), 'the Safari steps mention Share, Add to Home Screen and Open as Web App');
+  await ios.pg.click('#install_not_now_btn'); await ios.pg.waitForTimeout(300);
+  ok(await ios.pg.locator('#install_sheet').count() === 0, 'Not now closes it');
+  await ios.pg.reload(); await ios.pg.waitForTimeout(2000); await openRecipe(ios.pg);
+  ok(await ios.pg.locator('#install_sheet').count() === 0, 'after Not now it does not come back by itself (for two weeks)');
+  await ios.pg.click('#back_to_cookbook_btn'); await ios.pg.click('#global_share_btn'); await ios.pg.click('#share_cookbook_install_btn'); await ios.pg.waitForTimeout(300);
+  ok(await sheetMode(ios.pg) === 'ios-safari' && await ios.pg.locator('#install_never_btn').count() === 0 && (await ios.pg.locator('#install_not_now_btn').innerText()) === 'Close', 'Share Cookbook > Add to Home Screen opens it again any time');
+  await ios.c.close();
+
+  const never = await phonePage(iphone);
+  await openRecipe(never.pg); await never.pg.click('#install_never_btn');
+  await never.pg.reload(); await never.pg.waitForTimeout(2000); await openRecipe(never.pg);
+  ok(await never.pg.locator('#install_sheet').count() === 0, "Don't show this again stops it opening by itself");
+  await never.c.close();
+
+  const insta = await phonePage(iphone, { userAgent: iphone.userAgent + ' Instagram 300.0.0.0' });
+  await openRecipe(insta.pg);
+  ok(await sheetMode(insta.pg) === 'in-app' && /Open in Safari/.test(await insta.pg.locator('#install_sheet').innerText()), "inside Instagram's browser it says to open the cookbook in Safari first");
+  await insta.c.close();
+
+  const crios = await phonePage(iphone, { userAgent: iphone.userAgent.replace('Version/', 'CriOS/120.0 Version/') });
+  await openRecipe(crios.pg);
+  ok(await sheetMode(crios.pg) === 'ios-other', 'Chrome on iPhone gets the steps for its own Share button');
+  await crios.c.close();
+
+  const home = await phonePage(iphone, { init: () => Object.defineProperty(navigator, 'standalone', { get: () => true }) });
+  await openRecipe(home.pg);
+  ok(await home.pg.locator('#install_sheet').count() === 0, 'opened from the Home Screen: no pop-up');
+  await home.pg.click('#back_to_cookbook_btn'); await home.pg.click('#global_share_btn');
+  ok(await home.pg.locator('#share_cookbook_install_btn').count() === 0, 'and no Add to Home Screen button in Share Cookbook');
+  await home.c.close();
+
+  const droid = await phonePage(pwDevices['Pixel 7']);
+  await droid.pg.evaluate(() => {
+    const e = new Event('beforeinstallprompt');
+    e.prompt = async () => { window.__installPrompted = true; };
+    e.userChoice = Promise.resolve({ outcome: 'accepted' });
+    window.dispatchEvent(e);
+  });
+  await openRecipe(droid.pg);
+  ok(await sheetMode(droid.pg) === 'native', 'Android Chrome: it offers a real Install button');
+  await droid.pg.click('#install_app_btn'); await droid.pg.waitForTimeout(400);
+  ok(await droid.pg.evaluate(() => window.__installPrompted === true) && await droid.pg.locator('#install_sheet').count() === 0, "Install opens the phone's own install screen, then the pop-up goes away");
+  await droid.c.close();
+
+  const desk = await b.newContext({ viewport: { width: 1100, height: 900 } });
+  const dpg = await desk.newPage(); await dpg.route('**/fonts.g*/**', r => r.abort());
+  await dpg.goto('http://localhost:5173/Cookbook/'); await dpg.waitForTimeout(2000); await openRecipe(dpg);
+  ok(await dpg.locator('#install_sheet').count() === 0, 'on a computer it never opens by itself');
+  await desk.close();
+
+  const bellIos = await phonePage(iphone, { init: () => localStorage.setItem('heritage_cookbook_install_never', '1') });
+  await bellIos.pg.evaluate(() => window.__cookbookTestSignIn('ios-bell-uid', 'iosbell@example.com', 'Ivy Phone'));
+  await bellIos.pg.waitForSelector('#notification_bell', { timeout: 15000 });
+  await bellIos.pg.click('#notification_bell'); await bellIos.pg.click('#phone_alerts_how_btn'); await bellIos.pg.waitForTimeout(300);
+  ok(await sheetMode(bellIos.pg) === 'ios-safari', 'iPhone: the phone-alerts hint in the bell has Show me how, which opens the same steps');
+  await bellIos.c.close();
+
   // A list made while signed out moves into the account on sign-in, and is not left on the device
   const ctx4 = await b.newContext({ viewport: { width: 1100, height: 900 } });
   const p4 = await ctx4.newPage();

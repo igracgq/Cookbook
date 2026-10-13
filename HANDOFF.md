@@ -75,6 +75,13 @@ use any of it (no network, no sign-in popup), so the artifact shows the buttons 
   the cookbook on the Home Screen. Instant pop-ups would need Firebase Cloud Functions (paid Blaze plan).
 - **Editing a recipe:** the person who added a recipe sees **Edit my recipe** on its page; it opens the Add recipe form filled in
   (`AddRecipeScreen.tsx` with `editRecipeId`, `updateRecipe` in `CommunityContext.tsx`). Only the author can save changes (rules already enforce it).
+- **"Add to Home Screen" pop-up** (`src/context/InstallContext.tsx`, `src/components/InstallSheet.tsx`): Apple does not let a website
+  open Safari's add-to-home-screen screen, so iPhones/iPads get a pop-up with the taps (••• > Share > Add to Home Screen, keep "Open
+  as Web App" on). Other iPhone browsers (Chrome, Edge, Firefox) get their own steps; in-app browsers (Facebook, Instagram, Google
+  app) are told to open Safari first; Android Chrome gets a real Install button. Phones and tablets only, it opens by itself after
+  the first recipe or 30 seconds, once per visit, not for 14 days after "Not now", never after "Don't show again", and never once
+  installed. Always available from Share Cookbook > Add to Home Screen and from the bell's phone-alerts hint ("Show me how").
+  Apple changes Safari's buttons between iOS versions, so the wording covers both layouts; check it against a real iPhone after iOS updates.
 - **Star ratings:** one per member per recipe; averages show on cards and recipe pages (`recipeRatings`).
 - **Owner moderation:** an `admins/{uid}` document (made in the Firebase console) adds Delete (owner) buttons on comments,
   tips, shared recipes and member photos.

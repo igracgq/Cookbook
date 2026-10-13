@@ -16,7 +16,7 @@ import { RecipeDetailScreen } from './screens/RecipeDetailScreen';
 import { RecipeListScreen } from './screens/RecipeListScreen';
 import { ShoppingListScreen } from './screens/ShoppingListScreen';
 import { PhotosScreen } from './screens/PhotosScreen';
-import { InstallPrompt } from './components/InstallPrompt';
+import { InstallProvider } from './context/InstallContext';
 import { AppUpdateProvider } from './context/AppUpdateContext';
 import { RatingsProvider } from './context/RatingsContext';
 import { UpdateBanner } from './components/UpdateBanner';
@@ -166,14 +166,15 @@ export function App() {
       <CommunityProvider>
         <RatingsProvider>
         <CookbookProvider>
-          <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
-            <CulinaryMonochromeBackground />
-            <OfflineStatusBar />
-            <Navigation />
-            <UpdateBanner />
-            <InstallPrompt />
-            <MainContent />
-          </div>
+          <InstallProvider>
+            <div className="relative min-h-screen bg-[#F4EEE5] text-[#261D16]">
+              <CulinaryMonochromeBackground />
+              <OfflineStatusBar />
+              <Navigation />
+              <UpdateBanner />
+              <MainContent />
+            </div>
+          </InstallProvider>
         </CookbookProvider>
         </RatingsProvider>
       </CommunityProvider>
