@@ -26,10 +26,11 @@ This brings in all the code, recipes, photos, rules, tests and the documents in 
 In VS Code open the terminal (**Ctrl+`**, the key above Tab) and run:
 
 ```
-npm install --no-save --no-package-lock
+npm ci
 ```
 
-It takes a minute or two. (The `--no-...` parts stop it from changing project files.)
+It takes a minute or two. (`npm ci` installs exactly the tested versions listed in `package-lock.json` and never changes project
+files.)
 
 ## 4. Create your private `.env.local` file
 
@@ -107,7 +108,7 @@ GitHub, and VS Code works on a copy on your computer. To move between them witho
 2. **Merge it, or give Claude the branch name.** If your work is on a branch that is not merged, start the next Claude session with
    "continue from branch `<name>`". Otherwise Claude starts from `main` and will not see it.
 3. **Pull before you start in VS Code.** On `main`: **Ctrl+Shift+P > Git: Pull**. That brings in what Claude merged. (If you are on
-   a branch, first **Git: Checkout to...** `main`.) Run `npm install --no-save --no-package-lock` again if `package.json` changed.
+   a branch, first **Git: Checkout to...** `main`.) Run `npm ci` again if `package.json` changed.
 4. **One at a time.** Do not edit the same files in both places at once; that causes merge conflicts. Finish and merge in one
    place, then switch.
 5. **Keep `HANDOFF.md` current.** It is the shared memory between sessions. At the end of a session ask: "Update HANDOFF.md with
@@ -122,7 +123,7 @@ Claude puts every change on a branch with a pull request, and nothing is live un
 1. Tell Claude to **hold** the pull request ("hold this one, I will test it"). Claude then leaves it open and does not merge it.
 2. In VS Code open the `Cookbook` folder. **Ctrl+Shift+P > Git: Fetch**, then **Git: Checkout to...** and choose the branch named in the
    pull request (it starts with `claude/`; pick the `origin/...` entry).
-3. In the terminal: `npm install --no-save --no-package-lock`, then `npm run dev`, and open http://localhost:3000.
+3. In the terminal: `npm ci`, then `npm run dev`, and open http://localhost:3000.
 4. If the change touched `firestore.rules`, paste the new file into Firebase console > Firestore Database > Rules > Publish **before**
    you test, or the new feature will say it "could not be saved". Publishing early is harmless: the live site keeps working.
 5. Try it. When you are happy, tell Claude to merge. To go back to the old version afterwards: **Git: Checkout to... `main`**, then

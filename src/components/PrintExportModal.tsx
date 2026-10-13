@@ -19,6 +19,19 @@ import {
 import { RecipeCategory } from '../types';
 import { ModalPortal } from './ModalPortal';
 
+/**
+ * Recipe text goes into a hand-built HTML page (the print window), not through React, so it is not escaped
+ * automatically. Members can add recipes, so every recipe field must be escaped here: otherwise text such as
+ * "<img ...>" in a title or ingredient would become real HTML in the print window.
+ */
+const esc = (v: unknown) =>
+  String(v ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 export const PrintExportModal: React.FC = () => {
   const { isPrintExportOpen, printExportRecipeId, closePrintExport } = useCookbook();
 
@@ -56,18 +69,18 @@ export const PrintExportModal: React.FC = () => {
       <div class="recipe-card">
         <div class="recipe-header">
           <div>
-            <h2 class="recipe-title">${r.title}</h2>
-            ${r.italianTitle ? `<p class="recipe-subtitle">${r.italianTitle}</p>` : ''}
+            <h2 class="recipe-title">${esc(r.title)}</h2>
+            ${r.italianTitle ? `<p class="recipe-subtitle">${esc(r.italianTitle)}</p>` : ''}
           </div>
-          ${r.contributor && r.contributor !== 'Family Cookbook' ? `<span class="recipe-contributor">By ${r.contributor}</span>` : ''}
+          ${r.contributor && r.contributor !== 'Family Cookbook' ? `<span class="recipe-contributor">By ${esc(r.contributor)}</span>` : ''}
         </div>
 
         <div class="meta-row">
           ${[
-            r.servings ? `<span>Yield: ${r.servings}</span>` : '',
-            r.prepTime ? `<span>Prep: ${r.prepTime}</span>` : '',
-            r.cookTime ? `<span>Cook: ${r.cookTime}</span>` : '',
-            `<span>Category: ${r.category.replace(/_/g, ' ')}</span>`
+            r.servings ? `<span>Yield: ${esc(r.servings)}</span>` : '',
+            r.prepTime ? `<span>Prep: ${esc(r.prepTime)}</span>` : '',
+            r.cookTime ? `<span>Cook: ${esc(r.cookTime)}</span>` : '',
+            `<span>Category: ${esc(String(r.category).replace(/_/g, ' '))}</span>`
           ].filter(Boolean).join('<span>•</span>')}
         </div>
 
@@ -75,14 +88,14 @@ export const PrintExportModal: React.FC = () => {
           <div class="col">
             <h3 class="section-title">Ingredients</h3>
             <ul class="ingredient-list">
-              ${r.ingredients.map(ing => `<li>• ${ing.rawText}</li>`).join('')}
+              ${r.ingredients.map(ing => `<li>• ${esc(ing.rawText)}</li>`).join('')}
             </ul>
           </div>
 
           <div class="col">
             <h3 class="section-title">Instructions</h3>
             <ol class="instructions-list">
-              ${r.instructions.map(inst => `<li>${inst}</li>`).join('')}
+              ${r.instructions.map(inst => `<li>${esc(inst)}</li>`).join('')}
             </ol>
           </div>
         </div>
@@ -90,7 +103,7 @@ export const PrintExportModal: React.FC = () => {
         ${
           r.notes
             ? `<div class="heirloom-note">
-                <strong>Heirloom Family Note:</strong> ${r.notes}
+                <strong>Heirloom Family Note:</strong> ${esc(r.notes)}
                </div>`
             : ''
         }

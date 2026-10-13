@@ -120,8 +120,16 @@ No real secrets are in the repository.
 ## Gotchas
 
 - Never commit `node_modules/` or `dist/` (both are in `.gitignore`).
-- Run `npm install --no-save --no-package-lock` for dependencies; `npm ci` fails on a lockfile mismatch that
-  was already there.
+- Install dependencies with `npm ci` (installs exactly the versions in `package-lock.json`; checked working in Oct 2026,
+  the same command the deploy workflow uses). Do not use `npm audit fix --force`: it proposes downgrading Firebase to 9.x.
+- **Security rule for future code:** React escapes text automatically, but any HTML built by hand as a string (today only the
+  print/export page, `PrintExportModal.tsx`) must pass every member-typed field through its `esc()` helper. A browser test
+  (`tools/firebase/e2e.cjs`, "Print / export") fails if recipe text can add HTML to the print window.
+- **Dependencies (Oct 2026 audit):** the app has 0 known vulnerabilities (Vite 6.4.4; `@grpc/grpc-js` forced to a patched
+  version through `overrides` in `package.json`, because Firebase pins an old one; it is Node-only and not in the browser bundle).
+  `tools/push` runs on firebase-admin 14 (needs Node 22, which the workflow uses) with 0 production vulnerabilities. The only
+  remaining advisories are inside the Firebase command-line tool (`firebase-tools`, dev-only, used to start the test
+  emulators); they clear when Google updates it.
 - The `PIXABAY_KEY` environment variable is only needed to search for new photos, not to run or build the app.
 - Seven photos (`stock_cantucci_328_5..8`, `stock_buttermilk_biscuits_465_2..4`) were swapped by hand after
   `apply_unique.py`; rerunning it would undo that (details in `tools/stock-photos/picks/README.md`).
